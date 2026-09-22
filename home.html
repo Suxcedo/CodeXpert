@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,224 +11,439 @@
 <body>
 
 <header class="topbar">
-    <a href="home.html" class="logo">
-        <span class="logo-box">&lt;/&gt;</span>
-        <div>
-            <strong>CodeXpert</strong>
-            <small>Learn. Code. Grow.</small>
-        </div>
+
+    <a href="home.html" class="logo-link">
+        <img src="assets/CX.jpeg" alt="CodeXpert logo" class="logo-image">
     </a>
 
-    <nav class="main-nav">
-        <a href="home.html" class="active">Home</a>
-        <a href="#learning">My Learning</a>
-        <a href="#paths">Learning Paths</a>
+    <nav class="main-nav" id="mainNav">
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#learning">Learning Path</a>
+        <a href="#reels">Reels</a>
         <a href="#community">Community</a>
         <a href="#help">Help Board</a>
     </nav>
 
-    <div class="user-area">
-        <input type="search" id="searchInput" placeholder="Search CodeXpert">
-        <div class="user-avatar">TB</div>
+    <div class="top-actions">
+
+        <div class="top-stat streak-top">
+            <span>STREAK</span>
+            <strong id="topStreak">0</strong>
+        </div>
+
+        <div class="top-stat xp-top">
+            <strong id="topXp">0</strong>
+            <span>XP</span>
+        </div>
+
+        <div class="profile-circle" id="profileInitial">
+            U
+        </div>
+
+        <button
+            type="button"
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open menu"
+            aria-expanded="false">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
     </div>
+
 </header>
 
 
-<main class="dashboard">
+<main class="dashboard" id="dashboard">
 
-    <section class="hero">
-        <div class="hero-text">
-            <p class="small-heading">WELCOME BACK</p>
+    <section class="welcome-section">
 
-            <h1>
-                Keep building your
-                <span>coding skills.</span>
-            </h1>
-
-            <p>
-                Continue your lessons, keep your learning streak active
-                and make progress toward your programming goals.
-            </p>
-
-            <a href="#learning" class="main-button">
-                Continue Learning
-            </a>
+        <div class="dashboard-wordmark">
+            <img src="assets/CodeXperts.jpeg" alt="CodeXperts logo">
         </div>
 
-        <div class="hero-code">
-            <p class="code-file">progress.js</p>
+        <h1>
+            Welcome back,
+            <span id="welcomeName">Learner.</span>
+        </h1>
 
-            <pre><span>const</span> learner = "Tia";
+        <p id="welcomeMessage">
+            Start learning today and begin building your streak.
+        </p>
 
-while (learner.isLearning) {
-    learner.improve();
-}
-
-// Keep going.</pre>
-        </div>
     </section>
 
 
-    <section class="stats">
-        <article class="stat-card">
-            <span class="stat-code">ST</span>
+    <section class="stats-grid">
+
+        <article class="stat-card streak-card">
+            <p>DAY STREAK</p>
+
             <div>
-                <p>Current Streak</p>
-                <h2>7 Days</h2>
-                <small>Best streak: 12 days</small>
+                <h2 id="streakValue">0</h2>
+                <span>days</span>
             </div>
         </article>
 
-        <article class="stat-card">
-            <span class="stat-code">LS</span>
+
+        <article class="stat-card xp-card">
+            <p>TOTAL XP</p>
+
             <div>
-                <p>Lessons Completed</p>
-                <h2>18</h2>
-                <small>4 completed this week</small>
+                <h2 id="xpValue">0</h2>
+                <span>points</span>
             </div>
         </article>
 
-        <article class="stat-card">
-            <span class="stat-code">BG</span>
+
+        <article class="stat-card level-card">
+            <p>CURRENT LEVEL</p>
+
             <div>
-                <p>Badges Earned</p>
-                <h2>6</h2>
-                <small>2 badges almost unlocked</small>
+                <h2 id="levelValue">1</h2>
+                <span>/ 10</span>
             </div>
         </article>
 
-        <article class="stat-card">
-            <span class="stat-code">PR</span>
+
+        <article class="stat-card lessons-card">
+            <p>LESSONS DONE</p>
+
             <div>
-                <p>Overall Progress</p>
-                <h2>42%</h2>
-                <small>Keep moving forward</small>
+                <h2 id="lessonsValue">0</h2>
+                <span>total</span>
             </div>
         </article>
+
     </section>
 
 
-    <section class="section" id="learning">
-        <div class="section-title">
-            <div>
-                <p>YOUR LEARNING</p>
-                <h2>Continue Learning</h2>
-            </div>
+    <section class="dashboard-layout">
 
-            <a href="#">View All</a>
-        </div>
+        <div class="main-column">
 
-        <article class="course-card">
-            <div class="course-logo">JS</div>
+            <section class="level-panel">
 
-            <div class="course-info">
-                <span class="course-type">JAVASCRIPT</span>
-                <h3>JavaScript Fundamentals</h3>
-                <p>Lesson 9 of 20 - Functions and Scope</p>
+                <div class="level-header">
+
+                    <div>
+                        <h3 id="levelHeading">
+                            Level 1 → Level 2
+                        </h3>
+
+                        <p id="levelXpText">
+                            0 / 1,000 XP
+                        </p>
+                    </div>
+
+                    <strong id="levelPercentage">
+                        0%
+                    </strong>
+
+                </div>
 
                 <div class="progress-bar">
-                    <div class="progress-value"></div>
+                    <div
+                        class="progress-fill level-progress"
+                        id="levelProgress">
+                    </div>
                 </div>
 
-                <div class="course-bottom">
-                    <span>45% complete</span>
-                    <button type="button">Continue</button>
+                <small id="levelMessage">
+                    Complete lessons to earn XP and progress.
+                </small>
+
+            </section>
+
+
+            <section class="week-panel">
+
+                <h3>This Week</h3>
+
+                <div class="week-grid">
+
+                    <div class="day">
+                        <span></span>
+                        <p>Mon</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Tue</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Wed</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Thu</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Fri</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Sat</p>
+                    </div>
+
+                    <div class="day">
+                        <span></span>
+                        <p>Sun</p>
+                    </div>
+
                 </div>
-            </div>
-        </article>
-    </section>
+
+                <div class="week-message" id="weekMessage">
+                    Complete your first lesson to begin tracking your week.
+                </div>
+
+            </section>
 
 
-    <section class="section" id="paths">
-        <div class="section-title">
-            <div>
-                <p>DISCOVER</p>
-                <h2>Learning Paths</h2>
-            </div>
+            <section class="learning-panel" id="learning">
+
+                <div class="section-header">
+
+                    <div>
+                        <p class="section-label">YOUR PYTHON PATH</p>
+                        <h3>Beginner Learning Path</h3>
+                    </div>
+
+                    <span id="pathProgress">0 / 4</span>
+
+                </div>
+
+
+                <div class="lesson current" id="lesson1">
+
+                    <div class="lesson-status"></div>
+
+                    <div class="lesson-info">
+                        <h4>Getting Started</h4>
+                        <p>Your first lesson is ready</p>
+                    </div>
+
+                    <span class="lesson-xp">+100 XP</span>
+
+                </div>
+
+
+                <div class="lesson locked" id="lesson2">
+
+                    <div class="lesson-status"></div>
+
+                    <div class="lesson-info">
+                        <h4>Variables & Data Types</h4>
+                        <p>Locked</p>
+                    </div>
+
+                    <span class="lesson-xp">+120 XP</span>
+
+                </div>
+
+
+                <div class="lesson locked" id="lesson3">
+
+                    <div class="lesson-status"></div>
+
+                    <div class="lesson-info">
+                        <h4>Control Flow: if/else</h4>
+                        <p>Locked</p>
+                    </div>
+
+                    <span class="lesson-xp">+150 XP</span>
+
+                </div>
+
+
+                <div class="lesson locked" id="lesson4">
+
+                    <div class="lesson-status"></div>
+
+                    <div class="lesson-info">
+                        <h4>Loops: for & while</h4>
+                        <p>Locked</p>
+                    </div>
+
+                    <span class="lesson-xp">+180 XP</span>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="continue-button"
+                    id="lessonButton">
+
+                    Start First Lesson →
+
+                </button>
+
+                <p class="lesson-message" id="lessonMessage"></p>
+
+            </section>
+
+
+            <section class="quick-actions">
+
+                <button
+                    type="button"
+                    class="quick-card reel-card"
+                    id="reels">
+
+                    <span>REELS</span>
+                    <strong>Watch a Reel</strong>
+                    <small>Quick coding content</small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="quick-card help-card"
+                    id="help">
+
+                    <span>HELP</span>
+                    <strong>Ask Help Board</strong>
+                    <small>Get unstuck</small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="quick-card community-card"
+                    id="community">
+
+                    <span>COMMUNITY</span>
+                    <strong>View Community</strong>
+                    <small>Learn with others</small>
+
+                </button>
+
+            </section>
+
         </div>
 
-        <div class="path-grid">
-            <article class="path-card">
-                <span class="language-code js">JS</span>
-                <span class="level">Beginner</span>
 
-                <h3>JavaScript</h3>
+        <aside class="side-column">
 
-                <p>
-                    Learn JavaScript fundamentals and build
-                    interactive web applications.
-                </p>
+            <section class="activity-panel">
 
-                <small>20 Lessons</small>
-                <button type="button">View Path</button>
-            </article>
+                <div class="panel-tabs">
 
-            <article class="path-card">
-                <span class="language-code python">PY</span>
-                <span class="level">Beginner</span>
+                    <button
+                        type="button"
+                        class="tab-button active"
+                        data-tab="activity">
+                        Activity
+                    </button>
 
-                <h3>Python</h3>
+                    <button
+                        type="button"
+                        class="tab-button"
+                        data-tab="ranks">
+                        Ranks
+                    </button>
 
-                <p>
-                    Develop strong programming foundations
-                    through practical Python exercises.
-                </p>
+                </div>
 
-                <small>24 Lessons</small>
-                <button type="button">View Path</button>
-            </article>
+                <div id="activityContent"></div>
 
-            <article class="path-card">
-                <span class="language-code java">JV</span>
-                <span class="level">Intermediate</span>
-
-                <h3>Java</h3>
-
-                <p>
-                    Learn object-oriented programming and
-                    structured Java development.
-                </p>
-
-                <small>28 Lessons</small>
-                <button type="button">View Path</button>
-            </article>
-        </div>
-    </section>
+            </section>
 
 
-    <section class="community-section" id="community">
-        <div>
-            <p class="small-heading">LEARN TOGETHER</p>
-            <h2>Join the CodeXpert community.</h2>
+            <section class="badges-panel">
 
-            <p>
-                Connect with learners studying the same programming
-                languages, share knowledge and get support when needed.
-            </p>
-        </div>
+                <h3>Your Badges</h3>
 
-        <div class="community-buttons">
-            <button type="button">Explore Community</button>
-            <button type="button" class="secondary" id="help">
-                Visit Help Board
-            </button>
-        </div>
+                <div class="badges-grid">
+
+                    <div class="badge locked" data-streak="7">
+                        <span>7D</span>
+                        <p>7-Day</p>
+                    </div>
+
+                    <div class="badge locked" data-streak="30">
+                        <span>30D</span>
+                        <p>30-Day</p>
+                    </div>
+
+                    <div class="badge locked" data-streak="100">
+                        <span>100D</span>
+                        <p>100-Day</p>
+                    </div>
+
+                    <div class="badge locked">
+                        <span>FA</span>
+                        <p>First Answer</p>
+                    </div>
+
+                    <div class="badge locked">
+                        <span>TH</span>
+                        <p>Top Helper</p>
+                    </div>
+
+                    <div class="badge locked">
+                        <span>SL</span>
+                        <p>Speed</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="reward-panel">
+
+                <div class="reward-header">
+
+                    <div class="reward-icon">
+                        100
+                    </div>
+
+                    <div>
+                        <h3>100-Day Reward</h3>
+                        <p>Keep your learning streak going.</p>
+                    </div>
+
+                </div>
+
+                <div class="progress-bar">
+                    <div
+                        class="progress-fill reward-progress"
+                        id="rewardProgress">
+                    </div>
+                </div>
+
+                <small id="rewardText">
+                    0/100 days · 100 days to go
+                </small>
+
+            </section>
+
+        </aside>
+
     </section>
 
 </main>
 
 
-<footer>
-    <p>CodeXpert 2026</p>
+<div class="toast" id="toast"></div>
 
-    <div>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Support</a>
-    </div>
-</footer>
 
 <script src="js/home.js"></script>
 
 </body>
+
 </html>
