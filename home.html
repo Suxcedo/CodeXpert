@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | CodeXpert</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="home.html" class="logo">
+        <span class="logo-box">&lt;/&gt;</span>
+        <div>
+            <strong>CodeXpert</strong>
+            <small>Learn. Code. Grow.</small>
+        </div>
+    </a>
+
+    <nav class="main-nav">
+        <a href="home.html" class="active">Home</a>
+        <a href="#learning">My Learning</a>
+        <a href="#paths">Learning Paths</a>
+        <a href="#community">Community</a>
+        <a href="#help">Help Board</a>
+    </nav>
+
+    <div class="user-area">
+        <input type="search" id="searchInput" placeholder="Search CodeXpert">
+        <div class="user-avatar">TB</div>
+    </div>
+</header>
+
+
+<main class="dashboard">
+
+    <section class="hero">
+        <div class="hero-text">
+            <p class="small-heading">WELCOME BACK</p>
+
+            <h1>
+                Keep building your
+                <span>coding skills.</span>
+            </h1>
+
+            <p>
+                Continue your lessons, keep your learning streak active
+                and make progress toward your programming goals.
+            </p>
+
+            <a href="#learning" class="main-button">
+                Continue Learning
+            </a>
+        </div>
+
+        <div class="hero-code">
+            <p class="code-file">progress.js</p>
+
+            <pre><span>const</span> learner = "Tia";
+
+while (learner.isLearning) {
+    learner.improve();
+}
+
+// Keep going.</pre>
+        </div>
+    </section>
+
+
+    <section class="stats">
+        <article class="stat-card">
+            <span class="stat-code">ST</span>
+            <div>
+                <p>Current Streak</p>
+                <h2>7 Days</h2>
+                <small>Best streak: 12 days</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-code">LS</span>
+            <div>
+                <p>Lessons Completed</p>
+                <h2>18</h2>
+                <small>4 completed this week</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-code">BG</span>
+            <div>
+                <p>Badges Earned</p>
+                <h2>6</h2>
+                <small>2 badges almost unlocked</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-code">PR</span>
+            <div>
+                <p>Overall Progress</p>
+                <h2>42%</h2>
+                <small>Keep moving forward</small>
+            </div>
+        </article>
+    </section>
+
+
+    <section class="section" id="learning">
+        <div class="section-title">
+            <div>
+                <p>YOUR LEARNING</p>
+                <h2>Continue Learning</h2>
+            </div>
+
+            <a href="#">View All</a>
+        </div>
+
+        <article class="course-card">
+            <div class="course-logo">JS</div>
+
+            <div class="course-info">
+                <span class="course-type">JAVASCRIPT</span>
+                <h3>JavaScript Fundamentals</h3>
+                <p>Lesson 9 of 20 - Functions and Scope</p>
+
+                <div class="progress-bar">
+                    <div class="progress-value"></div>
+                </div>
+
+                <div class="course-bottom">
+                    <span>45% complete</span>
+                    <button type="button">Continue</button>
+                </div>
+            </div>
+        </article>
+    </section>
+
+
+    <section class="section" id="paths">
+        <div class="section-title">
+            <div>
+                <p>DISCOVER</p>
+                <h2>Learning Paths</h2>
+            </div>
+        </div>
+
+        <div class="path-grid">
+            <article class="path-card">
+                <span class="language-code js">JS</span>
+                <span class="level">Beginner</span>
+
+                <h3>JavaScript</h3>
+
+                <p>
+                    Learn JavaScript fundamentals and build
+                    interactive web applications.
+                </p>
+
+                <small>20 Lessons</small>
+                <button type="button">View Path</button>
+            </article>
+
+            <article class="path-card">
+                <span class="language-code python">PY</span>
+                <span class="level">Beginner</span>
+
+                <h3>Python</h3>
+
+                <p>
+                    Develop strong programming foundations
+                    through practical Python exercises.
+                </p>
+
+                <small>24 Lessons</small>
+                <button type="button">View Path</button>
+            </article>
+
+            <article class="path-card">
+                <span class="language-code java">JV</span>
+                <span class="level">Intermediate</span>
+
+                <h3>Java</h3>
+
+                <p>
+                    Learn object-oriented programming and
+                    structured Java development.
+                </p>
+
+                <small>28 Lessons</small>
+                <button type="button">View Path</button>
+            </article>
+        </div>
+    </section>
+
+
+    <section class="community-section" id="community">
+        <div>
+            <p class="small-heading">LEARN TOGETHER</p>
+            <h2>Join the CodeXpert community.</h2>
+
+            <p>
+                Connect with learners studying the same programming
+                languages, share knowledge and get support when needed.
+            </p>
+        </div>
+
+        <div class="community-buttons">
+            <button type="button">Explore Community</button>
+            <button type="button" class="secondary" id="help">
+                Visit Help Board
+            </button>
+        </div>
+    </section>
+
+</main>
+
+
+<footer>
+    <p>CodeXpert 2026</p>
+
+    <div>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Support</a>
+    </div>
+</footer>
+
+<script src="js/home.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | CodeXpert</title>
+
+    <meta
+        name="description"
+        content="Create your CodeXpert account and start building your programming skills."
+    >
+
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+
+<body>
+
+    <main class="signup-page">
+
+        <!-- LEFT SIDE -->
+        <section class="signup-visual">
+
+            <div class="brand">
+                <div class="brand-icon">&lt;/&gt;</div>
+
+                <div>
+                    <h1>CodeXpert</h1>
+                    <p>Learn. Code. Grow.</p>
+                </div>
+            </div>
+
+            <div class="visual-content">
+
+                <span class="eyebrow">START YOUR CODING JOURNEY</span>
+
+                <h2>
+                    Turn your coding goals
+                    into <span>daily progress.</span>
+                </h2>
+
+                <p class="intro-text">
+                    Learn programming through structured lessons,
+                    track your progress, build streaks and grow
+                    alongside a community of developers.
+                </p>
+
+                <div class="benefits">
+
+                    <article class="benefit-card">
+                        <div class="benefit-icon">01</div>
+
+                        <div>
+                            <h3>Learn step by step</h3>
+                            <p>
+                                Follow structured programming paths designed
+                                to keep your learning focused.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="benefit-card">
+                        <div class="benefit-icon">02</div>
+
+                        <div>
+                            <h3>Build consistency</h3>
+                            <p>
+                                Track progress, maintain learning streaks and
+                                earn badges as you improve.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="benefit-card">
+                        <div class="benefit-icon">03</div>
+
+                        <div>
+                            <h3>Learn together</h3>
+                            <p>
+                                Connect with other learners and get help when
+                                you're stuck.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="code-preview">
+                    <div class="code-header">
+                        <div class="window-buttons">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <p>your_journey.js</p>
+                    </div>
+
+                    <div class="code-body">
+                        <p>
+                            <span class="purple">const</span>
+                            <span class="blue">developer</span>
+                            =
+                            <span class="yellow">"you"</span>;
+                        </p>
+
+                        <p>
+                            <span class="purple">while</span>
+                            (developer.<span class="green">keepsLearning</span>) {
+                        </p>
+
+                        <p class="indent">
+                            developer.<span class="blue">levelUp</span>();
+                        </p>
+
+                        <p>}</p>
+
+                        <p class="comment">
+                            // Your next level starts here.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SIDE -->
+        <section class="signup-form-section">
+
+            <div class="form-container">
+
+                <div class="mobile-brand">
+                    <div class="brand-icon">&lt;/&gt;</div>
+                    <h2>CodeXpert</h2>
+                </div>
+
+                <div class="form-heading">
+                    <span class="form-label">WELCOME TO CODEXPERT</span>
+
+                    <h2>Create your account</h2>
+
+                    <p>
+                        Start learning, building and improving your
+                        programming skills today.
+                    </p>
+                </div>
+
+
+                <form id="signupForm" novalidate>
+
+                    <div class="name-row">
+
+                        <div class="form-group">
+                            <label for="firstName">First name</label>
+
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                placeholder="Enter your first name"
+                                autocomplete="given-name"
+                            >
+
+                            <small class="error-message"></small>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="lastName">Last name</label>
+
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                placeholder="Enter your last name"
+                                autocomplete="family-name"
+                            >
+
+                            <small class="error-message"></small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="username">Username</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">@</span>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Choose a username"
+                                autocomplete="username"
+                            >
+                        </div>
+
+                        <small class="error-message"></small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="email">Email address</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                            >
+                        </div>
+
+                        <small class="error-message"></small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="password">Password</label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">⌁</span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a strong password"
+                                autocomplete="new-password"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <div class="password-strength">
+                            <div class="strength-bars">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                            <p id="strengthText">
+                                Use at least 8 characters
+                            </p>
+                        </div>
+
+                        <small class="error-message"></small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">✓</span>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Enter your password again"
+                                autocomplete="new-password"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleConfirmPassword"
+                                aria-label="Show confirmed password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <small class="error-message"></small>
+
+                    </div>
+
+
+                    <div class="terms-row">
+
+                        <label class="checkbox-container">
+
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="terms"
+                            >
+
+                            <span class="custom-checkbox"></span>
+
+                            <span class="terms-text">
+                                I agree to the
+                                <a href="#">Terms of Service</a>
+                                and
+                                <a href="#">Privacy Policy</a>.
+                            </span>
+
+                        </label>
+
+                        <small
+                            class="error-message terms-error"
+                            id="termsError"
+                        ></small>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="signup-button"
+                    >
+                        <span>Create my account</span>
+                        <span class="button-arrow">→</span>
+                    </button>
+
+
+                    <div
+                        class="success-message"
+                        id="successMessage"
+                    >
+                        <div class="success-icon">✓</div>
+
+                        <div>
+                            <strong>Account details look good!</strong>
+
+                            <p>
+                                Your registration form has passed validation.
+                            </p>
+                        </div>
+                    </div>
+
+                </form>
+
+
+                <div class="login-link">
+                    <p>
+                        Already have an account?
+                        <a href="login.html">Sign in</a>
+                    </p>
+                </div>
+
+
+                <div class="security-note">
+                    <span></span>
+
+                    <p>
+                        Your information is handled securely and will
+                        never be displayed publicly without your permission.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/signup.js"></script>
+
+</body>
+</html>
