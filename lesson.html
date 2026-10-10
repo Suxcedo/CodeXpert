@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1.1 | CodeXperts</title>
+    <link rel="stylesheet" href="css/lesson.css">
+    <script src="js/lesson.js" defer></script>
+</head>
+<body>
+
+    
+<header class="topbar">
+    <a href="index.html" class="brand" aria-label="CodeXperts Dashboard">
+        <img src="assets/cXlogo.jpeg" alt="CodeXperts logo">
+        <span>CodeXperts</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a href="home.html">Dashboard</a>
+        <a href="selection.html">Selection</a>
+        <a href="learning-path.html" class="active">Learning Path</a>
+        <a href="#">Reels</a>
+        <a href="#">Community</a>
+        <a href="#">Help Board</a>
+    </nav>
+
+    <div class="header-right">
+        <span class="learning-label">LEARNING MODE</span>
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span id="usernameDisplay">Learner</span>
+    </div>
+</header>
+
+    <main class="app-layout">
+
+        <aside class="lesson-sidebar">
+            <a href="learning-path.html" class="back-link">← Learning path</a>
+
+            <div class="sidebar-course">
+                <span class="course-icon">⌘</span>
+                <div>
+                    <p>WEBSITE DEVELOPMENT</p>
+                    <h2>Module 1</h2>
+                </div>
+            </div>
+
+            <div class="sidebar-progress">
+                <div class="progress-heading">
+                    <span>Your progress</span>
+                    <strong id="progressText">0%</strong>
+                </div>
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+
+            <p class="sidebar-heading">MODULE CONTENT</p>
+
+            <button class="lesson-nav-item active" type="button">
+                <span class="nav-number">1.1</span>
+                <span>
+                    <strong>Introduction to Websites</strong>
+                    <small>Current lesson</small>
+                </span>
+                <span class="nav-status">●</span>
+            </button>
+
+            <div class="sidebar-note">
+                <span>💡</span>
+                <p>Learn at your own pace. Take your time to understand each concept.</p>
+            </div>
+        </aside>
+
+        <section class="lesson-main">
+
+            <div class="lesson-topline">
+                <span>MODULE 1</span>
+                <span class="topline-divider">/</span>
+                <span>LESSON 1.1</span>
+                <span class="time-label">◷ About 5 minutes</span>
+            </div>
+
+            <div class="lesson-content" id="lessonContent" hidden>
+
+                <section class="lesson-intro" id="section-intro">
+                    <div class="intro-badge">YOUR WEB DEVELOPMENT JOURNEY STARTS HERE</div>
+
+                    <h1>Introduction to Websites and Web Development</h1>
+
+                    <p class="intro-description">
+                        Before building websites, let's understand what they are,
+                        how their pages fit together, and where CodeXperts fits in.
+                    </p>
+
+                    <div class="learning-outcomes">
+                        <h3>By the end of this lesson, you'll be able to:</h3>
+                        <div class="outcome">
+                            <span>✓</span> Explain what a website is.
+                        </div>
+                        <div class="outcome">
+                            <span>✓</span> Describe what a webpage is.
+                        </div>
+                        <div class="outcome">
+                            <span>✓</span> Identify the difference between a website and a webpage.
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-divider"></div>
+
+                <section class="content-section" id="section-website">
+                    <div class="section-number">01</div>
+
+                    <div class="section-body">
+                        <p class="section-kicker">LET'S START WITH THE BASICS</p>
+                        <h2>1.1.1 What is a website?</h2>
+
+                        <p>
+                            A <strong>website</strong> is a collection of related webpages
+                            that people can access through a web browser, usually using
+                            an internet connection.
+                        </p>
+
+                        <p>
+                            A website may provide information, display pictures, publish
+                            news, sell products, teach learners, or allow people to communicate.
+                        </p>
+
+                        <div class="example-callout">
+                            <span class="callout-icon">🎓</span>
+                            <div>
+                                <h3>Think of a university website</h3>
+                                <p>A university website might contain several pages:</p>
+                                <ul>
+                                    <li>A home page introducing the university.</li>
+                                    <li>An admissions page explaining how to apply.</li>
+                                    <li>A courses page listing available qualifications.</li>
+                                    <li>A contact page containing contact details.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <figure class="image-card">
+                            <img
+                                src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80"
+                                alt="University building representing a university website"
+                                loading="lazy"
+                            >
+                            <figcaption>
+                                Example: a university website can provide admissions,
+                                course and contact information.
+                            </figcaption>
+                        </figure>
+
+                        <div class="remember-card">
+                            <span>🧠</span>
+                            <div>
+                                <strong>Remember this</strong>
+                                <p>A website brings related pages together under one online home.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-divider"></div>
+
+                <section class="content-section" id="section-webpage">
+                    <div class="section-number">02</div>
+
+                    <div class="section-body">
+                        <p class="section-kicker">NOW, LOOK CLOSER</p>
+                        <h2>What is a webpage?</h2>
+
+                        <p>
+                            A <strong>webpage</strong> is a single page within a website.
+                        </p>
+
+                        <p>
+                            Think of a website as a book and each webpage as one page in
+                            that book. The pages may contain text, images, videos, links,
+                            forms, and other content.
+                        </p>
+
+                        <div class="analogy-card">
+                            <div class="analogy-visual book-visual">
+                                <span>📚</span>
+                                <strong>Website</strong>
+                                <small>The whole book</small>
+                            </div>
+
+                            <div class="analogy-arrow">→</div>
+
+                            <div class="analogy-visual page-visual">
+                                <span>📄</span>
+                                <strong>Webpage</strong>
+                                <small>One page in the book</small>
+                            </div>
+                        </div>
+
+                        <figure class="image-card">
+                            <img
+                                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80"
+                                alt="Modern office workspace illustrating a website example"
+                                loading="lazy"
+                            >
+                            <figcaption>
+                                A website can have different pages, each designed for a
+                                particular purpose.
+                            </figcaption>
+                        </figure>
+                    </div>
+                </section>
+
+                <div class="lesson-divider"></div>
+
+                <section class="content-section" id="section-examples">
+                    <div class="section-number">03</div>
+
+                    <div class="section-body">
+                        <p class="section-kicker">VISUAL EXAMPLES</p>
+                        <h2>Website vs webpage</h2>
+                        <p>
+                            Select an example below to see the difference between the
+                            complete website and one page within it.
+                        </p>
+
+                        <div class="example-grid">
+                            <button class="example-tile" type="button"
+                                data-website="University website"
+                                data-webpage="Admissions page">
+                                <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+                                     alt="University building" loading="lazy">
+                                <span class="tile-label">EDUCATION</span>
+                                <strong>University</strong>
+                                <span class="tile-hint">Click to explore →</span>
+                            </button>
+
+                            <button class="example-tile" type="button"
+                                data-website="Online store"
+                                data-webpage="Product details page">
+                                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80"
+                                     alt="Retail clothing store" loading="lazy">
+                                <span class="tile-label">SHOPPING</span>
+                                <strong>Online store</strong>
+                                <span class="tile-hint">Click to explore →</span>
+                            </button>
+
+                            <button class="example-tile" type="button"
+                                data-website="News website"
+                                data-webpage="A particular news article">
+                                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80"
+                                     alt="Newspapers representing news" loading="lazy">
+                                <span class="tile-label">NEWS</span>
+                                <strong>News website</strong>
+                                <span class="tile-hint">Click to explore →</span>
+                            </button>
+
+                            <button class="example-tile" type="button"
+                                data-website="CodeXperts"
+                                data-webpage="A lesson page">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80"
+                                     alt="Person learning using a computer" loading="lazy">
+                                <span class="tile-label">LEARNING</span>
+                                <strong>CodeXperts</strong>
+                                <span class="tile-hint">Click to explore →</span>
+                            </button>
+                        </div>
+
+                        <div class="comparison-result" id="comparisonResult" aria-live="polite">
+                            <span class="result-icon">👆</span>
+                            <p>Choose an example above to see its website and webpage.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="lesson-divider"></div>
+
+                <section class="content-section" id="section-practice">
+                    <div class="section-number">04</div>
+
+                    <div class="section-body">
+                        <p class="section-kicker">YOUR TURN</p>
+                        <h2>Quick knowledge check</h2>
+                        <p>Let's check what you've learned so far.</p>
+
+                        <div class="quiz-card" id="quizCard">
+                            <div class="quiz-progress">QUESTION 1 OF 2</div>
+                            <h3 id="quizQuestion">
+                                A university has a home page, an admissions page
+                                and a courses page. Together, these pages are part of a...
+                            </h3>
+
+                            <div class="quiz-options" id="quizOptions">
+                                <button type="button" class="quiz-option" data-answer="wrong">
+                                    A single webpage
+                                </button>
+                                <button type="button" class="quiz-option" data-answer="correct">
+                                    A website
+                                </button>
+                                <button type="button" class="quiz-option" data-answer="wrong">
+                                    A web browser
+                                </button>
+                            </div>
+
+                            <div class="quiz-feedback" id="quizFeedback" role="status"></div>
+                            <button type="button" class="secondary-button" id="nextQuestionButton" hidden>
+                                Next question →
+                            </button>
+                        </div>
+
+                        <details class="glossary">
+                            <summary>📖 Need a reminder? Open the mini glossary</summary>
+                            <div class="glossary-content">
+                                <p><strong>Website:</strong> A collection of related webpages.</p>
+                                <p><strong>Webpage:</strong> One individual page within a website.</p>
+                                <p><strong>Web browser:</strong> An application used to access and view websites.</p>
+                            </div>
+                        </details>
+                    </div>
+                </section>
+
+                <section class="lesson-finish" id="lessonFinish" hidden>
+                    <div class="finish-icon">🎉</div>
+                    <p class="section-kicker">LESSON COMPLETE</p>
+                    <h2>You've taken your first step!</h2>
+                    <p>
+                        You now understand the difference between a website and a webpage.
+                        Great work, future developer!
+                    </p>
+                    <button type="button" class="primary-button" id="finishButton">
+                        Finish lesson ✓
+                    </button>
+                    <p class="finish-note" id="finishNote" role="status"></p>
+                </section>
+
+            </div>
+
+            <div class="lesson-locked-placeholder" id="lessonPlaceholder">
+                <div class="placeholder-icon">🔒</div>
+                <h2>Your lesson is ready when you are</h2>
+                <p>Enroll to unlock Lesson 1.1 and start learning with CodeXperts.</p>
+            </div>
+
+        </section>
+    </main>
+
+    <div class="enrollment-overlay" id="enrollmentOverlay" role="dialog"
+         aria-modal="true" aria-labelledby="enrollmentTitle">
+        <div class="enrollment-modal">
+            <div class="modal-decoration">🚀</div>
+            <span class="modal-kicker">YOUR JOURNEY STARTS HERE</span>
+            <h1 id="enrollmentTitle">Ready to become a web developer?</h1>
+            <p>
+                You're about to begin Website Development. Explore the basics,
+                practise new skills and build your confidence one lesson at a time.
+            </p>
+
+            <div class="modal-course">
+                <div class="modal-course-icon">⌘</div>
+                <div>
+                    <strong>Website Development</strong>
+                    <span>Module 1 · Lesson 1.1</span>
+                </div>
+            </div>
+
+            <ul class="modal-benefits">
+                <li><span>✓</span> Beginner-friendly explanations</li>
+                <li><span>✓</span> Visual examples and activities</li>
+                <li><span>✓</span> Short knowledge checks</li>
+            </ul>
+
+            <button type="button" class="primary-button enroll-button" id="enrollNowButton">
+                Enroll Now <span aria-hidden="true">→</span>
+            </button>
+
+            <p class="modal-footnote">
+                This preview version unlocks the lesson locally. Enrollment saving
+                will be connected when the database integration is ready.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>

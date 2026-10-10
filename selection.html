@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Choose Your Path | CodeXperts</title>
+
+    <link rel="stylesheet" href="css/selection.css">
+</head>
+<body>
+
+    <header class="selection-header">
+        <a href="index.html" class="logo" aria-label="CodeXperts home">
+            <img src="assets/cXlogo.jpeg" alt="CodeXperts logo">
+        </a>
+
+        <div class="step-indicator" aria-label="Step 1 of 3">
+            <div class="step-progress">
+                <span class="step-dot active"></span>
+                <span class="step-line"></span>
+                <span class="step-dot"></span>
+                <span class="step-line"></span>
+                <span class="step-dot"></span>
+            </div>
+            <span class="step-label">STEP 1 OF 3</span>
+        </div>
+    </header>
+
+    <main class="selection-container">
+
+        <section class="selection-intro">
+            <p class="eyebrow">YOUR JOURNEY STARTS HERE</p>
+
+            <h1>Choose your <span>learning path.</span></h1>
+
+            <p class="intro-description">
+                Every expert starts somewhere. Pick a path, build your
+                skills, and turn your coding goals into reality.
+            </p>
+        </section>
+
+        <section class="paths-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Explore learning paths</h2>
+                    <p>Select a path to explore its modules.</p>
+                </div>
+
+                <span class="path-count" id="pathCount">5 PATHS</span>
+            </div>
+
+            <div class="paths-grid" id="pathsGrid">
+                <p class="paths-message">Loading learning paths...</p>
+            </div>
+
+        </section>
+
+        <footer class="selection-footer">
+            <p>
+                <span class="footer-check">✓</span>
+                You can explore other learning paths as they become available.
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- Floating Continue button: hidden until a path is selected -->
+    <div class="continue-dock" id="continueDock" hidden>
+        <div class="continue-dock-content">
+            <div class="continue-info">
+                <span class="continue-check">✓</span>
+                <div>
+                    <p class="continue-title" id="selectedPathName">
+                        Path selected
+                    </p>
+                    <p class="continue-subtitle" id="selectionMessage">
+                        Ready to explore your learning path
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                id="continueButton"
+                class="continue-button"
+            >
+                Continue <span aria-hidden="true">→</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/selection.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | CodeXpert</title>
+
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+
+<body>
+
+<header class="auth-header">
+
+    <a href="index.html" class="logo-link">
+        <img
+            src="assets/codeXpert_logo.jpeg"
+            alt="CodeXpert logo"
+            class="header-logo">
+    </a>
+
+    <a href="index.html" class="back-home">
+        ← Back to home
+    </a>
+
+</header>
+
+
+<main class="auth-page">
+
+    <div class="auth-tabs">
+
+        <a href="login.html" class="tab-link">
+            Log in
+        </a>
+
+        <a href="signup.html" class="tab-link active">
+            Sign up
+        </a>
+
+    </div>
+
+
+    <section class="signup-card">
+
+        <div class="signup-heading">
+
+            <h1>Join CodeXpert.</h1>
+
+            <p>
+                Pick a language, start day 1.
+            </p>
+
+        </div>
+
+
+        <button type="button" class="social-button">
+
+            <span class="google-icon">G</span>
+
+            Continue with Google
+
+        </button>
+
+
+        <button type="button" class="social-button">
+
+            <span class="github-icon">GH</span>
+
+            Continue with GitHub
+
+        </button>
+
+
+        <div class="divider">
+
+            <span></span>
+
+            <p>
+                or with email
+            </p>
+
+            <span></span>
+
+        </div>
+
+
+        <form id="signupForm" novalidate>
+
+
+            <!-- First Name -->
+
+            <div class="form-group">
+
+                <label for="firstName">
+                    FIRST NAME
+                </label>
+
+                <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="e.g. Alex"
+                    autocomplete="given-name">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
+            <!-- Last Name -->
+
+            <div class="form-group">
+
+                <label for="lastName">
+                    LAST NAME
+                </label>
+
+                <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="e.g. Morgan"
+                    autocomplete="family-name">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
+            <!-- Username -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    USERNAME
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="e.g. alex_dev"
+                    autocomplete="username">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    EMAIL ADDRESS
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@email.com"
+                    autocomplete="email">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    PASSWORD
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Min. 6 characters"
+                    autocomplete="new-password">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="continue-button">
+
+                Continue →
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <div class="streak-card">
+
+        <div class="streak-icon"></div>
+
+        <div>
+
+            <strong>
+                alex_dev is on an 89-day streak
+            </strong>
+
+            <p>
+                278 learners coded today. Don't let your streak die.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script src="js/signup.js"></script>
+
+</body>
+
+</html>

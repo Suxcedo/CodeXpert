@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path | CodeXperts</title>
+    <link rel="stylesheet" href="css/learning.css">
+    <script src="js/learning.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="selection.html" aria-label="CodeXperts">
+            <img src="assets/cXlogo.jpeg" alt="CodeXperts logo">
+        </a>
+
+        <div class="header-user">
+            <span class="status-dot"></span>
+            <span id="usernameDisplay">Loading username...</span>
+        </div>
+    </header>
+
+    <main class="page-container">
+
+        <section class="step-section">
+            <div class="step-label">
+                <span class="step-number">2</span>
+                <div>
+                    <p class="eyebrow">YOUR ONBOARDING JOURNEY</p>
+                    <h2>STEP 2 OF 3</h2>
+                </div>
+            </div>
+
+            <div class="step-track">
+                <span class="step-complete"></span>
+                <span class="step-current"></span>
+                <span></span>
+            </div>
+
+            <p class="step-description">
+                Explore your curriculum and see what you will learn before starting.
+            </p>
+        </section>
+
+        <section class="course-header">
+            <div class="course-heading-content">
+                <p class="eyebrow">YOUR SELECTED LEARNING PATH</p>
+                <h1 id="pathTitle">Loading learning path...</h1>
+                <p id="pathDescription" class="path-description">
+                    Loading your course description...
+                </p>
+
+                <div class="course-meta">
+                    <span id="moduleCount">Loading modules...</span>
+                    <span>Beginner friendly</span>
+                    <span>Learn at your own pace</span>
+                </div>
+            </div>
+
+            <button id="continueButton" class="primary-button" type="button">
+                Continue
+                <span aria-hidden="true">→</span>
+            </button>
+        </section>
+
+        <section class="curriculum-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR CURRICULUM</p>
+                    <h2>What you'll learn</h2>
+                    <p class="section-description">
+                        Expand each module to explore its lessons and practical activities.
+                    </p>
+                </div>
+            </div>
+
+            <div id="pageMessage" class="page-message" role="status">
+                Loading your curriculum...
+            </div>
+
+            <div id="modulesList" class="modules-list"></div>
+        </section>
+
+        <section class="bottom-continue">
+            <div>
+                <h2>Ready to begin?</h2>
+                <p>Continue when you're ready to start your learning journey.</p>
+            </div>
+
+            <button id="bottomContinueButton" class="primary-button" type="button">
+                Continue to Step 3 →
+            </button>
+        </section>
+
+    </main>
+</body>
+</html>

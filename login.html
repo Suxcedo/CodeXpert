@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Log In | CodeXpert</title>
+
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+
+<body>
+
+    <header class="auth-header">
+
+        <a href="index.html" class="logo-link">
+            <img
+                src="assets/codeXpert_logo.jpeg"
+                alt="CodeXpert logo"
+                class="header-logo">
+        </a>
+
+        <a href="index.html" class="back-home">
+            ← Back to home
+        </a>
+
+    </header>
+
+
+    <main class="auth-page">
+
+        <div class="auth-tabs">
+
+            <a href="login.html" class="tab-link active">
+                Log in
+            </a>
+
+            <a href="signup.html" class="tab-link">
+                Sign up
+            </a>
+
+        </div>
+
+
+        <section class="signup-card">
+
+            <div class="signup-heading">
+
+                <h1>Welcome back.</h1>
+
+                <p>
+                    Continue your coding journey.
+                </p>
+
+            </div>
+
+
+            <button type="button" class="social-button">
+
+                <span class="google-icon">G</span>
+
+                Continue with Google
+
+            </button>
+
+
+            <button type="button" class="social-button">
+
+                <span class="github-icon">GH</span>
+
+                Continue with GitHub
+
+            </button>
+
+
+            <div class="divider">
+
+                <span></span>
+
+                <p>or with email</p>
+
+                <span></span>
+
+            </div>
+
+
+            <form id="loginForm" novalidate>
+
+                <!-- Username or Email -->
+
+                <div class="form-group">
+
+                    <label for="loginIdentifier">
+                        USERNAME OR EMAIL ADDRESS
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loginIdentifier"
+                        name="loginIdentifier"
+                        placeholder="Enter your username or email"
+                        autocomplete="username">
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        PASSWORD
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password">
+
+                    <small class="error-message"></small>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="continue-button">
+
+                    Log in →
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <div class="streak-card">
+
+            <div class="streak-icon"></div>
+
+            <div>
+
+                <strong>
+                    Keep your coding streak alive.
+                </strong>
+
+                <p>
+                    Log in and continue learning with CodeXpert.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeXpert &mdash; Learn a language, by living in it.</title>
+<meta name="description" content="CodeXpert combines structured learning paths, daily streaks, a peer community, short coding reels and a help board &mdash; so coding becomes a habit, not a goal you abandon.">
+<meta name="theme-color" content="#08090b">
+<link rel="stylesheet" href="css/index.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="index.html" class="logo" aria-label="CodeXperts home">
+      <img src="assets/codeXpert_logo.jpeg" alt="CodeXperts logo" class="logo-img">
+    </a>
+
+    <nav class="header-nav" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#platform">Platform</a>
+      <a href="#community">Community</a>
+      <a href="#audience">Who it's for</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="login.html" class="log-in-link">Log in</a>
+      <a href="signup.html" class="btn btn--pill btn--gradient">Start Free</a>
+      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">&#9776;</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile" hidden>
+    <a href="#how">How it works</a>
+    <a href="#platform">Platform</a>
+    <a href="#community">Community</a>
+    <a href="#audience">Who it's for</a>
+    <a href="#faq">FAQ</a>
+    <a href="signup.html" class="btn btn--gradient btn--lg">Start free</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-orb hero-orb--1" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+
+      <!-- Left floating widgets -->
+      <aside class="hero-side hero-side--left" aria-hidden="true">
+
+        <!-- Live code editor preview -->
+        <div class="float-card float-card--editor" data-tilt>
+          <div class="editor-bar">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="editor-file">lesson_04.py</span>
+          </div>
+          <pre class="editor-code"><code><span class="code-keyword">def</span> <span class="code-fn">greet</span>(name):
+    <span class="code-keyword">return</span> <span class="code-string">f"Hello, {name}"</span>
+
+<span class="code-fn">print</span>(greet(<span class="code-string">"CodeXpert"</span>))</code></pre>
+          <div class="editor-status">
+            <span class="editor-pulse"></span> Running &middot; 0.02s
+          </div>
+        </div>
+
+        <!-- Today's lesson -->
+        <div class="float-card float-card--lesson" data-tilt>
+          <div class="float-head">
+            <span class="float-emoji">&#128218;</span>
+            <span class="float-title">Today's lesson</span>
+          </div>
+          <p class="float-big float-big--sm">04 &middot; Functions</p>
+          <p class="float-sub">Python &middot; 8 min read</p>
+          <div class="progress-track"><span style="width: 33%"></span></div>
+          <p class="float-sub float-sub--tiny">3 of 12 lessons completed</p>
+        </div>
+
+      </aside>
+
+      <!-- Center content -->
+      <div class="hero-center">
+        <img src="assets/cXlogo.jpeg" alt="CodeXperts" class="logoimg">
+        <h1 class="hero-title">
+          Learn a language,
+          <span class="hero-title-accent">By living in it.</span>
+        </h1>
+        <p class="hero-sub">
+          CodeXpert combines structured learning paths, daily streaks, peer
+          community, short coding reels, and a help board &mdash; so coding
+          becomes a habit, not a goal you abandon.
+        </p>
+
+        <div class="lang-pills" role="group" aria-label="Choose a language">
+          <button class="lang-pill lang-pill--active" type="button">Python</button>
+          <button class="lang-pill" type="button">JavaScript</button>
+          <button class="lang-pill" type="button">Java</button>
+          <button class="lang-pill" type="button">C++</button>
+          <button class="lang-pill" type="button">HTML</button>
+          <button class="lang-pill" type="button">CSS</button>
+          <button class="lang-pill" type="button">C#</button>
+        </div>
+
+        <div class="hero-ctas">
+          <a href="#" class="btn btn--gradient btn--lg" id="ctaMain">Start learning Python &rarr;</a>
+          <a href="#how" class="btn btn--outline btn--lg">See how it works</a>
+        </div>
+
+        <div class="streak-chip">
+          <span class="streak-chip-icon" aria-hidden="true">&#128293;</span>
+          <span class="streak-chip-value">100</span>
+          <span class="streak-chip-label">day streak to earn a prize</span>
+        </div>
+      </div>
+
+      <!-- Right floating widgets -->
+      <aside class="hero-side hero-side--right" aria-hidden="true">
+
+        <!-- Help board preview -->
+        <div class="float-card float-card--help" data-tilt>
+          <div class="float-head">
+            <span class="float-emoji">&#128172;</span>
+            <span class="float-title">Help board &middot; live</span>
+          </div>
+          <ul class="help-mini">
+            <li>
+              <span class="tag tag--py">Python</span>
+              <span>Why is my list index off by one?</span>
+            </li>
+            <li>
+              <span class="tag tag--js">JS</span>
+              <span>async vs await, plainly explained?</span>
+            </li>
+            <li>
+              <span class="tag tag--ai">AI</span>
+              <span>Loop skipping the last item</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Trending reels -->
+        <div class="float-card float-card--reels" data-tilt>
+          <div class="float-head">
+            <span class="float-emoji">&#9654;</span>
+            <span class="float-title">Trending reels</span>
+          </div>
+          <ul class="reel-mini">
+            <li><span>Python f-strings in 30s</span><b>0:30</b></li>
+            <li><span>map vs filter in JS</span><b>0:45</b></li>
+            <li><span>CSS grid in 60s</span><b>1:00</b></li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card" data-glow>
+        <p class="stat-value" data-count="7">0</p>
+        <p class="stat-label">Languages</p>
+      </div>
+      <div class="stat-card" data-glow>
+        <p class="stat-value" data-count="100" data-suffix="+">0</p>
+        <p class="stat-label">Lessons</p>
+      </div>
+      <div class="stat-card" data-glow>
+        <p class="stat-value" data-count="100">0</p>
+        <p class="stat-label">Max streak days</p>
+      </div>
+      <div class="stat-card" data-glow>
+        <p class="stat-value">24/7</p>
+        <p class="stat-label">Community help</p>
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Python</span><i>&bull;</i>
+        <span>JavaScript</span><i>&bull;</i>
+        <span>Java</span><i>&bull;</i>
+        <span>C++</span><i>&bull;</i>
+        <span>HTML</span><i>&bull;</i>
+        <span>CSS</span><i>&bull;</i>
+        <span>C#</span><i>&bull;</i>
+        <span>Daily Streaks</span><i>&bull;</i>
+        <span>Peer Groups</span><i>&bull;</i>
+        <span>Coding Reels</span><i>&bull;</i>
+        <span>Help Board</span><i>&bull;</i>
+        <span>AI Hints</span><i>&bull;</i>
+        <span>Python</span><i>&bull;</i>
+        <span>JavaScript</span><i>&bull;</i>
+        <span>Java</span><i>&bull;</i>
+        <span>C++</span><i>&bull;</i>
+        <span>HTML</span><i>&bull;</i>
+        <span>CSS</span><i>&bull;</i>
+        <span>C#</span><i>&bull;</i>
+        <span>Daily Streaks</span><i>&bull;</i>
+        <span>Peer Groups</span><i>&bull;</i>
+        <span>Coding Reels</span><i>&bull;</i>
+        <span>Help Board</span><i>&bull;</i>
+        <span>AI Hints</span><i>&bull;</i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section" id="how">
+    <div class="section-head reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title">Pick a language. Show up daily. Level up.</h2>
+      <p class="section-lede">Three steps, repeated until it stops feeling like effort.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="step-card reveal" data-glow>
+        <span class="step-num">01</span>
+        <h4>Choose your language</h4>
+        <p>Python, JavaScript, Java, C++, HTML, CSS or C#. Start with one &mdash; switch whenever you like.</p>
+      </li>
+      <li class="step-card reveal" data-glow>
+        <span class="step-num">02</span>
+        <h4>Do one short lesson</h4>
+        <p>Five to ten minutes. Lessons unlock in order, so you always know exactly where you stand.</p>
+      </li>
+      <li class="step-card reveal" data-glow>
+        <span class="step-num">03</span>
+        <h4>Keep the streak alive</h4>
+        <p>Earn XP, badges and a spot on your group leaderboard. Miss a day and the streak resets.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PLATFORM ============ -->
+  <section class="section" id="platform">
+    <div class="section-head reveal">
+      <p class="eyebrow">What is the platform all about</p>
+      <h2 class="section-title">The app can be divided into five parts</h2>
+      <p class="section-lede">Every part feeds the same loop: show up, learn, get seen, come back.</p>
+    </div>
+
+    <div class="platform-layout">
+      <div class="platform-tabs" role="tablist" aria-label="Platform features">
+        <button class="platform-tab platform-tab--active" data-tab="0" type="button">
+          <span class="platform-tab-icon" aria-hidden="true">&#10004;</span>
+          <span>Learning Path<small>01</small></span>
+          <span class="platform-tab-dot" aria-hidden="true"></span>
+        </button>
+        <button class="platform-tab" data-tab="1" type="button">
+          <span class="platform-tab-icon" aria-hidden="true">&#128293;</span>
+          <span>Streaks &amp; Rewards<small>02</small></span>
+          <span class="platform-tab-dot" aria-hidden="true"></span>
+        </button>
+        <button class="platform-tab" data-tab="2" type="button">
+          <span class="platform-tab-icon" aria-hidden="true">&#128101;</span>
+          <span>Community<small>03</small></span>
+          <span class="platform-tab-dot" aria-hidden="true"></span>
+        </button>
+        <button class="platform-tab" data-tab="3" type="button">
+          <span class="platform-tab-icon" aria-hidden="true">&#9654;</span>
+          <span>Reels<small>04</small></span>
+          <span class="platform-tab-dot" aria-hidden="true"></span>
+        </button>
+        <button class="platform-tab" data-tab="4" type="button">
+          <span class="platform-tab-icon" aria-hidden="true">&#128172;</span>
+          <span>Help Board<small>05</small></span>
+          <span class="platform-tab-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="platform-panels">
+
+        <!-- Panel 1 -->
+        <div class="platform-panel" data-glow>
+          <p class="platform-panel-kicker">01 &mdash;</p>
+          <h3 class="platform-panel-title">Learning Path</h3>
+          <p class="platform-panel-desc">
+            Short lessons, a few minutes each. Each lesson unlocks only after
+            the previous one is completed &mdash; keeping you honest about what
+            you actually know instead of skipping ahead.
+          </p>
+
+          <div class="platform-feature-grid">
+            <div class="platform-feature">Progressive unlock system</div>
+            <div class="platform-feature">5&ndash;10 min lessons</div>
+            <div class="platform-feature">Instant feedback on exercises</div>
+            <div class="platform-feature">Multiple languages supported</div>
+          </div>
+
+          <div class="code-snippet">
+            <p class="code-line code-comment">// Lesson 3: Variables</p>
+            <p class="code-line"><span class="code-keyword">let</span> name = <span class="code-string">"CodeXpert"</span>;</p>
+            <p class="code-line">console.log(<span class="code-string">`Hello, ${name}!`</span>);</p>
+            <p class="code-line code-comment">// &#10003; Completed &mdash; Lesson 4 unlocked</p>
+          </div>
+
+          <div class="platform-icon-badge" aria-hidden="true">&#128506;</div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div class="platform-panel" hidden data-glow>
+          <p class="platform-panel-kicker">02 &mdash;</p>
+          <h3 class="platform-panel-title">Streaks &amp; Rewards</h3>
+          <p class="platform-panel-desc">
+            One lesson a day keeps the streak alive. Every milestone unlocks a
+            badge, and hitting 100 days earns you a real prize. Miss a day and
+            the counter resets &mdash; that&rsquo;s what makes it stick.
+          </p>
+
+          <div class="platform-feature-grid">
+            <div class="platform-feature">Daily streak counter</div>
+            <div class="platform-feature">Badges at 7 / 25 / 100 days</div>
+            <div class="platform-feature">XP for every completed lesson</div>
+            <div class="platform-feature">Prize at the 100-day mark</div>
+          </div>
+
+          <div class="week-strip" aria-hidden="true">
+            <div class="week-day is-done"><span>M</span><b>&#10003;</b></div>
+            <div class="week-day is-done"><span>T</span><b>&#10003;</b></div>
+            <div class="week-day is-done"><span>W</span><b>&#10003;</b></div>
+            <div class="week-day is-done"><span>T</span><b>&#10003;</b></div>
+            <div class="week-day is-today"><span>F</span><b>&#128293;</b></div>
+            <div class="week-day"><span>S</span><b>&middot;</b></div>
+            <div class="week-day"><span>S</span><b>&middot;</b></div>
+          </div>
+
+          <div class="platform-icon-badge" aria-hidden="true">&#127942;</div>
+        </div>
+
+        <!-- Panel 3 -->
+        <div class="platform-panel" hidden data-glow>
+          <p class="platform-panel-kicker">03 &mdash;</p>
+          <h3 class="platform-panel-title">Community</h3>
+          <p class="platform-panel-desc">
+            You&rsquo;re placed in a group with learners at your level working on
+            the same language. The leaderboard makes your consistency visible to
+            everyone &mdash; and theirs visible to you.
+          </p>
+
+          <div class="platform-feature-grid">
+            <div class="platform-feature">Level-matched groups</div>
+            <div class="platform-feature">Live group leaderboard</div>
+            <div class="platform-feature">Visible daily activity</div>
+            <div class="platform-feature">Credit for helping others</div>
+          </div>
+
+          <ul class="mini-list">
+            <li>
+              <span class="mini-rank">01</span>
+              <span class="mini-name">alex_dev</span>
+              <span class="mini-xp">&#128293; 89d &middot; 24,210 XP</span>
+            </li>
+            <li>
+              <span class="mini-rank">02</span>
+              <span class="mini-name">sarah_codes</span>
+              <span class="mini-xp">&#128293; 74d &middot; 21,050 XP</span>
+            </li>
+            <li>
+              <span class="mini-rank">03</span>
+              <span class="mini-name">raj_learns</span>
+              <span class="mini-xp">&#128293; 61d &middot; 18,400 XP</span>
+            </li>
+          </ul>
+
+          <div class="platform-icon-badge" aria-hidden="true">&#128101;</div>
+        </div>
+
+        <!-- Panel 4 -->
+        <div class="platform-panel" hidden data-glow>
+          <p class="platform-panel-kicker">04 &mdash;</p>
+          <h3 class="platform-panel-title">Reels</h3>
+          <p class="platform-panel-desc">
+            Bite-sized vertical coding clips you can scroll between lessons.
+            Concepts explained in under a minute &mdash; perfect for the moments
+            when you don&rsquo;t have the energy for a full lesson.
+          </p>
+
+          <div class="platform-feature-grid">
+            <div class="platform-feature">Under-60-second clips</div>
+            <div class="platform-feature">Scrollable feed</div>
+            <div class="platform-feature">Save clips for later</div>
+            <div class="platform-feature">Filter by language</div>
+          </div>
+
+          <div class="reel-card">
+            <div class="reel-screen">
+              <p class="code-line code-comment">// Reel &middot; 45s &middot; Python loops</p>
+              <p class="code-line"><span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(3):</p>
+              <p class="code-line">&nbsp;&nbsp;print(<span class="code-string">"loop"</span>, i)</p>
+            </div>
+            <div class="reel-meta">
+              <span>&#9654; 45s</span>
+              <span>&#9829; 1.2k</span>
+              <span>&#8635; Save</span>
+            </div>
+          </div>
+
+          <div class="platform-icon-badge" aria-hidden="true">&#127909;</div>
+        </div>
+
+        <!-- Panel 5 -->
+        <div class="platform-panel" hidden data-glow>
+          <p class="platform-panel-kicker">05 &mdash;</p>
+          <h3 class="platform-panel-title">Help Board</h3>
+          <p class="platform-panel-desc">
+            Stuck? Post your question and get answers from learners and mentors.
+            Posts are auto-tagged by language and topic, so the right people
+            actually see them.
+          </p>
+
+          <div class="platform-feature-grid">
+            <div class="platform-feature">Auto-tagged by topic</div>
+            <div class="platform-feature">AI first-hint on every post</div>
+            <div class="platform-feature">Answer &amp; earn reputation</div>
+            <div class="platform-feature">Searchable answer archive</div>
+          </div>
+
+          <div class="help-list">
+            <div class="help-card">
+              <span class="help-tag">Python</span>
+              <p class="help-q">Why does my loop skip the last item?</p>
+              <p class="help-a">&#129302; AI hint ready &middot; 3 answers</p>
+            </div>
+            <div class="help-card">
+              <span class="help-tag">JavaScript</span>
+              <p class="help-q">What&rsquo;s the difference between let and var?</p>
+              <p class="help-a">&#10003; Solved &middot; 7 answers</p>
+            </div>
+          </div>
+
+          <div class="platform-icon-badge" aria-hidden="true">&#128172;</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY ============ -->
+  <section class="section" id="community">
+    <div class="section-head reveal">
+      <p class="eyebrow">Community bonds</p>
+      <h2 class="section-title">See who&rsquo;s showing up daily.</h2>
+    </div>
+
+    <div class="community-block">
+      <div class="community-copy reveal">
+        <p class="community-desc">
+          You&rsquo;re placed in a group with learners at your level, working on
+          the same language. The leaderboard makes your consistency visible
+          to everyone &mdash; and theirs visible to you.
+        </p>
+        <p class="badges-label">Your badges</p>
+        <div class="badge-grid">
+          <div class="badge badge--earned">
+            <span class="badge-icon" aria-hidden="true">&#128142;</span>
+            <span>7-Day Streak</span>
+          </div>
+          <div class="badge badge--earned">
+            <span class="badge-icon" aria-hidden="true">&#9889;</span>
+            <span>25-Day Streak</span>
+          </div>
+          <div class="badge">
+            <span class="badge-icon" aria-hidden="true">&#128142;</span>
+            <span>100-Day Streak</span>
+          </div>
+          <div class="badge badge--earned">
+            <span class="badge-icon" aria-hidden="true">&#127919;</span>
+            <span>First Answer</span>
+          </div>
+          <div class="badge">
+            <span class="badge-icon" aria-hidden="true">&#128081;</span>
+            <span>Top Helper</span>
+          </div>
+          <div class="badge badge--earned">
+            <span class="badge-icon" aria-hidden="true">&#127919;</span>
+            <span>Speed Learner</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="leaderboard reveal" data-glow>
+        <div class="leaderboard-header">
+          <span>Python Beginners &middot; Group #42</span>
+          <span class="leaderboard-live">24 online</span>
+        </div>
+        <ul class="leaderboard-list">
+          <li>
+            <span class="lb-rank">01</span>
+            <span class="lb-name">alex_dev <small>Python</small></span>
+            <span class="lb-xp">&#128293; 89d &nbsp; 24,210 XP</span>
+          </li>
+          <li>
+            <span class="lb-rank">02</span>
+            <span class="lb-name">sarah_codes <small>JavaScript</small></span>
+            <span class="lb-xp">&#128293; 74d &nbsp; 21,050 XP</span>
+          </li>
+          <li>
+            <span class="lb-rank">03</span>
+            <span class="lb-name">raj_learns <small>Python</small></span>
+            <span class="lb-xp">&#128293; 61d &nbsp; 18,400 XP</span>
+          </li>
+          <li>
+            <span class="lb-rank">04</span>
+            <span class="lb-name">chloe_js <small>JavaScript</small></span>
+            <span class="lb-xp">&#128293; 20d &nbsp; 9,600 XP</span>
+          </li>
+          <li class="lb-you">
+            <span class="lb-rank">05</span>
+            <span class="lb-name">you <small>Python</small></span>
+            <span class="lb-xp">&#128293; 5d &nbsp; 3,820 XP</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AUDIENCE ============ -->
+  <section class="section section--center" id="audience">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow">Who is this for</p>
+      <h2 class="section-title">Anyone who wants to code daily.</h2>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-card reveal" data-glow>
+        <span class="audience-icon" aria-hidden="true">&#127793;</span>
+        <h4>Beginners</h4>
+        <p>A clear path. No guesswork. No studying alone.</p>
+      </div>
+      <div class="audience-card reveal" data-glow>
+        <span class="audience-icon" aria-hidden="true">&#128218;</span>
+        <h4>Self-taught Students</h4>
+        <p>Daily bite-sized practice that backs up your coursework.</p>
+      </div>
+      <div class="audience-card reveal" data-glow>
+        <span class="audience-icon" aria-hidden="true">&#128260;</span>
+        <h4>Career Switchers</h4>
+        <p>Fast, focused practice &mdash; not another 40-hour course.</p>
+      </div>
+      <div class="audience-card reveal" data-glow>
+        <span class="audience-icon" aria-hidden="true">&#9889;</span>
+        <h4>Habit-driven Learners</h4>
+        <p>Streaks, visible progress, and credit for helping others.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section" id="testimonials">
+    <div class="section-head reveal">
+      <p class="eyebrow">Loved by daily coders</p>
+      <h2 class="section-title">Small lessons. Loud results.</h2>
+    </div>
+
+    <div class="quote-grid">
+      <figure class="quote-card reveal" data-glow>
+        <blockquote>&ldquo;I&rsquo;ve started and quit four coding courses. This is the first one I&rsquo;ve opened thirty days straight.&rdquo;</blockquote>
+        <figcaption>
+          <span class="quote-avatar" style="background:#2f9e44;">A</span>
+          <span><strong>Amara N.</strong><small>Career switcher</small></span>
+        </figcaption>
+      </figure>
+      <figure class="quote-card reveal" data-glow>
+        <blockquote>&ldquo;The leaderboard is embarrassingly effective. I refuse to drop below third in my group.&rdquo;</blockquote>
+        <figcaption>
+          <span class="quote-avatar" style="background:#2f4bcf;">D</span>
+          <span><strong>Daniel K.</strong><small>CS student</small></span>
+        </figcaption>
+      </figure>
+      <figure class="quote-card reveal" data-glow>
+        <blockquote>&ldquo;The Help Board answered in eleven minutes. I&rsquo;ve never had that from a course before.&rdquo;</blockquote>
+        <figcaption>
+          <span class="quote-avatar" style="background:#9c36b5;">P</span>
+          <span><strong>Priya S.</strong><small>Self-taught dev</small></span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ AI ============ -->
+  <section class="section" id="ai">
+    <div class="ai-panel reveal">
+      <div class="ai-panel-head">
+        <span class="ai-panel-icon" aria-hidden="true">&#129302;</span>
+        <div>
+          <h3>AI Features</h3>
+          <p class="ai-panel-kicker">Part 5 &middot; Extra mile</p>
+        </div>
+      </div>
+
+      <div class="ai-grid">
+        <div class="ai-feature">
+          <span class="ai-feature-icon" aria-hidden="true">&#127919;</span>
+          <div>
+            <p class="ai-feature-title">Personal Lesson Picks</p>
+            <p class="ai-feature-desc">AI analyzes what you keep getting wrong and adjusts which lesson or drill comes next.</p>
+          </div>
+        </div>
+        <div class="ai-feature">
+          <span class="ai-feature-icon" aria-hidden="true">&#128161;</span>
+          <div>
+            <p class="ai-feature-title">Instant First Hints</p>
+            <p class="ai-feature-desc">When you post on the Help Board, AI provides a quick initial suggestion.</p>
+          </div>
+        </div>
+        <div class="ai-feature">
+          <span class="ai-feature-icon" aria-hidden="true">&#127991;&#65039;</span>
+          <div>
+            <p class="ai-feature-title">Auto-sorting Questions</p>
+            <p class="ai-feature-desc">Help Board posts are auto-tagged by language and topic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section class="section" id="team">
+    <div class="section-head reveal">
+      <p class="eyebrow">The team &middot; IT project &middot; 2026 cohort</p>
+      <h2 class="section-title">Who built CodeXpert.</h2>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card reveal" data-glow>
+        <span class="team-avatar" style="background:#c0392b;">T</span>
+        <div>
+          <p class="team-name">Thandolwethu Sonia Hlvi</p>
+          <p class="team-role">Database Development</p>
+        </div>
+      </div>
+      <div class="team-card reveal" data-glow>
+        <span class="team-avatar" style="background:#a3a326;">R</span>
+        <div>
+          <p class="team-name">Radiyyah Kurtha</p>
+          <p class="team-role">Database Development</p>
+        </div>
+      </div>
+      <div class="team-card reveal" data-glow>
+        <span class="team-avatar" style="background:#2f9e44;">E</span>
+        <div>
+          <p class="team-name">Excellent Success Longe</p>
+          <p class="team-role">Backend Developer</p>
+        </div>
+      </div>
+      <div class="team-card reveal" data-glow>
+        <span class="team-avatar" style="background:#2f4bcf;">S</span>
+        <div>
+          <p class="team-name">Shazzia Salimon</p>
+          <p class="team-role">Front-end Development</p>
+        </div>
+      </div>
+      <div class="team-card reveal" data-glow>
+        <span class="team-avatar" style="background:#9c36b5;">T</span>
+        <div>
+          <p class="team-name">Tia Brigol</p>
+          <p class="team-role">Front-end Development</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow">Questions</p>
+      <h2 class="section-title">Everything you might be wondering.</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item reveal" data-glow>
+        <summary>Is CodeXpert really free to start?</summary>
+        <p>Yes. You can create an account, pick a language and complete the full learning path without paying. Streak rewards and prizes are open to everyone on the free plan.</p>
+      </details>
+      <details class="faq-item reveal" data-glow>
+        <summary>How much time do I need each day?</summary>
+        <p>Five to ten minutes is enough to keep a streak alive. Lessons are deliberately short so that a busy day never becomes an excuse to skip.</p>
+      </details>
+      <details class="faq-item reveal" data-glow>
+        <summary>What happens if I miss a day?</summary>
+        <p>Your streak resets to zero. Your XP, badges and completed lessons stay exactly where they are &mdash; you just start a new streak the next day.</p>
+      </details>
+      <details class="faq-item reveal" data-glow>
+        <summary>Which languages can I learn?</summary>
+        <p>Python, JavaScript, Java, C++, HTML, CSS and C#. You can switch languages at any time, and your progress in each is tracked separately.</p>
+      </details>
+      <details class="faq-item reveal" data-glow>
+        <summary>Do I need any experience to begin?</summary>
+        <p>None at all. The learning path starts from absolute zero and unlocks one lesson at a time, so you are never dropped into something you are not ready for.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section section--center">
+    <div class="final-cta reveal">
+      <div class="final-cta-glow" aria-hidden="true"></div>
+      <span class="final-cta-icon" aria-hidden="true">&#128640;</span>
+      <h2>Day 1 starts today.</h2>
+      <p>Pick your language. Start the first lesson. Build a streak. CodeXpert makes coding a daily habit.</p>
+      <div class="final-cta-actions">
+        <a href="#" class="btn btn--gradient btn--lg">Start for free</a>
+        <a href="#" class="btn btn--outline btn--lg">Log in</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <p class="footer-logo">Code<span>Xpert</span></p>
+      <p class="footer-tagline">Learn a language, by living in it.</p>
+      <form class="footer-form" action="#" method="post">
+        <label class="sr-only" for="footerEmail">Email address</label>
+        <input id="footerEmail" name="email" type="email" placeholder="you@example.com" required>
+        <button class="btn btn--gradient" type="submit">Get updates</button>
+      </form>
+    </div>
+
+    <nav class="footer-col" aria-label="Product">
+      <p class="footer-col-title">Product</p>
+      <a href="#">Dashboard</a>
+      <a href="#">Learn</a>
+      <a href="#">Reels</a>
+      <a href="#">Help Board</a>
+    </nav>
+
+    <nav class="footer-col" aria-label="Community">
+      <p class="footer-col-title">Community</p>
+      <a href="#">Leaderboard</a>
+      <a href="#">Groups</a>
+      <a href="#">Badges</a>
+      <a href="#">Discord</a>
+    </nav>
+
+    <nav class="footer-col" aria-label="Project">
+      <p class="footer-col-title">Project</p>
+      <a href="#team">About the team</a>
+      <a href="#">Roadmap</a>
+      <a href="#">Contact</a>
+      <a href="#">GitHub</a>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-meta">IT Project 998 &middot; Hackathon &middot; <span id="year">2026</span></p>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="Back to top">&#8593;</button>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- sticky header ---------- */
+  var header = document.getElementById('siteHeader');
+  var toTop = document.getElementById('toTop');
+  function onScroll() {
+    if (header) header.classList.toggle('is-scrolled', window.scrollY > 8);
+    if (toTop) toTop.classList.toggle('is-visible', window.scrollY > 600);
+  }
+
+  /* ---------- mobile nav ---------- */
+  var menuBtn = document.querySelector('.menu-btn');
+  var mobileNav = document.getElementById('mobileNav');
+  function closeMenu() {
+    if (!mobileNav) return;
+    mobileNav.setAttribute('hidden', '');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Open menu');
+    menuBtn.textContent = '\u2630';
+  }
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener('click', function () {
+      var open = mobileNav.hasAttribute('hidden');
+      if (open) {
+        mobileNav.removeAttribute('hidden');
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuBtn.setAttribute('aria-label', 'Close menu');
+        menuBtn.textContent = '\u00D7';
+      } else closeMenu();
+    });
+    mobileNav.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') closeMenu();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !mobileNav.hasAttribute('hidden')) {
+        closeMenu(); menuBtn.focus();
+      }
+    });
+  }
+
+  /* ---------- platform tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.platform-tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.platform-panel'));
+  function selectTab(index) {
+    tabs.forEach(function (tab, i) {
+      var active = i === index;
+      tab.classList.toggle('platform-tab--active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    panels.forEach(function (panel, i) {
+      if (i === index) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.setAttribute('role', 'tab');
+    tab.id = 'tab-' + i;
+    tab.setAttribute('aria-selected', String(i === 0));
+    tab.setAttribute('aria-controls', 'panel-' + i);
+    tab.tabIndex = i === 0 ? 0 : -1;
+    tab.addEventListener('click', function () { selectTab(i); });
+    tab.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+      if (next !== null) { e.preventDefault(); selectTab(next); tabs[next].focus(); }
+    });
+  });
+  panels.forEach(function (panel, i) {
+    panel.id = 'panel-' + i;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', 'tab-' + i);
+    panel.tabIndex = 0;
+  });
+
+  /* ---------- language pills ---------- */
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.lang-pill'));
+  var ctaMain = document.getElementById('ctaMain');
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.classList.remove('lang-pill--active'); });
+      pill.classList.add('lang-pill--active');
+      if (ctaMain) ctaMain.innerHTML = 'Start learning ' + pill.textContent.trim() + ' &rarr;';
+    });
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && reveals.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(function (el, i) {
+      el.style.transitionDelay = Math.min(i % 4, 3) * 70 + 'ms';
+      io.observe(el);
+    });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ---------- number count-up ---------- */
+  function animateCount(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (isNaN(target)) return;
+    var start = 0, dur = 1200, t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(start + (target - start) * eased);
+      el.textContent = val.toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+  if ('IntersectionObserver' in window && counters.length) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          cio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* ---------- cursor glow on cards ---------- */
+  var glowEls = Array.prototype.slice.call(document.querySelectorAll('[data-glow]'));
+  glowEls.forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      var r = el.getBoundingClientRect();
+      var x = ((e.clientX - r.left) / r.width) * 100;
+      var y = ((e.clientY - r.top) / r.height) * 100;
+      el.style.setProperty('--mx', x + '%');
+      el.style.setProperty('--my', y + '%');
+    });
+  });
+
+  /* ---------- hero parallax orbs ---------- */
+  var orbs = Array.prototype.slice.call(document.querySelectorAll('.hero-orb'));
+  var hero = document.querySelector('.hero');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (hero && !reduce) {
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      orbs.forEach(function (orb, i) {
+        var depth = (i + 1) * 12;
+        orb.style.transform = 'translate(' + (x * depth) + 'px,' + (y * depth) + 'px)';
+      });
+    });
+    hero.addEventListener('mouseleave', function () {
+      orbs.forEach(function (orb) { orb.style.transform = ''; });
+    });
+  }
+
+  /* ---------- float card tilt ---------- */
+  var tiltCards = Array.prototype.slice.call(document.querySelectorAll('[data-tilt]'));
+  if (!reduce) {
+    tiltCards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = 'perspective(700px) rotateY(' + (x * 8) + 'deg) rotateX(' + (-y * 8) + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+    });
+  }
+
+  /* ---------- back to top ---------- */
+  if (toTop) {
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- footer year ---------- */
+  var year = document.getElementById('year');
+  if (year) year.textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
