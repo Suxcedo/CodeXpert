@@ -4,11 +4,8 @@ const { createClient } = require("@supabase/supabase-js");
 const supabase = require("../config/supabase");
 
 const router = express.Router();
-router.get("/test-route", (req, res) => {
-    res.json({ message: "Updated pathRoutes.js is loaded!" });
-});
 
-// Separate client for authentication
+// Separate client for authentication.
 const supabaseAuth = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SECRET_KEY,
@@ -35,7 +32,7 @@ router.post("/signup", async (req, res) => {
             password
         } = req.body;
 
-        // Validate required fields
+        // Validate required fields.
         if (
             !firstName?.trim() ||
             !lastName?.trim() ||
@@ -49,7 +46,7 @@ router.post("/signup", async (req, res) => {
             });
         }
 
-        // Create the authentication account
+        // Create the authentication account.
         const { data: authData, error: authError } =
             await supabase.auth.admin.createUser({
                 email: email.trim(),
@@ -73,7 +70,7 @@ router.post("/signup", async (req, res) => {
             });
         }
 
-        // Create the user profile
+        // Create the user profile.
         const { data: profileData, error: profileError } =
             await supabase
                 .from("user_profile")
@@ -89,7 +86,7 @@ router.post("/signup", async (req, res) => {
         if (profileError) {
             console.error("Profile creation error:", profileError);
 
-            // Remove Auth account if profile creation fails
+            // Remove the Auth account if profile creation fails.
             const { error: deleteError } =
                 await supabase.auth.admin.deleteUser(authData.user.id);
 
@@ -144,7 +141,7 @@ router.post("/login", async (req, res) => {
         const loginValue = identifier.trim();
         let email = loginValue;
 
-        // If the user entered a username, find their profile
+        // If the user entered a username, find their profile.
         if (!loginValue.includes("@")) {
             const { data: profile, error: usernameError } =
                 await supabase
@@ -169,7 +166,7 @@ router.post("/login", async (req, res) => {
                 });
             }
 
-            // Find the Auth account linked to the profile
+            // Find the Auth account linked to the profile.
             const { data: userData, error: userError } =
                 await supabase.auth.admin.getUserById(profile.user_id);
 
@@ -185,7 +182,7 @@ router.post("/login", async (req, res) => {
             email = userData.user.email;
         }
 
-        // Authenticate using the separate Auth client
+        // Authenticate using Supabase Auth.
         const { data: authData, error: authError } =
             await supabaseAuth.auth.signInWithPassword({
                 email: email,
@@ -201,14 +198,14 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        if (!authData.user) {
+        if (!authData.user || !authData.session) {
             return res.status(401).json({
                 success: false,
                 message: "Unable to authenticate this account."
             });
         }
 
-        // Retrieve the user's profile
+        // Retrieve the user's profile.
         const { data: userProfile, error: profileError } =
             await supabase
                 .from("user_profile")
@@ -232,12 +229,13 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        // Check whether the user has enrolled in a programming path
+        // Check whether the user has an active enrollment.
         const { data: enrollments, error: enrollmentError } =
             await supabase
                 .from("enrollment")
                 .select("enrollment_id")
                 .eq("user_id", authData.user.id)
+                .eq("status", "active")
                 .limit(1);
 
         if (enrollmentError) {
@@ -252,7 +250,7 @@ router.post("/login", async (req, res) => {
         const hasEnrollment =
             Array.isArray(enrollments) && enrollments.length > 0;
 
-        // Return login result and enrollment status
+        // Return the profile, enrollment status, and session token.
         return res.status(200).json({
             success: true,
             message: "Login successful.",

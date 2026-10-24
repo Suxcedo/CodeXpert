@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const pathRoutes = require("./routes/pathRoutes");
-
+const quizRoutes = require("./routes/quizRoutes");
 const app = express();
 const PORT = 5000;
 
@@ -14,6 +14,9 @@ app.use("/api/auth", authRoutes);
 
 // Learning paths routes
 app.use("/api/paths", pathRoutes);
+
+app.use("/api/quizzes", quizRoutes);
+
 
 app.get("/", (req, res) => {
     res.json({
