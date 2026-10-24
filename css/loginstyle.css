@@ -436,3 +436,16 @@ input {
         padding: 27px 18px;
     }
 }
+
+
+
+/* Login button loading state */
+.continue-button:disabled {
+    opacity: 0.75;
+    cursor: wait;
+}
+
+.continue-button.loading {
+    position: relative;
+    pointer-events: none;
+}

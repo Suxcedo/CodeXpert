@@ -1,31 +1,29 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | CodeXpert</title>
+    <title>Home | CodeXperts</title>
     <link rel="stylesheet" href="css/home.css">
+    <script src="js/home.js" defer></script>
 </head>
-
 <body>
 
 <header class="topbar">
-
-    <a href="home.html" class="logo-link">
-        <img src="assets/codeXpert_logo.jpeg" alt="CodeXpert logo" class="logo-image">
+    <a href="home.html" class="logo-link" aria-label="CodeXperts home">
+        <img src="assets/codeXpert_logo.jpeg" alt="CodeXperts logo" class="logo-image">
     </a>
 
     <nav class="main-nav" id="mainNav">
         <a href="home.html" class="active">Dashboard</a>
-        <a href="learning-path.html" class="active">Learning Path</a>
+        <a href="#learning">Learning Path</a>
         <a href="#reels">Reels</a>
         <a href="#community">Community</a>
         <a href="#help">Help Board</a>
     </nav>
 
     <div class="top-actions">
-
         <div class="top-stat streak-top">
             <span>STREAK</span>
             <strong id="topStreak">0</strong>
@@ -36,414 +34,206 @@
             <span>XP</span>
         </div>
 
-        <div class="profile-circle" id="profileInitial">
-            U
-        </div>
+        <div class="profile-circle" id="profileInitial">U</div>
 
-        <button
-            type="button"
-            class="menu-button"
-            id="menuButton"
-            aria-label="Open menu"
-            aria-expanded="false">
-
+        <button type="button" class="menu-button" id="menuButton"
+                aria-label="Open menu" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
-
         </button>
-
     </div>
-
 </header>
-
 
 <main class="dashboard" id="dashboard">
 
     <section class="welcome-section">
-
         <div class="dashboard-wordmark">
-            <img src="assets/cXlogo.jpeg" alt="CodeXperts logo">
+            <img src="assets/cXlogo.jpeg" alt="CodeXperts">
         </div>
 
-        <h1>
-            Welcome back,
-            <span id="welcomeName">Learner.</span>
-        </h1>
-
-        <p id="welcomeMessage">
-            Start learning today and begin building your streak.
-        </p>
-
+        <h1>Welcome back, <span id="welcomeName">Learner.</span></h1>
+        <p id="welcomeMessage">Loading your learning dashboard...</p>
     </section>
 
+    <div id="pageMessage" class="page-message" role="status" hidden></div>
 
     <section class="stats-grid">
-
         <article class="stat-card streak-card">
             <p>DAY STREAK</p>
-
-            <div>
-                <h2 id="streakValue">0</h2>
-                <span>days</span>
-            </div>
+            <div><h2 id="streakValue">0</h2><span>days</span></div>
         </article>
-
 
         <article class="stat-card xp-card">
             <p>TOTAL XP</p>
-
-            <div>
-                <h2 id="xpValue">0</h2>
-                <span>points</span>
-            </div>
+            <div><h2 id="xpValue">0</h2><span>points</span></div>
         </article>
-
 
         <article class="stat-card level-card">
             <p>CURRENT LEVEL</p>
-
-            <div>
-                <h2 id="levelValue">1</h2>
-                <span>/ 10</span>
-            </div>
+            <div><h2 id="levelValue">1</h2><span id="levelOutOf">/ 10</span></div>
         </article>
-
 
         <article class="stat-card lessons-card">
             <p>LESSONS DONE</p>
-
-            <div>
-                <h2 id="lessonsValue">0</h2>
-                <span>total</span>
-            </div>
+            <div><h2 id="lessonsValue">0</h2><span>total</span></div>
         </article>
-
     </section>
 
-
     <section class="dashboard-layout">
-
         <div class="main-column">
 
             <section class="level-panel">
-
                 <div class="level-header">
-
                     <div>
-                        <h3 id="levelHeading">
-                            Level 1 → Level 2
-                        </h3>
-
-                        <p id="levelXpText">
-                            0 / 1,000 XP
-                        </p>
+                        <h3 id="levelHeading">Level 1</h3>
+                        <p id="levelXpText">Your learning progress</p>
                     </div>
-
-                    <strong id="levelPercentage">
-                        0%
-                    </strong>
-
+                    <strong id="levelPercentage">0%</strong>
                 </div>
 
                 <div class="progress-bar">
-                    <div
-                        class="progress-fill level-progress"
-                        id="levelProgress">
-                    </div>
+                    <div class="progress-fill level-progress" id="levelProgress"></div>
                 </div>
 
-                <small id="levelMessage">
-                    Complete lessons to earn XP and progress.
-                </small>
-
+                <small id="levelMessage">Your progress will appear here.</small>
             </section>
 
-
             <section class="week-panel">
-
                 <h3>This Week</h3>
 
                 <div class="week-grid">
-
-                    <div class="day">
-                        <span></span>
-                        <p>Mon</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Tue</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Wed</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Thu</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Fri</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Sat</p>
-                    </div>
-
-                    <div class="day">
-                        <span></span>
-                        <p>Sun</p>
-                    </div>
-
+                    <div class="day" data-day="0"><span></span><p>Mon</p></div>
+                    <div class="day" data-day="1"><span></span><p>Tue</p></div>
+                    <div class="day" data-day="2"><span></span><p>Wed</p></div>
+                    <div class="day" data-day="3"><span></span><p>Thu</p></div>
+                    <div class="day" data-day="4"><span></span><p>Fri</p></div>
+                    <div class="day" data-day="5"><span></span><p>Sat</p></div>
+                    <div class="day" data-day="6"><span></span><p>Sun</p></div>
                 </div>
 
                 <div class="week-message" id="weekMessage">
-                    Complete your first lesson to begin tracking your week.
+                    Your learning activity will appear here.
                 </div>
-
             </section>
-
 
             <section class="learning-panel" id="learning">
-
                 <div class="section-header">
-
                     <div>
-                        <p class="section-label">YOUR PYTHON PATH</p>
-                        <h3>Beginner Learning Path</h3>
+                        <p class="section-label">YOUR LEARNING</p>
+                        <h3 id="pathHeading">Your Learning Path</h3>
                     </div>
-
-                    <span id="pathProgress">0 / 4</span>
-
+                    <span id="pathProgress">Loading...</span>
                 </div>
 
+                <p class="path-description" id="pathDescription">
+                    Checking your enrollment...
+                </p>
 
-                <div class="lesson current" id="lesson1">
-
-                    <div class="lesson-status"></div>
-
-                    <div class="lesson-info">
-                        <h4>Getting Started</h4>
-                        <p>Your first lesson is ready</p>
+                <div id="learningContent" class="learning-content">
+                    <div class="empty-state">
+                        <strong>Loading your learning path</strong>
+                        <p>Please wait while we retrieve your enrollment.</p>
                     </div>
-
-                    <span class="lesson-xp">+100 XP</span>
-
                 </div>
 
+                <a href="selection.html" class="secondary-button" id="choosePathButton" hidden>
+                    Explore Learning Paths
+                </a>
 
-                <div class="lesson locked" id="lesson2">
-
-                    <div class="lesson-status"></div>
-
-                    <div class="lesson-info">
-                        <h4>Variables & Data Types</h4>
-                        <p>Locked</p>
-                    </div>
-
-                    <span class="lesson-xp">+120 XP</span>
-
-                </div>
-
-
-                <div class="lesson locked" id="lesson3">
-
-                    <div class="lesson-status"></div>
-
-                    <div class="lesson-info">
-                        <h4>Control Flow: if/else</h4>
-                        <p>Locked</p>
-                    </div>
-
-                    <span class="lesson-xp">+150 XP</span>
-
-                </div>
-
-
-                <div class="lesson locked" id="lesson4">
-
-                    <div class="lesson-status"></div>
-
-                    <div class="lesson-info">
-                        <h4>Loops: for & while</h4>
-                        <p>Locked</p>
-                    </div>
-
-                    <span class="lesson-xp">+180 XP</span>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="continue-button"
-                    id="lessonButton">
-
-                    Start First Lesson →
-
+                <button type="button" class="continue-button" id="lessonButton" disabled>
+                    Loading...
                 </button>
 
-                <p class="lesson-message" id="lessonMessage"></p>
-
+                <p class="lesson-message" id="lessonMessage" aria-live="polite"></p>
             </section>
 
-
             <section class="quick-actions">
-
-                <button
-                    type="button"
-                    class="quick-card reel-card"
-                    id="reels">
-
+                <a class="quick-card reel-card" id="reels" href="#reels">
                     <span>REELS</span>
                     <strong>Watch a Reel</strong>
                     <small>Quick coding content</small>
+                </a>
 
-                </button>
-
-
-                <button
-                    type="button"
-                    class="quick-card help-card"
-                    id="help">
-
+                <a class="quick-card help-card" id="help" href="#help">
                     <span>HELP</span>
                     <strong>Ask Help Board</strong>
                     <small>Get unstuck</small>
+                </a>
 
-                </button>
-
-
-                <button
-                    type="button"
-                    class="quick-card community-card"
-                    id="community">
-
+                <a class="quick-card community-card" id="community" href="#community">
                     <span>COMMUNITY</span>
                     <strong>View Community</strong>
                     <small>Learn with others</small>
-
-                </button>
-
+                </a>
             </section>
 
         </div>
 
-
         <aside class="side-column">
-
             <section class="activity-panel">
-
                 <div class="panel-tabs">
-
-                    <button
-                        type="button"
-                        class="tab-button active"
-                        data-tab="activity">
+                    <button type="button" class="tab-button active" data-tab="activity">
                         Activity
                     </button>
-
-                    <button
-                        type="button"
-                        class="tab-button"
-                        data-tab="ranks">
+                    <button type="button" class="tab-button" data-tab="ranks">
                         Ranks
                     </button>
-
                 </div>
 
-                <div id="activityContent"></div>
-
+                <div id="activityContent">
+                    <div class="empty-state">
+                        <strong>No activity loaded</strong>
+                        <p>Your learning activity will appear here when available.</p>
+                    </div>
+                </div>
             </section>
 
-
             <section class="badges-panel">
-
                 <h3>Your Badges</h3>
 
                 <div class="badges-grid">
-
                     <div class="badge locked" data-streak="7">
-                        <span>7D</span>
-                        <p>7-Day</p>
+                        <span>7D</span><p>7-Day</p>
                     </div>
-
                     <div class="badge locked" data-streak="30">
-                        <span>30D</span>
-                        <p>30-Day</p>
+                        <span>30D</span><p>30-Day</p>
                     </div>
-
                     <div class="badge locked" data-streak="100">
-                        <span>100D</span>
-                        <p>100-Day</p>
+                        <span>100D</span><p>100-Day</p>
                     </div>
-
                     <div class="badge locked">
-                        <span>FA</span>
-                        <p>First Answer</p>
+                        <span>FA</span><p>First Answer</p>
                     </div>
-
                     <div class="badge locked">
-                        <span>TH</span>
-                        <p>Top Helper</p>
+                        <span>TH</span><p>Top Helper</p>
                     </div>
-
                     <div class="badge locked">
-                        <span>SL</span>
-                        <p>Speed</p>
+                        <span>SL</span><p>Speed</p>
                     </div>
-
                 </div>
-
             </section>
 
-
             <section class="reward-panel">
-
                 <div class="reward-header">
-
-                    <div class="reward-icon">
-                        100
-                    </div>
-
+                    <div class="reward-icon">100</div>
                     <div>
                         <h3>100-Day Reward</h3>
                         <p>Keep your learning streak going.</p>
                     </div>
-
                 </div>
 
                 <div class="progress-bar">
-                    <div
-                        class="progress-fill reward-progress"
-                        id="rewardProgress">
-                    </div>
+                    <div class="progress-fill reward-progress" id="rewardProgress"></div>
                 </div>
 
-                <small id="rewardText">
-                    0/100 days · 100 days to go
-                </small>
-
+                <small id="rewardText">0/100 days</small>
             </section>
-
         </aside>
-
     </section>
-
 </main>
 
-
-<div class="toast" id="toast"></div>
-
-
-<script src="js/home.js"></script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 </body>
-
 </html>

@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("loginForm");
     const loginIdentifier = document.getElementById("loginIdentifier");
     const password = document.getElementById("password");
+    const loginButton = loginForm
+        ? loginForm.querySelector('button[type="submit"]')
+        : null;
 
     // Check required HTML elements
     if (!loginForm || !loginIdentifier || !password) {
@@ -45,10 +48,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Show the login loading state
+    function setLoginLoading(isLoading) {
+        if (!loginButton) return;
+
+        if (isLoading) {
+            if (!loginButton.dataset.originalText) {
+                loginButton.dataset.originalText =
+                    loginButton.textContent.trim();
+            }
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Signing in...";
+            loginButton.classList.add("loading");
+        } else {
+            loginButton.disabled = false;
+            loginButton.textContent =
+                loginButton.dataset.originalText || "Log In";
+            loginButton.classList.remove("loading");
+        }
+    }
+
     // Handle login submission
     loginForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
+
+        // Prevent repeated submissions while login is processing
+        if (loginButton && loginButton.disabled) return;
 
         const identifierValue = loginIdentifier.value.trim();
         const passwordValue = password.value;
@@ -76,8 +103,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!formValid) return;
 
-        // Send login request to backend
+        // Show loading state before sending the login request
+        setLoginLoading(true);
+
         try {
+            // Send login request to backend
             const response = await fetch(
                 "http://localhost:5000/api/auth/login",
                 {
@@ -102,10 +132,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     password,
                     result.message || "Login failed. Please try again."
                 );
+
+                setLoginLoading(false);
                 return;
             }
 
-            
             // Save the user's profile for use on other pages
             sessionStorage.setItem(
                 "loggedInUser",
@@ -131,6 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (error) {
             console.error("Login request failed:", error);
+
+            setLoginLoading(false);
 
             alert(
                 "Unable to connect to the server. Please make sure your backend is running."

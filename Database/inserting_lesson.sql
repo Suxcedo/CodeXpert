@@ -1,0 +1,1570 @@
+
+BEGIN;
+
+INSERT INTO public.lesson_section (
+    lesson_id,
+    display_order,
+    section_type,
+    section_title,
+    section_content
+)
+SELECT
+    1,
+    v.display_order,
+    v.section_type,
+    v.section_title,
+    v.section_content::jsonb
+FROM (
+    VALUES
+    (
+        1,
+        'introduction',
+        'Welcome to Web Development',
+        '{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": "Welcome to your first CodeXperts lesson! Before learning how to write code, it is important to understand what websites are and how they work."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "In this lesson, you will learn what a website is, how people access websites, and the basic terms used in web development."
+                },
+                {
+                    "type": "list",
+                    "title": "By the end of this lesson, you should be able to:",
+                    "items": [
+                        "Explain what a website is.",
+                        "Describe how a browser accesses a website.",
+                        "Identify common types of websites.",
+                        "Explain basic web development terms."
+                    ]
+                }
+            ]
+        }'
+    ),
+    (
+        2,
+        'heading',
+        'What Is a Website?',
+        '{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": "A website is a collection of related web pages and other resources that people can access through a web browser. Websites are usually organised under a domain name, such as example.com."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "A web page is a single document displayed in a browser. For example, a home page, an About page and a Contact page can all be part of the same website."
+                },
+                {
+                    "type": "example",
+                    "title": "Example",
+                    "text": "An online clothing store may have a home page, product pages, a shopping cart and a contact page. Together, these pages form part of one website."
+                }
+            ]
+        }'
+    ),
+    (
+        3,
+        'heading',
+        'How Does a Website Work?',
+        '{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": "When you enter a website address into your browser, the browser sends a request for the required resource. A web server or another hosting service responds with the requested content or an appropriate error."
+                },
+                {
+                    "type": "list",
+                    "title": "A simple example:",
+                    "items": [
+                        "You open your web browser.",
+                        "You enter a website address.",
+                        "The browser sends a request over the internet.",
+                        "The server responds with the requested page or resource.",
+                        "The browser displays the page to you."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "title": "Remember",
+                    "text": "The browser is the application you use to access websites. The web server is the system that handles requests for website resources."
+                }
+            ]
+        }'
+    ),
+    (
+        4,
+        'heading',
+        'Common Types of Websites',
+        '{
+            "blocks": [
+                {
+                    "type": "list",
+                    "items": [
+                        "Informational websites: share information about a person, organisation or topic.",
+                        "E-commerce websites: allow people to browse and purchase products or services.",
+                        "Educational websites: provide learning materials, courses and activities.",
+                        "Social networking websites: allow people to connect and share content.",
+                        "News websites: publish news, reports and current events."
+                    ]
+                },
+                {
+                    "type": "example",
+                    "title": "Think about websites you use",
+                    "text": "A university website may provide course information, while an online shop may let you buy products. Their purposes differ, but both can be accessed through a browser."
+                }
+            ]
+        }'
+    ),
+    (
+        5,
+        'heading',
+        'Important Web Development Terms',
+        '{
+            "blocks": [
+                {
+                    "type": "list",
+                    "items": [
+                        "Website: a collection of related web pages and resources.",
+                        "Web page: an individual document displayed in a browser.",
+                        "Web browser: software used to access and display web content.",
+                        "Web server: software or a system that responds to requests for web resources.",
+                        "Domain name: a human-readable name used to locate an internet service.",
+                        "Web development: the process of building and maintaining websites and web applications."
+                    ]
+                }
+            ]
+        }'
+    ),
+    (
+        6,
+        'summary',
+        'Lesson Summary',
+        '{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": "A website contains related pages and resources. People access websites using browsers, which request resources from servers. Websites can serve different purposes, including education, shopping, communication and sharing information."
+                },
+                {
+                    "type": "list",
+                    "title": "Key points",
+                    "items": [
+                        "A web page is one part of a website.",
+                        "Browsers request and display web resources.",
+                        "Servers respond to requests.",
+                        "Websites are built for different purposes."
+                    ]
+                }
+            ]
+        }'
+    )
+) AS v(
+    display_order,
+    section_type,
+    section_title,
+    section_content
+)
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM public.lesson_section existing
+    WHERE existing.lesson_id = 1
+      AND existing.display_order = v.display_order
+);
+
+COMMIT;
+
+
+BEGIN;
+
+UPDATE public.lesson_section AS ls
+SET
+    section_title = v.section_title,
+    section_content = v.section_content::jsonb
+FROM (
+    VALUES
+    (
+        1,
+        'Welcome to Web Development',
+        $json${"blocks":[
+            {
+                "type":"paragraph",
+                "text":"Welcome to your first CodeXperts lesson! Before learning how to write code, it is important to understand what websites are, what they are used for and how people access them."
+            },
+            {
+                "type":"paragraph",
+                "text":"Websites are part of everyday life. People use them to study, shop, communicate, read news, watch videos and access services. Web development is the process of creating and maintaining websites and web applications."
+            },
+            {
+                "type":"heading",
+                "text":"What you will learn"
+            },
+            {
+                "type":"list",
+                "items":[
+                    "Explain what a website and a web page are.",
+                    "Identify the difference between a website and a web application.",
+                    "Describe the basic roles of a browser and a web server.",
+                    "Identify common types of websites.",
+                    "Understand the basic terms used in web development."
+                ]
+            },
+            {
+                "type":"callout",
+                "title":"Learning tip",
+                "text":"As you study, think about websites you already use. Connecting new ideas to familiar websites makes them easier to understand."
+            }
+        ]}$json$::jsonb
+    ),
+    (
+        2,
+        'What Is a Website?',
+        $json${"blocks":[
+            {
+                "type":"heading",
+                "text":"Understanding websites"
+            },
+            {
+                "type":"paragraph",
+                "text":"A website is a collection of related web pages and resources that people can access through a web browser. A website may contain text, images, videos, links, forms and other interactive features."
+            },
+            {
+                "type":"paragraph",
+                "text":"A web page is an individual document displayed in a browser. A website can contain many pages that are connected through links and navigation menus."
+            },
+            {
+                "type":"example",
+                "title":"Example: A university website",
+                "text":"A university website may contain a home page, an About Us page, course information, an admissions page and a contact page. Each is a separate web page, but together they form one website."
+            },
+            {
+                "type":"heading",
+                "text":"Website versus web application"
+            },
+            {
+                "type":"paragraph",
+                "text":"A traditional informational website mainly presents information for visitors to read. A web application allows users to perform tasks and interact with data through a browser. The difference is not always strict because many websites include application features."
+            },
+            {
+                "type":"list",
+                "items":[
+                    "Informational website: mainly helps visitors find and read information.",
+                    "Web application: allows users to perform tasks such as submitting information, managing records or making purchases."
+                ]
+            },
+            {
+                "type":"example",
+                "title":"Compare the two",
+                "text":"A page showing a restaurant's opening hours is mainly informational. An online banking service that lets customers view balances and transfer money is a web application."
+            },
+            {
+                "type":"callout",
+                "title":"Remember",
+                "text":"A website can include interactive features, and a web application can be part of a larger website. These terms describe common uses rather than completely separate categories."
+            }
+        ]}$json$::jsonb
+    ),
+    (
+        3,
+        'How Does a Website Work?',
+        $json${"blocks":[
+            {
+                "type":"heading",
+                "text":"The browser and the server"
+            },
+            {
+                "type":"paragraph",
+                "text":"When you open a website, your browser requests the resources needed to display it. Those resources may be provided by a web server or another hosting service. The response may contain a web page, an image, a script or another resource."
+            },
+            {
+                "type":"paragraph",
+                "text":"A web browser is software used to access and display web content. Examples include Google Chrome, Mozilla Firefox, Microsoft Edge and Safari."
+            },
+            {
+                "type":"paragraph",
+                "text":"A web server is software, usually running on a computer or hosting platform, that receives requests and sends responses. The browser and server communicate over a network using agreed communication rules."
+            },
+            {
+                "type":"heading",
+                "text":"The basic process"
+            },
+            {
+                "type":"list",
+                "items":[
+                    "You enter a website address or select a link.",
+                    "The browser identifies the resource it needs to request.",
+                    "The browser sends a request over the network.",
+                    "The server or hosting service processes the request and sends a response.",
+                    "The browser processes the returned resources and displays the page."
+                ]
+            },
+            {
+                "type":"example",
+                "title":"Example: Opening an online shop",
+                "text":"You enter an online shop's address. Your browser requests its home page. The hosting service returns the required page resources, and the browser displays the shop. When you select a product, the browser may send another request to obtain its details."
+            },
+            {
+                "type":"callout",
+                "title":"Important",
+                "text":"Not every request succeeds. A server may return an error if a page is unavailable, access is denied or another problem occurs. Websites may also use content delivery networks and other services to deliver resources."
+            }
+        ]}$json$::jsonb
+    ),
+    (
+        4,
+        'Common Types of Websites',
+        $json${"blocks":[
+            {
+                "type":"paragraph",
+                "text":"Websites are created for different purposes. Understanding their purposes helps developers decide what information and features to include."
+            },
+            {
+                "type":"list",
+                "items":[
+                    "Informational websites: provide information about a person, organisation, service or topic.",
+                    "E-commerce websites: allow customers to browse products or services and make purchases.",
+                    "Educational websites: provide lessons, courses, learning materials and activities.",
+                    "Social networking websites: allow people to connect, communicate and share content.",
+                    "News websites: publish news reports, articles and current events.",
+                    "Portfolio websites: display a person's work, projects, skills or experience.",
+                    "Entertainment websites: provide videos, music, games or other entertainment."
+                ]
+            },
+            {
+                "type":"example",
+                "title":"One purpose, different features",
+                "text":"An educational website may provide reading material and downloadable notes. An online learning platform may also include accounts, quizzes, progress tracking and rewards."
+            },
+            {
+                "type":"callout",
+                "title":"Think like a developer",
+                "text":"Before building a website, identify its purpose and its intended users. This helps determine which pages, content and features are needed."
+            }
+        ]}$json$::jsonb
+    ),
+    (
+        5,
+        'Important Web Development Terms',
+        $json${"blocks":[
+            {
+                "type":"list",
+                "title":"Key terms",
+                "items":[
+                    "Website: a collection of related web pages and resources.",
+                    "Web page: an individual document displayed in a browser.",
+                    "Web browser: software that requests and displays web content.",
+                    "Web server: software or a system that handles requests for web resources.",
+                    "Domain name: a human-readable name used to locate an internet service.",
+                    "Web hosting: a service that makes website resources available over a network.",
+                    "Web development: the process of building and maintaining websites and web applications.",
+                    "Frontend: the part of a website or application that users interact with.",
+                    "Backend: the server-side logic and services that process requests and work with data.",
+                    "Full-stack development: work involving both frontend and backend development."
+                ]
+            },
+            {
+                "type":"example",
+                "title":"Putting the terms together",
+                "text":"A learner opens a web browser and visits a learning platform using its domain name. The browser requests the page from the hosting service. The frontend displays the lesson, while the backend may retrieve the learner's progress from a database."
+            },
+            {
+                "type":"heading",
+                "text":"Practical activity: Investigate a website"
+            },
+            {
+                "type":"paragraph",
+                "text":"Choose a website you use regularly. Open it in a browser and investigate how it is organised. You do not need to write any code for this activity."
+            },
+            {
+                "type":"list",
+                "title":"Complete these tasks",
+                "items":[
+                    "Write down the website's domain name.",
+                    "Identify its main purpose.",
+                    "List three pages or sections you can access.",
+                    "Identify two features users can interact with, if available.",
+                    "Explain what the browser does when you open the website.",
+                    "Give one example of information or a resource the website provides."
+                ]
+            },
+            {
+                "type":"callout",
+                "title":"Activity submission",
+                "text":"Write your observations in your own words. Do not include passwords, private account information or other sensitive details."
+            }
+        ]}$json$::jsonb
+    ),
+    (
+        6,
+        'Lesson Summary',
+        $json${"blocks":[
+            {
+                "type":"paragraph",
+                "text":"A website is a collection of related web pages and resources. People commonly access websites through browsers, which request resources from servers or hosting services. The browser processes the returned resources and displays the content."
+            },
+            {
+                "type":"list",
+                "title":"Key points to remember",
+                "items":[
+                    "A web page is an individual document; a website can contain many related pages.",
+                    "Websites can provide information, shopping, education, communication and entertainment.",
+                    "Browsers request and display web resources.",
+                    "Servers or hosting services respond to requests for resources.",
+                    "Web applications let users perform tasks through a browser.",
+                    "Understanding a website's purpose helps developers plan its pages and features."
+                ]
+            },
+            {
+                "type":"heading",
+                "text":"Check your understanding"
+            },
+            {
+                "type":"list",
+                "items":[
+                    "Can you explain the difference between a website and a web page?",
+                    "Can you describe the basic communication between a browser and a server?",
+                    "Can you identify different types of websites and their purposes?",
+                    "Can you explain the meaning of the key terms introduced in this lesson?"
+                ]
+            },
+            {
+                "type":"callout",
+                "title":"You are ready for the next lesson when...",
+                "text":"You can explain these ideas in your own words and complete the practical website investigation. The quizzes will be planned and added after the lesson content has been finalised."
+            }
+        ]}$json$::jsonb
+    )
+) AS v(
+    display_order,
+    section_title,
+    section_content
+)
+WHERE ls.lesson_id = 1
+  AND ls.display_order = v.display_order;
+
+COMMIT;
+
+SELECT
+    section_id,
+    lesson_id,
+    display_order,
+    section_title,
+    jsonb_array_length(section_content->'blocks') AS block_count
+FROM public.lesson_section
+WHERE lesson_id = 1
+ORDER BY display_order;
+
+
+
+
+
+
+
+
+
+BEGIN;
+
+DO $$
+DECLARE
+    v_quiz_id BIGINT;
+BEGIN
+    -- Stop if this quiz already exists, to avoid duplicate data.
+    IF EXISTS (
+        SELECT 1
+        FROM public.quiz
+        WHERE lesson_id = 1
+          AND quiz_number = 1
+          AND quiz_type = 'practice'
+    ) THEN
+        RAISE EXCEPTION
+            'A practice quiz numbered 1 already exists for Lesson 1.';
+    END IF;
+
+    -- Generate an unused quiz ID.
+    SELECT COALESCE(MAX(quiz_id), 0) + 1
+    INTO v_quiz_id
+    FROM public.quiz;
+
+    -- Create the draft practice quiz.
+    INSERT INTO public.quiz (
+        quiz_id,
+        lesson_id,
+        module_id,
+        quiz_number,
+        title,
+        instructions,
+        quiz_type,
+        pass_mark,
+        xp_per_correct,
+        perfect_bonus_xp,
+        status
+    )
+    VALUES (
+        v_quiz_id,
+        1,
+        NULL,
+        1,
+        'Lesson 1.1 Knowledge Check',
+        'Choose the best answer for each question.',
+        'practice',
+        50,
+        0,
+        0,
+        'draft'
+    );
+
+    -- Question 1
+    INSERT INTO public.question (
+        quiz_id, display_order, question_type, prompt,
+        options, evaluation, explanation, xp_reward, is_required
+    )
+    VALUES (
+        v_quiz_id,
+        1,
+        'multiple_choice',
+        'Which statement best describes a website?',
+        '[
+            {"value":"A","label":"A program used only to write code"},
+            {"value":"B","label":"A collection of related webpages or web resources"},
+            {"value":"C","label":"A physical computer monitor"},
+            {"value":"D","label":"A type of keyboard"}
+        ]'::jsonb,
+        '{"correct_answer":"B"}'::jsonb,
+        'A website is a collection of related webpages or web resources made available on the web.',
+        0,
+        TRUE
+    );
+
+    -- Question 2
+    INSERT INTO public.question (
+        quiz_id, display_order, question_type, prompt,
+        options, evaluation, explanation, xp_reward, is_required
+    )
+    VALUES (
+        v_quiz_id,
+        2,
+        'multiple_choice',
+        'What is the primary role of a web browser?',
+        '[
+            {"value":"A","label":"Manufacture hardware"},
+            {"value":"B","label":"Replace every web server"},
+            {"value":"C","label":"Access and display web content"},
+            {"value":"D","label":"Guarantee every website is secure"}
+        ]'::jsonb,
+        '{"correct_answer":"C"}'::jsonb,
+        'A browser requests web resources and displays the resulting content to the user.',
+        0,
+        TRUE
+    );
+
+    -- Question 3
+    INSERT INTO public.question (
+        quiz_id, display_order, question_type, prompt,
+        options, evaluation, explanation, xp_reward, is_required
+    )
+    VALUES (
+        v_quiz_id,
+        3,
+        'multiple_choice',
+        'In a typical website request, which system sends the response?',
+        '[
+            {"value":"A","label":"Web server"},
+            {"value":"B","label":"Keyboard"},
+            {"value":"C","label":"Browser address bar alone"},
+            {"value":"D","label":"Computer speaker"}
+        ]'::jsonb,
+        '{"correct_answer":"A"}'::jsonb,
+        'The web server processes the request and sends an HTTP response to the client.',
+        0,
+        TRUE
+    );
+
+    -- Add Section 7 without changing Sections 1–6.
+    INSERT INTO public.lesson_section (
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content,
+        quiz_id
+    )
+    VALUES (
+        1,
+        7,
+        'text',
+        'Common Misconceptions',
+        '{
+            "blocks": [
+                {
+                    "type": "heading",
+                    "text": "A browser is not a website"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "A browser is software used to access and display web content. A website is the collection of webpages and resources being accessed."
+                },
+                {
+                    "type": "heading",
+                    "text": "Websites do not always need multiple pages"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "A website can consist of a single page. The number of pages does not determine whether it is a website."
+                },
+                {
+                    "type": "heading",
+                    "text": "Web development is more than appearance"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "Web development can include structure, design, interactions, server-side processing, data storage, accessibility and security."
+                },
+                {
+                    "type": "heading",
+                    "text": "Not every website needs a database"
+                },
+                {
+                    "type": "paragraph",
+                    "text": "A simple static website can display content without a database. Databases become useful when an application needs to store and manage data."
+                }
+            ]
+        }'::jsonb,
+        NULL
+    );
+
+    -- Add Section 8 and link it to the quiz.
+    INSERT INTO public.lesson_section (
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content,
+        quiz_id
+    )
+    VALUES (
+        1,
+        8,
+        'quiz',
+        'Knowledge Check',
+        '{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": "Check your understanding of websites, browsers and web servers by answering the questions below."
+                }
+            ]
+        }'::jsonb,
+        v_quiz_id
+    );
+
+    RAISE NOTICE 'Created draft quiz with ID %', v_quiz_id;
+END $$;
+
+COMMIT;
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE FUNCTION public.award_xp(
+    p_user_id UUID,
+    p_amount INTEGER,
+    p_reward_key TEXT,
+    p_reason TEXT,
+    p_lesson_id BIGINT DEFAULT NULL,
+    p_quiz_attempt_id BIGINT DEFAULT NULL,
+    p_question_attempt_id BIGINT DEFAULT NULL,
+    p_path_id BIGINT DEFAULT NULL
+)
+RETURNS TABLE (
+    awarded BOOLEAN,
+    amount INTEGER,
+    overall_xp INTEGER,
+    path_xp INTEGER
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+    v_transaction_id BIGINT;
+    v_overall_xp INTEGER;
+    v_path_xp INTEGER := 0;
+BEGIN
+    IF p_amount <= 0 THEN
+        RAISE EXCEPTION 'XP amount must be greater than zero';
+    END IF;
+
+    IF p_reward_key IS NULL OR LENGTH(TRIM(p_reward_key)) = 0 THEN
+        RAISE EXCEPTION 'Reward key is required';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM user_profile
+        WHERE user_id = p_user_id
+    ) THEN
+        RAISE EXCEPTION 'User profile not found';
+    END IF;
+
+    IF p_path_id IS NOT NULL AND NOT EXISTS (
+        SELECT 1
+        FROM enrollment
+        WHERE user_id = p_user_id
+          AND path_id = p_path_id
+    ) THEN
+        RAISE EXCEPTION 'Enrollment not found for this learning path';
+    END IF;
+
+    INSERT INTO xp_transaction (
+        user_id,
+        lesson_id,
+        quiz_attempt_id,
+        question_attempt_id,
+        reward_key,
+        amount,
+        reason
+    )
+    VALUES (
+        p_user_id,
+        p_lesson_id,
+        p_quiz_attempt_id,
+        p_question_attempt_id,
+        p_reward_key,
+        p_amount,
+        p_reason
+    )
+    ON CONFLICT (user_id, reward_key) DO NOTHING
+    RETURNING transaction_id INTO v_transaction_id;
+
+    IF v_transaction_id IS NOT NULL THEN
+        UPDATE user_profile
+        SET overall_xp = overall_xp + p_amount
+        WHERE user_id = p_user_id;
+
+        IF p_path_id IS NOT NULL THEN
+            UPDATE enrollment
+            SET path_xp = path_xp + p_amount
+            WHERE user_id = p_user_id
+              AND path_id = p_path_id;
+        END IF;
+
+        awarded := TRUE;
+        amount := p_amount;
+    ELSE
+        awarded := FALSE;
+        amount := 0;
+    END IF;
+
+    SELECT up.overall_xp
+    INTO v_overall_xp
+    FROM user_profile up
+    WHERE up.user_id = p_user_id;
+
+    IF p_path_id IS NOT NULL THEN
+        SELECT e.path_xp
+        INTO v_path_xp
+        FROM enrollment e
+        WHERE e.user_id = p_user_id
+          AND e.path_id = p_path_id;
+    END IF;
+
+    overall_xp := v_overall_xp;
+    path_xp := COALESCE(v_path_xp, 0);
+
+    RETURN NEXT;
+END;
+$$;
+
+REVOKE EXECUTE ON FUNCTION public.award_xp(
+    UUID, INTEGER, TEXT, TEXT, BIGINT, BIGINT, BIGINT, BIGINT
+) FROM PUBLIC, anon, authenticated;
+
+GRANT EXECUTE ON FUNCTION public.award_xp(
+    UUID, INTEGER, TEXT, TEXT, BIGINT, BIGINT, BIGINT, BIGINT
+) TO service_role;
+
+
+
+UPDATE public.quiz
+SET
+    xp_per_correct = 3,
+    perfect_bonus_xp = 5
+WHERE quiz_id = 1;
+
+
+
+
+
+
+
+
+DO $$
+DECLARE
+    v_user_id UUID := '83d606b8-e1c0-4e7a-a46b-f02b0f3056f5';
+    v_quiz_id BIGINT := 1;
+    v_attempt_id BIGINT := 1;
+    v_lesson_id BIGINT;
+    v_path_id BIGINT;
+    v_question RECORD;
+BEGIN
+    -- Get the lesson and learning path connected to this quiz.
+    SELECT q.lesson_id, m.path_id
+    INTO v_lesson_id, v_path_id
+    FROM public.quiz q
+    JOIN public.lesson l ON l.lesson_id = q.lesson_id
+    JOIN public.module m ON m.module_id = l.module_id
+    WHERE q.quiz_id = v_quiz_id;
+
+    IF v_lesson_id IS NULL OR v_path_id IS NULL THEN
+        RAISE EXCEPTION 'Could not find the quiz lesson and learning path.';
+    END IF;
+
+    -- Award XP for each correctly answered question in the first attempt.
+    FOR v_question IN
+        SELECT
+            qa.question_attempt_id,
+            qa.question_id,
+            COALESCE(NULLIF(q.xp_reward, 0), qu.xp_per_correct, 0) AS reward
+        FROM public.question_attempt qa
+        JOIN public.question q
+          ON q.question_id = qa.question_id
+         AND q.quiz_id = qa.quiz_id
+        JOIN public.quiz qu ON qu.quiz_id = qa.quiz_id
+        WHERE qa.quiz_attempt_id = v_attempt_id
+          AND qa.quiz_id = v_quiz_id
+          AND qa.is_correct = TRUE
+    LOOP
+        IF v_question.reward > 0 THEN
+            PERFORM public.award_xp(
+                p_user_id := v_user_id,
+                p_amount := v_question.reward,
+                p_reward_key := 'question:' || v_question.question_id,
+                p_reason := 'Correct answer to question ' || v_question.question_id,
+                p_lesson_id := v_lesson_id,
+                p_quiz_attempt_id := v_attempt_id,
+                p_question_attempt_id := v_question.question_attempt_id,
+                p_path_id := v_path_id
+            );
+        END IF;
+    END LOOP;
+
+    -- Award the perfect-quiz bonus once.
+    IF EXISTS (
+        SELECT 1
+        FROM public.quiz_attempt
+        WHERE quiz_attempt_id = v_attempt_id
+          AND user_id = v_user_id
+          AND quiz_id = v_quiz_id
+          AND is_perfect = TRUE
+    ) THEN
+        PERFORM public.award_xp(
+            p_user_id := v_user_id,
+            p_amount := (
+                SELECT perfect_bonus_xp
+                FROM public.quiz
+                WHERE quiz_id = v_quiz_id
+            ),
+            p_reward_key := 'quiz-perfect:' || v_quiz_id,
+            p_reason := 'Perfect score on quiz ' || v_quiz_id,
+            p_lesson_id := v_lesson_id,
+            p_quiz_attempt_id := v_attempt_id,
+            p_question_attempt_id := NULL,
+            p_path_id := v_path_id
+        );
+    END IF;
+END $$;
+
+
+
+
+
+
+CREATE OR REPLACE FUNCTION public.award_xp(
+    p_user_id uuid,
+    p_amount integer,
+    p_reward_key text,
+    p_reason text,
+    p_lesson_id bigint DEFAULT NULL,
+    p_quiz_attempt_id bigint DEFAULT NULL,
+    p_question_attempt_id bigint DEFAULT NULL,
+    p_path_id bigint DEFAULT NULL
+)
+RETURNS TABLE (
+    awarded boolean,
+    amount integer,
+    overall_xp integer,
+    path_xp integer
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO 'public'
+AS $function$
+DECLARE
+    v_transaction_id BIGINT;
+    v_overall_xp INTEGER;
+    v_path_xp INTEGER := 0;
+BEGIN
+    IF p_amount <= 0 THEN
+        RAISE EXCEPTION 'XP amount must be greater than zero';
+    END IF;
+
+    IF p_reward_key IS NULL OR LENGTH(TRIM(p_reward_key)) = 0 THEN
+        RAISE EXCEPTION 'Reward key is required';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.user_profile up
+        WHERE up.user_id = p_user_id
+    ) THEN
+        RAISE EXCEPTION 'User profile not found';
+    END IF;
+
+    IF p_path_id IS NOT NULL AND NOT EXISTS (
+        SELECT 1
+        FROM public.enrollment e
+        WHERE e.user_id = p_user_id
+          AND e.path_id = p_path_id
+    ) THEN
+        RAISE EXCEPTION 'Enrollment not found for this learning path';
+    END IF;
+
+    INSERT INTO public.xp_transaction (
+        user_id,
+        lesson_id,
+        quiz_attempt_id,
+        question_attempt_id,
+        reward_key,
+        amount,
+        reason
+    )
+    VALUES (
+        p_user_id,
+        p_lesson_id,
+        p_quiz_attempt_id,
+        p_question_attempt_id,
+        p_reward_key,
+        p_amount,
+        p_reason
+    )
+    ON CONFLICT (user_id, reward_key) DO NOTHING
+    RETURNING transaction_id INTO v_transaction_id;
+
+    IF v_transaction_id IS NOT NULL THEN
+        UPDATE public.user_profile AS up
+        SET overall_xp = up.overall_xp + p_amount
+        WHERE up.user_id = p_user_id;
+
+        IF p_path_id IS NOT NULL THEN
+            UPDATE public.enrollment AS e
+            SET path_xp = e.path_xp + p_amount
+            WHERE e.user_id = p_user_id
+              AND e.path_id = p_path_id;
+        END IF;
+
+        awarded := TRUE;
+        amount := p_amount;
+    ELSE
+        awarded := FALSE;
+        amount := 0;
+    END IF;
+
+    SELECT up.overall_xp
+    INTO v_overall_xp
+    FROM public.user_profile AS up
+    WHERE up.user_id = p_user_id;
+
+    IF p_path_id IS NOT NULL THEN
+        SELECT e.path_xp
+        INTO v_path_xp
+        FROM public.enrollment AS e
+        WHERE e.user_id = p_user_id
+          AND e.path_id = p_path_id;
+    END IF;
+
+    overall_xp := v_overall_xp;
+    path_xp := COALESCE(v_path_xp, 0);
+
+    RETURN NEXT;
+END;
+$function$;
+
+
+
+
+
+
+
+
+DO $$
+DECLARE
+    v_user_id UUID :=
+        '83d606b8-e1c0-4e7a-a46b-f02b0f3056f5';
+
+    v_lesson_id BIGINT := 1;
+    v_path_id BIGINT;
+    v_reward RECORD;
+BEGIN
+    -- Find the learning path containing Lesson 1.
+    SELECT m.path_id
+    INTO v_path_id
+    FROM public.lesson l
+    JOIN public.module m
+        ON m.module_id = l.module_id
+    WHERE l.lesson_id = v_lesson_id;
+
+    IF v_path_id IS NULL THEN
+        RAISE EXCEPTION 'Could not find the learning path for Lesson 1.';
+    END IF;
+
+    -- Confirm that Lesson 1 is already completed.
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.lesson_progress lp
+        WHERE lp.user_id = v_user_id
+          AND lp.lesson_id = v_lesson_id
+          AND lp.status = 'completed'
+    ) THEN
+        RAISE EXCEPTION 'Lesson 1 is not marked as completed.';
+    END IF;
+
+    -- Ensure all quizzes linked to Lesson 1 have a passing attempt.
+    IF EXISTS (
+        SELECT 1
+        FROM public.lesson_section ls
+        WHERE ls.lesson_id = v_lesson_id
+          AND ls.quiz_id IS NOT NULL
+          AND NOT EXISTS (
+              SELECT 1
+              FROM public.quiz_attempt qa
+              WHERE qa.user_id = v_user_id
+                AND qa.quiz_id = ls.quiz_id
+                AND qa.passed = TRUE
+          )
+    ) THEN
+        RAISE EXCEPTION
+            'A linked quiz has not been passed. No lesson XP awarded.';
+    END IF;
+
+    -- Award the lesson XP without duplicating an existing reward.
+    SELECT *
+    INTO v_reward
+    FROM public.award_xp(
+        p_user_id := v_user_id,
+        p_amount := 10,
+        p_reward_key := 'lesson:1',
+        p_reason := 'Completed lesson 1',
+        p_lesson_id := v_lesson_id,
+        p_quiz_attempt_id := NULL,
+        p_question_attempt_id := NULL,
+        p_path_id := v_path_id
+    );
+
+    RAISE NOTICE
+        'Awarded: %, Amount: %, Overall XP: %, Path XP: %',
+        v_reward.awarded,
+        v_reward.amount,
+        v_reward.overall_xp,
+        v_reward.path_xp;
+END $$;
+
+SELECT
+    reward_key,
+    amount,
+    reason
+FROM public.xp_transaction
+WHERE user_id = '83d606b8-e1c0-4e7a-a46b-f02b0f3056f5'
+  AND reward_key = 'lesson:1';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--lessson 2
+
+
+
+
+BEGIN;
+
+DO $lesson2$
+DECLARE
+    v_quiz_id BIGINT;
+    v_max_quiz_id BIGINT;
+    v_sequence_name TEXT;
+BEGIN
+    -- 1. Confirm Lesson 2 exists.
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.lesson
+        WHERE lesson_id = 2
+    ) THEN
+        RAISE EXCEPTION 'Lesson 2 does not exist.';
+    END IF;
+
+    -- 2. Stop if Lesson 2 already has sections.
+    IF EXISTS (
+        SELECT 1
+        FROM public.lesson_section
+        WHERE lesson_id = 2
+    ) THEN
+        RAISE EXCEPTION
+            'Lesson 2 already has sections. Stop and inspect existing content.';
+    END IF;
+
+    -- 3. Stop if Lesson 2 already has a quiz.
+    IF EXISTS (
+        SELECT 1
+        FROM public.quiz
+        WHERE lesson_id = 2
+    ) THEN
+        RAISE EXCEPTION
+            'Lesson 2 already has a quiz. Stop and inspect existing quizzes.';
+    END IF;
+
+    -- 4. Synchronise the quiz identity sequence.
+    -- This preserves existing quiz rows, including Lesson 1.
+    SELECT MAX(quiz_id)
+    INTO v_max_quiz_id
+    FROM public.quiz;
+
+    v_sequence_name :=
+        pg_get_serial_sequence('public.quiz', 'quiz_id');
+
+    IF v_sequence_name IS NOT NULL THEN
+        IF v_max_quiz_id IS NULL OR v_max_quiz_id < 1 THEN
+            PERFORM setval(v_sequence_name::regclass, 1, false);
+        ELSE
+            PERFORM setval(
+                v_sequence_name::regclass,
+                v_max_quiz_id,
+                true
+            );
+        END IF;
+    END IF;
+
+    -- 5. Create Lesson 2's quiz.
+    INSERT INTO public.quiz (
+        lesson_id,
+        module_id,
+        quiz_number,
+        title,
+        instructions,
+        quiz_type,
+        pass_mark,
+        xp_per_correct,
+        perfect_bonus_xp,
+        status
+    )
+    VALUES (
+        2,
+        NULL,
+        1,
+        'Lesson 2 Knowledge Check',
+        'Answer both questions about informational websites and web applications.',
+        'practice',
+        50,
+        3,
+        5,
+        'draft'
+    )
+    RETURNING quiz_id INTO v_quiz_id;
+
+    -- 6. Insert sections 1 to 7.
+    INSERT INTO public.lesson_section (
+        lesson_id, display_order, section_type,
+        section_title, section_content, quiz_id
+    )
+    VALUES
+    (
+        2, 1, 'introduction',
+        '1.2.1 Introduction: Websites and Web Applications',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "Websites and web applications are both accessed through web browsers. People sometimes use these terms interchangeably, but they describe different areas of emphasis."
+            },
+            {
+              "type": "paragraph",
+              "text": "A traditional informational website mainly presents information for people to read or explore. A web application provides functionality that allows people to complete tasks, enter information, manage records, or interact with a service."
+            },
+            {
+              "type": "paragraph",
+              "text": "The distinction is not absolute. Modern websites often include interactive features, and many web applications also contain informational pages. The most useful way to distinguish them is to consider their main purpose and the activities users can perform."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 2, 'text',
+        '1.2.2 Informational Websites',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "An informational website is mainly designed to present content. Visitors use it to find information, read material, and navigate between pages."
+            },
+            {
+              "type": "list",
+              "title": "Examples of informational websites",
+              "items": [
+                "A restaurant website displaying its menu and opening hours.",
+                "A school website presenting its history and contact details.",
+                "A news website displaying news articles.",
+                "A business website explaining its services."
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Informational websites can still include navigation menus, links, images, videos, search boxes, and buttons. Having these features does not automatically mean that the entire website is primarily a web application."
+            },
+            {
+              "type": "callout",
+              "title": "Remember",
+              "text": "Focus on the website main purpose, not simply on whether it contains a clickable element."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 3, 'text',
+        '1.2.3 Web Applications',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "A web application is software accessed through a web browser that allows users to perform tasks, manipulate information, or interact with a service."
+            },
+            {
+              "type": "list",
+              "title": "Examples of web applications",
+              "items": [
+                "Online banking that lets customers view transactions and make payments.",
+                "An online store that lets customers manage a shopping cart and place orders.",
+                "An online learning platform that lets learners enrol in courses and track progress.",
+                "A booking system that lets users select dates and make appointments."
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "Web applications often communicate with a backend and may use a database to store information. Their architecture depends on what the application needs to do; not every web application has exactly the same structure."
+            },
+            {
+              "type": "example",
+              "title": "Example",
+              "text": "A learner dashboard that displays enrolled learning paths, records completed lessons, and tracks experience points has application functionality because it works with user-specific information and actions."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 4, 'text',
+        '1.2.4 Websites versus Web Applications: Comparison',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "The following table describes common patterns. These are general tendencies, not strict rules that apply to every website or web application."
+            },
+            {
+              "type": "list",
+              "title": "Main purpose",
+              "items": [
+                "Informational website: mainly presents information.",
+                "Web application: helps users complete tasks or interact with information."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Interaction",
+              "items": [
+                "Informational website: users mainly read content, browse pages, and follow links.",
+                "Web application: users may submit data, manage records, and complete workflows."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Personalised content",
+              "items": [
+                "Informational website: personalisation may be limited or unnecessary.",
+                "Web application: personalisation is often important because the system responds to the individual user."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "User accounts",
+              "items": [
+                "Informational website: accounts are not always needed.",
+                "Web application: accounts are common, although some web applications can be used without accounts."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Database use",
+              "items": [
+                "Informational website: a database is not always necessary.",
+                "Web application: a database is often used when the application needs to store or retrieve information."
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Example comparison",
+              "text": "A business brochure website that displays a company address is mainly informational. An online learning dashboard that records enrolments and lesson progress provides web application functionality."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 5, 'text',
+        '1.2.5 Practical Demonstration: A Button with JavaScript',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "This small example demonstrates how a webpage can respond to a user action. It is a simple illustration of interactivity, not a complete web application."
+            },
+            {
+              "type": "example",
+              "title": "HTML example",
+              "text": "<button onclick=\"alert(''Welcome to CodeXperts!'')\">Start Learning</button>"
+            },
+            {
+              "type": "list",
+              "title": "What happens when the button is clicked?",
+              "items": [
+                "The browser displays a button labelled Start Learning.",
+                "The user clicks the button.",
+                "The browser runs the JavaScript instruction attached to the click event.",
+                "An alert appears displaying Welcome to CodeXperts!"
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "This example demonstrates that a webpage can respond to a user action. However, one interactive button does not automatically make the entire website a full web application. The main purpose and the wider functionality still matter."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 6, 'text',
+        '1.2.6 Applying the Difference to CodeXperts',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "CodeXperts combines informational content with web application functionality."
+            },
+            {
+              "type": "list",
+              "title": "Examples of content-browsing features",
+              "items": [
+                "Viewing descriptions of programming modules.",
+                "Reading lesson explanations and examples.",
+                "Browsing information about learning paths."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Examples of application features",
+              "items": [
+                "Creating and using a learner account.",
+                "Enrolling in a learning path.",
+                "Recording lesson completion and learning progress.",
+                "Tracking experience points earned through learning activities."
+              ]
+            },
+            {
+              "type": "paragraph",
+              "text": "The informational sections help learners understand programming topics. The application features allow the platform to manage user actions and retain information associated with a learner."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    ),
+    (
+        2, 7, 'text',
+        '1.2.7 Common Misconceptions',
+        '{
+          "blocks": [
+            {
+              "type": "list",
+              "title": "Mistake 1: Every website needs user accounts",
+              "items": [
+                "Many informational websites can present their content without requiring visitors to sign in."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Mistake 2: Every interactive button makes a website a web application",
+              "items": [
+                "A button can provide simple interaction on an informational page. Classification depends on the overall purpose and functionality."
+              ]
+            },
+            {
+              "type": "list",
+              "title": "Mistake 3: Websites and web applications must use completely different technologies",
+              "items": [
+                "Both can use technologies such as HTML, CSS, and JavaScript. The difference is mainly about purpose and functionality, not a completely separate set of technologies."
+              ]
+            },
+            {
+              "type": "callout",
+              "title": "Key point",
+              "text": "Distinguish an informational website from a web application by considering what the system is mainly designed to help users do."
+            }
+          ]
+        }'::jsonb,
+        NULL
+    );
+
+    -- 7. Insert section 8 with its quiz_id immediately.
+    INSERT INTO public.lesson_section (
+        lesson_id, display_order, section_type,
+        section_title, section_content, quiz_id
+    )
+    VALUES (
+        2, 8, 'quiz',
+        '1.2.8 Knowledge Check',
+        '{
+          "blocks": [
+            {
+              "type": "paragraph",
+              "text": "Answer both multiple-choice questions to check your understanding of the difference between informational websites and web applications. Then complete the written practice questions below."
+            },
+            {
+              "type": "heading",
+              "text": "Written practice"
+            },
+            {
+              "type": "list",
+              "title": "Answer these questions in your own words",
+              "items": [
+                "Explain the difference between an informational website and a web application.",
+                "Give two examples of informational websites and two examples of web applications.",
+                "Identify three CodeXperts features that demonstrate web application functionality.",
+                "Explain why the distinction between websites and web applications is not absolute."
+              ]
+            }
+          ]
+        }'::jsonb,
+        v_quiz_id
+    );
+
+    -- 8. Add question 1.
+    INSERT INTO public.question (
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
+    )
+    VALUES (
+        v_quiz_id,
+        1,
+        'multiple_choice',
+        'Which example is the clearest example of a web application?',
+        '[
+          {"value":"A","label":"A static company page displaying its address"},
+          {"value":"B","label":"A system that lets students enrol and track learning progress"},
+          {"value":"C","label":"A printed poster showing a company logo"},
+          {"value":"D","label":"A desktop wallpaper image"}
+        ]'::jsonb,
+        '{"correct_answer":"B"}'::jsonb,
+        'A learning system that allows users to enrol and track progress provides functionality for completing tasks and managing user-specific information.',
+        0,
+        TRUE
+    );
+
+    -- 9. Add question 2.
+    INSERT INTO public.question (
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
+    )
+    VALUES (
+        v_quiz_id,
+        2,
+        'multiple_choice',
+        'Must an informational website always have a database?',
+        '[
+          {"value":"A","label":"Yes. Every website must use a database."},
+          {"value":"B","label":"No. An informational website can present content without a database."},
+          {"value":"C","label":"Yes. A database is required for every heading and paragraph."},
+          {"value":"D","label":"No. A website cannot display information."}
+        ]'::jsonb,
+        '{"correct_answer":"B"}'::jsonb,
+        'An informational website can use static HTML and other files without a database. A database is useful when the system needs to store or retrieve data, but it is not required for every website.',
+        0,
+        TRUE
+    );
+
+    RAISE NOTICE
+        'Lesson 2 content created. New quiz ID: %',
+        v_quiz_id;
+END
+$lesson2$;
+
+COMMIT;
+
+
+
+
+--publishing lesson 2
+UPDATE public.lesson
+SET status = 'published'
+WHERE lesson_id = 2;
+
+
+
