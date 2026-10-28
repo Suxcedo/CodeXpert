@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings | CodeXpert</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e13;--card:#10161d;--field:#0a0d11;--line:#1f2730;--text:#f2f5f7;--muted:#8b95a1;--accent:#5eead4;--accent-bg:#12332f;--accent-line:#1f6b5e;--danger:#f87171;--ink:#0b0e12}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;scroll-behavior:smooth}
+html{scroll-behavior:smooth}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+header{height:88px;border-bottom:1px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:space-between;padding-right:40px}
+.logo{width:168px;height:88px;display:flex;align-items:center;justify-content:center;background:#050805;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.logo img:not([src]){display:none}
+nav{display:flex;gap:32px;position:absolute;left:50%;transform:translateX(-50%)}
+nav a{color:#9aa4af;text-decoration:none;font-size:14px}
+.right{display:flex;align-items:center;gap:22px}
+.streak{background:#0f1b1a;color:var(--text);padding:0 14px;height:36px;border-radius:8px;display:flex;align-items:center;gap:10px;font-size:13px}
+.streak svg{color:var(--accent)}
+.bell{color:#9aa4af}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-line);color:var(--accent);display:grid;place-items:center;font-weight:500;font-size:14px;letter-spacing:1px}
+.layout{max-width:1560px;margin:0 auto;padding:40px 50px 0;display:grid;grid-template-columns:250px 1fr;gap:44px}
+aside .back{display:flex;align-items:center;gap:10px;color:#9aa4af;text-decoration:none;font-size:13px}
+aside h2{font-size:26px;font-weight:700;color:#ecf0f3;margin:14px 0 30px}
+.tabs{display:flex;flex-direction:column;gap:6px}
+.tab{cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--ink);color:#c5ccd3;border:1px solid var(--ink);border-radius:8px;height:50px;padding:0 14px;font-size:14px;text-align:left;width:100%}
+.tab.active{background:var(--accent-bg);color:var(--accent);border-color:var(--accent-line)}
+.member{margin-top:32px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;color:var(--text)}
+.member .top{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.member strong{display:block;font-size:17px;margin:14px 0 0;min-height:48px}
+.member small{color:var(--muted);font-size:13px}
+.member a{display:flex;justify-content:space-between;color:var(--accent);text-decoration:none;font-size:13px;margin-top:14px}
+.help{display:flex;align-items:center;gap:10px;color:#9aa4af;font-size:13px;margin:36px 0 0 14px}
+.hero{display:flex;justify-content:space-between;align-items:flex-start}
+.eyebrow{color:var(--accent);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-size:40px;font-weight:800;letter-spacing:-.02em;color:#ecf0f3;margin:10px 0 6px}
+.hero p{color:#9aa4af;font-size:16px}
+.verified{background:var(--accent-bg);border:1px solid var(--accent-line);color:var(--accent);height:34px;padding:0 14px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.card{scroll-margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;margin-top:28px;color:var(--text)}
+.card:first-of-type{margin-top:34px}
+.tag{font-size:11px;color:#6b7480;letter-spacing:.06em;text-transform:uppercase}
+.card h3{font-size:23px;font-weight:700;margin:8px 0 6px}
+.sub{color:var(--muted);font-size:14px}
+.row{display:flex;justify-content:space-between;align-items:flex-start}
+.public{font-size:11px;color:#6b7480;letter-spacing:.08em;margin-top:26px}
+.photo{display:flex;align-items:center;gap:18px;padding:26px 0 24px;border-bottom:1px solid var(--line)}
+.big{width:62px;height:62px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-line);color:var(--accent);display:grid;place-items:center;font-size:22px;letter-spacing:1px}
+.btn{background:var(--card);border:1px solid #2c353f;border-radius:8px;height:44px;padding:0 18px;display:inline-flex;align-items:center;gap:10px;font-weight:500;font-size:14px;color:var(--text)}
+.link{background:none;border:0;color:var(--muted);font-size:13px}
+.hint{color:var(--muted);font-size:12px;margin-top:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 22px;margin-top:24px}
+label.l{display:block;font-size:14px;font-weight:500;margin-bottom:12px}
+.field{display:flex;align-items:center;gap:10px;background:var(--field);border:1px solid var(--line);border-radius:8px;height:44px;padding:0 14px;color:var(--muted)}
+.field input,.field select{flex:1;background:none;border:0;outline:0;color:var(--text);width:100%;appearance:none;-webkit-appearance:none;height:100%}
+.field select option{background:var(--field)}
+.field:focus-within{border-color:var(--accent-line)}
+.bio-head{display:flex;justify-content:space-between;font-size:14px;font-weight:500;margin:24px 0 12px}
+.bio-head span{font-size:12px;color:#6b7480;font-weight:400}
+textarea{width:100%;height:70px;resize:none;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:14px;color:var(--text);outline:0}
+textarea:focus{border-color:var(--accent-line)}
+.goal{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.goal b{font-weight:500;display:block;margin-bottom:6px}
+.goal .sub{font-size:13px}
+.chips{display:flex;gap:10px}
+.chip{background:var(--field);border:1px solid var(--line);color:#9aa4af;border-radius:8px;height:40px;padding:0 15px;display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.chip.on{background:var(--accent-bg);border-color:var(--accent-line);color:var(--accent)}
+.chip svg{display:none;width:14px;height:14px}
+.chip.on svg{display:block}
+.streakbox{display:flex;align-items:center;gap:16px;margin-top:26px;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:24px 22px 22px}
+.icon{width:40px;height:40px;border-radius:10px;background:var(--accent-bg);color:var(--accent);display:grid;place-items:center}
+.streakbox .t{flex:1}
+.streakbox .t b{display:block;font-weight:500;margin-bottom:6px}
+.streakbox .t span{color:var(--muted);font-size:13px}
+.streakbox .col{width:215px}
+.streakbox .col label.l{margin-bottom:10px;font-size:14px}
+.switch{position:relative;width:36px;height:22px;flex:none;display:inline-block}
+.switch input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:1}
+.switch i{position:absolute;inset:0;border-radius:11px;background:#2a323b;transition:background .15s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#aeb6bf;transition:transform .15s,background .15s}
+.switch input:checked+i{background:var(--accent)}
+.switch input:checked+i::after{transform:translateX(14px);background:var(--ink)}
+.switch input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+.prefs{margin-top:30px}
+.prefs .head{display:grid;grid-template-columns:1fr 98px 98px;font-size:11px;color:#6b7480;letter-spacing:.08em;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.prefs .head span{text-align:center}
+.prow{display:grid;grid-template-columns:1fr 98px 98px;align-items:center;padding:12px 0 0}
+.prow:first-of-type{padding-top:20px}
+.prow b{display:block;font-weight:500;margin-bottom:6px}
+.prow span.d{color:var(--muted);font-size:13px}
+.prow .c{display:flex;justify-content:center}
+.note{font-size:12px;color:var(--muted);margin-top:24px}
+.sec{display:flex;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:0;padding-bottom:0}
+.sec>svg{color:#6b7480;width:20px;height:20px}
+.sec .t{flex:1}
+.sec .t b{font-weight:500;display:block;margin-bottom:6px}
+.sec .t span{color:var(--muted);font-size:13px}
+.on-tag{color:var(--accent);font-size:12px;margin-left:8px;font-weight:400}
+.sec .btn{height:44px}
+.sec.first{padding-top:30px}
+.del{border-color:#5b2a2d;color:var(--danger)}
+.plain{padding-left:0}
+.footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:34px}
+.footer-actions .info{display:flex;align-items:center;gap:10px;color:#9aa4af;font-size:13px}
+.footer-actions .acts{display:flex;gap:12px}
+.cancel{background:var(--ink);color:var(--text);border:0;border-radius:8px;height:44px;padding:0 18px;font-weight:500}
+.save{background:var(--accent);color:var(--ink);border:0;border-radius:8px;height:44px;padding:0 20px;font-weight:600;display:flex;align-items:center;gap:10px}
+footer{margin-top:38px;padding:18px 0 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px;color:#9aa4af}
+footer a{color:#9aa4af;text-decoration:none;margin-left:22px}
+@media(max-width:900px){
+.layout{grid-template-columns:1fr;padding:24px 20px 0;gap:24px}
+nav{display:none}
+.logo{width:110px}
+.grid{grid-template-columns:1fr}
+.hero{flex-direction:column;gap:16px}
+.goal,.streakbox,.sec{flex-wrap:wrap;gap:16px}
+.streakbox .col{width:100%}
+.tabs{flex-direction:row;overflow-x:auto}
+.tab{white-space:nowrap;width:auto}
+.footer-actions{flex-direction:column;gap:16px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><img id="logo" src="1000017202.jpg" alt="Logo"></div>
+<nav><a href="#">Learning paths</a><a href="#">Community</a><a href="#">Reels</a><a href="#">Help board</a></nav>
+<div class="right">
+<div class="streak mono"><svg viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-1.6.6-2.8 1.5-3.8.3 1.2 1 1.8 1.8 2C10 8.5 10.8 5.5 12 3z"/></svg>12 day streak</div>
+<svg class="bell" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+<div style="display:flex;align-items:center;gap:10px"><div class="avatar">AL</div><svg viewBox="0 0 24 24" style="color:#6b7480;width:14px"><path d="m6 9 6 6 6-6"/></svg></div>
+</div>
+</header>
+
+<div class="layout">
+<aside>
+<a class="back" href="#"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to dashboard</a>
+<h2>Settings</h2>
+<div class="tabs">
+<button type="button" class="tab active" data-target="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profile &amp; account</button>
+<button type="button" class="tab" data-target="learning"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 5l-4 14"/></svg>Learning preferences</button>
+<button type="button" class="tab" data-target="notifications"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Notifications</button>
+<button type="button" class="tab" data-target="security"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Security &amp; access</button>
+</div>
+<div class="member">
+<div class="top mono"><span>Your membership</span><i class="dot"></i></div>
+<strong id="member-name"></strong>
+</div>
+<div class="help"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg>Need a hand? Get help</div>
+</aside>
+
+<main>
+<div class="hero">
+<div>
+<div class="eyebrow mono">Your space. Your rules.</div>
+<h1>Make yourself at home.</h1>
+<p>Manage your profile, shape your learning, and stay in control.</p>
+</div>
+<div class="verified"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Account verified</div>
+</div>
+
+<form id="settings" onsubmit="return false">
+<section class="card" id="profile">
+<div class="row"><div><div class="tag mono">// 01 — Identity</div><h3>Profile information</h3><p class="sub">This is how you show up in the CodeXpert community.</p></div><div class="public mono">PUBLIC PROFILE</div></div>
+<div class="photo">
+<div class="big">AL</div>
+<div>
+<div style="display:flex;align-items:center;gap:14px"><button type="button" class="btn"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>Upload photo</button><button type="button" class="link">Remove</button></div>
+<p class="hint">JPG, PNG or GIF. Max 2 MB.</p>
+</div>
+</div>
+<div class="grid">
+<div><label class="l" for="name">Full name</label><div class="field"><input id="name" value="Alex Lee"></div></div>
+<div><label class="l" for="user">Username</label><div class="field"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg><input id="user" value="alexbuilds"></div></div>
+<div><label class="l" for="email">Email address</label><div class="field"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><input id="email" type="email" value="alex.lee@gmail.com"></div></div>
+<div><label class="l" for="loc">Location</label><div class="field"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><input id="loc" value="South africa"></div></div>
+</div>
+<div class="bio-head"><label for="bio">Bio</label><span class="mono" id="count">74 / 160</span></div>
+<textarea id="bio" maxlength="160">Turning coffee into code. Learning full-stack development, one day at a time.</textarea>
+</section>
+
+<section class="card" id="learning">
+<div class="tag mono">// 02 — Your flow</div>
+<h3>Built around how you learn</h3>
+<p class="sub">Personalize your learning paths and coding workspace.</p>
+<div class="grid">
+<div><label class="l" for="lang">Primary language</label><div class="field"><select id="lang"><option>JavaScript</option><option>Python</option><option>TypeScript</option><option>Java</option><option>C#</option></select><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></div>
+<div><label class="l" for="level">Experience level</label><div class="field"><select id="level"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></div>
+</div>
+<div class="goal">
+<div><b>Daily learning goal</b><span class="sub">Small steps. Real progress. Find your pace.</span></div>
+<div class="chips" id="goals">
+<button type="button" class="chip"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>15 min</button>
+<button type="button" class="chip on"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>30 min</button>
+<button type="button" class="chip"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>60 min</button>
+</div>
+</div>
+</section>
+
+<section class="card" id="notifications">
+<div class="tag mono">// 03 — Stay in the loop</div>
+<h3>A nudge, not noise</h3>
+<p class="sub">Choose what reaches you and when. Your focus comes first.</p>
+<div class="streakbox">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-1.6.6-2.8 1.5-3.8.3 1.2 1 1.8 1.8 2C10 8.5 10.8 5.5 12 3z"/></svg></div>
+<div class="t"><b>Protect your streak</b><span>A daily push reminder to keep showing up.</span></div>
+<label class="switch" style="margin-right:30px"><input type="checkbox" checked><i></i></label>
+<div class="col" style="width:144px"><label class="l" for="time">Remind me at</label><div class="field"><select id="time"><option>6:00 PM</option><option>7:00 PM</option><option selected>8:00 PM</option><option>9:00 PM</option></select><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></div>
+<div class="col" style="width:244px"><label class="l" for="tz">Time zone</label><div class="field"><select id="tz"><option selected>Pacific Time (UTC−07:00)</option><option>Eastern Time (UTC−04:00)</option><option>UTC</option><option>South Africa Standard Time (UTC+02:00)</option></select><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></div>
+</div>
+<div class="prefs">
+<div class="head mono"><span style="text-align:left">NOTIFICATION PREFERENCES</span><span>EMAIL</span><span>PUSH</span></div>
+<div class="prow"><div><b>Community &amp; help board</b><span class="d">Replies, mentions, and answers to your questions.</span></div><div class="c"><label class="switch"><input type="checkbox" checked><i></i></label></div><div class="c"><label class="switch"><input type="checkbox" checked><i></i></label></div></div>
+<div class="prow"><div><b>Streaks &amp; rewards</b><span class="d">Milestones, badges, and a little motivation.</span></div><div class="c"><label class="switch"><input type="checkbox"><i></i></label></div><div class="c"><label class="switch"><input type="checkbox" checked><i></i></label></div></div>
+<div class="prow"><div><b>Learning digest</b><span class="d">A weekly recap with paths and reels picked for you.</span></div><div class="c"><label class="switch"><input type="checkbox" checked><i></i></label></div><div class="c"><label class="switch"><input type="checkbox"><i></i></label></div></div>
+<p class="note">Security and account emails are always on, so you never miss anything important.</p>
+</div>
+</section>
+
+<section class="card" id="security">
+<div class="tag mono">// 04 — Lock it down</div>
+<h3>Account &amp; security</h3>
+<p class="sub">Keep your account secure and your progress yours.</p>
+<div class="sec first"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M16 7l3 3"/></svg><div class="t"><b>Password</b><span>Last changed October 12, 2026</span></div><button type="button" class="btn">Change password</button></div>
+<div class="sec"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><div class="t"><b>Two-factor authentication<span class="on-tag">Enabled</span></b><span>An extra layer of protection when you sign in.</span></div><button type="button" class="btn">Manage 2FA</button></div>
+<div class="sec"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><div class="t"><b>Active sessions</b><span>Chrome on macOS · San Francisco, US · This device</span></div><button type="button" class="btn">Manage sessions</button></div>
+<div class="sec"><div class="t"><b>Delete account</b><span>Permanently remove your account, progress, and community content.</span></div><button type="button" class="btn del">Delete account</button></div>
+</section>
+
+<div class="footer-actions">
+<div class="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>Changes apply across all your devices.</div>
+<div class="acts"><button type="reset" class="cancel">Cancel</button><button type="submit" class="save"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg>Save changes</button></div>
+</div>
+</form>
+
+<footer><span class="mono">© 2026 CodeXpert · Keep building.</span><span><a href="#">Privacy policy</a><a href="#">Terms of service</a></span></footer>
+</main>
+</div>
+
+<script>
+var tabs=document.querySelectorAll('.tab');
+function setActive(id){tabs.forEach(function(x){x.classList.toggle('active',x.dataset.target===id)})}
+tabs.forEach(function(t){t.addEventListener('click',function(){document.getElementById(t.dataset.target).scrollIntoView({behavior:'smooth',block:'start'});setActive(t.dataset.target)})});
+var ids=['profile','learning','notifications','security'];
+window.addEventListener('scroll',function(){
+var cur=ids[0];
+if(window.innerHeight+window.scrollY>=document.body.scrollHeight-4){cur=ids[ids.length-1]}
+else{ids.forEach(function(id){if(document.getElementById(id).getBoundingClientRect().top<=window.innerHeight*0.35){cur=id}})}
+setActive(cur)
+});
+document.querySelectorAll('#goals .chip').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('#goals .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on')})});
+var bio=document.getElementById('bio'),count=document.getElementById('count');
+bio.addEventListener('input',function(){count.textContent=bio.value.length+' / 160'});
+</script>
+</body>
+</html>
