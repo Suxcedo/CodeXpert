@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeXpert | Community Chatroom</title>
+    <link rel="stylesheet" href="css/community.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <nav class="navbar">
+            <a href="home.html" class="nav-link">Dashboard</a>
+            <a href="learning-path.html" class="nav-link">Learning Path</a>
+            <a href="#" class="nav-link">Reels</a>
+            <a href="community.html" class="nav-link active">Community</a>
+            <a href="helpboard.html" class="nav-link">Help Board</a>
+
+            <div class="nav-spacer"></div>
+
+            <div class="streak">47</div>
+            <div class="xp">3,820 XP</div>
+            <div class="profile">S</div>
+            <button class="menu-button" type="button" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+
+        <section class="page-heading">
+            <h1>Community Chatroom</h1>
+            <p>Connect, learn and code together with your community.</p>
+        </section>
+
+        <section class="community-layout">
+
+            <aside class="sidebar">
+                <p class="section-label">YOUR GROUPS</p>
+
+                <button class="group-card selected" data-group="Python Beginners">
+                    <div class="group-icon blue">P</div>
+                    <div class="group-info">
+                        <div class="group-title-row">
+                            <strong>Python</strong>
+                            <span class="your-tag">YOURS</span>
+                        </div>
+                        <small>18/24 active now</small>
+                    </div>
+                    <span class="status-dot"></span>
+                </button>
+
+                <button class="group-card" data-group="JavaScript Learners">
+                    <div class="group-icon yellow">JS</div>
+                    <div class="group-info">
+                        <strong>JavaScript</strong>
+                        <small>22/31 active now</small>
+                    </div>
+                    <span class="status-dot"></span>
+                </button>
+
+                <button class="group-card" data-group="TypeScript Learners">
+                    <div class="group-icon blue">TS</div>
+                    <div class="group-info">
+                        <strong>TypeScript</strong>
+                        <small>11/19 active now</small>
+                    </div>
+                    <span class="status-dot"></span>
+                </button>
+
+                <div class="stats-card">
+                    <p class="section-label">GROUP STATS</p>
+
+                    <div class="stat-row">
+                        <span>Avg streak</span>
+                        <strong>34 days</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Members</span>
+                        <strong>24</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Active today</span>
+                        <strong>18</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Top member</span>
+                        <strong>alex_dev</strong>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="chat-panel">
+
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <div class="chat-icon">P</div>
+                        <div>
+                            <h2 id="groupName">Python Beginners</h2>
+                            <p>24 members · 18 online now</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-tabs">
+                        <button class="tab active">Chat</button>
+                        <button class="tab">Members</button>
+                        <button class="tab">Challenges</button>
+                    </div>
+                </div>
+
+                <div class="messages" id="messages">
+
+                    <div class="message-row">
+                        <div class="avatar">A</div>
+                        <div>
+                            <div class="message-meta">
+                                <strong>alex_dev</strong>
+                                <span>2m ago</span>
+                            </div>
+                            <div class="message-bubble">
+                                Just finished the recursion lesson. That one took me 3 tries lol
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-row">
+                        <div class="avatar">J</div>
+                        <div>
+                            <div class="message-meta">
+                                <strong>jess_learns</strong>
+                                <span>5m ago</span>
+                            </div>
+                            <div class="message-bubble small">
+                                Same! The base case keeps tripping me up
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="streak-message">
+                        <strong>raj_learns: Hit day 61 today!</strong>
+                        <span>8m ago</span>
+                    </div>
+
+                    <div class="activity-message">
+                        Sarah_codes completed: List Comprehensions
+                    </div>
+
+                    <div class="message-row">
+                        <div class="avatar">C</div>
+                        <div>
+                            <div class="message-meta">
+                                <strong>code_tia</strong>
+                                <span>25m ago</span>
+                            </div>
+                            <div class="message-bubble">
+                                Anyone else struggling with decorators? I just watched the reel 3 times
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-row">
+                        <div class="avatar">A</div>
+                        <div>
+                            <div class="message-meta">
+                                <strong>alex_dev</strong>
+                                <span>22m ago</span>
+                            </div>
+                            <div class="message-bubble wide">
+                                Decorators clicked for me when I drew it on paper. The wrapper function is just a function that returns a function.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <form class="message-form" id="messageForm">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Message the group..."
+                        autocomplete="off"
+                    >
+                    <button type="submit">Send →</button>
+                </form>
+
+            </section>
+        </section>
+
+    </main>
+
+    <script src="js/community.js"></script>
+</body>
+</html>

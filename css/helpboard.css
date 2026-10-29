@@ -1,0 +1,20 @@
+.help-panel {
+    min-height: 535px;
+}
+
+.popular-question {
+    background: #211d13;
+    border-color: #403719;
+}
+
+.popular-question strong {
+    color: #ffd536;
+}
+
+.help-panel .message-form button {
+    background: #0fd5bd;
+}
+
+.help-panel .message-form button:hover {
+    background: #18e6cb;
+}

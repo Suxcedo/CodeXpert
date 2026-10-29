@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeXpert | Help Board</title>
+    <link rel="stylesheet" href="css/community.css">
+    <link rel="stylesheet" href="css/helpboard.css">
+</head>
+<body>
+
+<header class="topbar">
+    <nav class="navbar">
+        <a href="home.html" class="nav-link">Dashboard</a>
+        <a href="learning-path.html" class="nav-link">Learning Path</a>
+        <a href="#" class="nav-link">Reels</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="helpboard.html" class="nav-link active">Help Board</a>
+
+        <div class="nav-spacer"></div>
+
+        <div class="streak">47</div>
+        <div class="xp">3,820 XP</div>
+        <div class="profile">S</div>
+
+        <button class="menu-button" type="button" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+</header>
+
+<main class="page-shell">
+
+    <section class="page-heading">
+        <h1>Help Board</h1>
+        <p>Ask questions, get help and learn from the CodeXpert community.</p>
+    </section>
+
+    <section class="community-layout">
+
+        <aside class="sidebar">
+
+            <p class="section-label">CATEGORIES</p>
+
+            <button class="group-card selected" data-category="General Help">
+                <div class="group-icon blue">?</div>
+                <div class="group-info">
+                    <strong>General Help</strong>
+                    <small>12 questions</small>
+                </div>
+                <span class="status-dot"></span>
+            </button>
+
+            <button class="group-card" data-category="HTML & CSS">
+                <div class="group-icon yellow">&lt;/&gt;</div>
+                <div class="group-info">
+                    <strong>HTML &amp; CSS</strong>
+                    <small>8 questions</small>
+                </div>
+                <span class="status-dot"></span>
+            </button>
+
+            <button class="group-card" data-category="JavaScript">
+                <div class="group-icon blue">JS</div>
+                <div class="group-info">
+                    <strong>JavaScript</strong>
+                    <small>14 questions</small>
+                </div>
+                <span class="status-dot"></span>
+            </button>
+
+            <div class="stats-card">
+                <p class="section-label">BOARD STATS</p>
+
+                <div class="stat-row">
+                    <span>Total Questions</span>
+                    <strong>34</strong>
+                </div>
+
+                <div class="stat-row">
+                    <span>Solved</span>
+                    <strong>24</strong>
+                </div>
+
+                <div class="stat-row">
+                    <span>Active Today</span>
+                    <strong>18</strong>
+                </div>
+
+                <div class="stat-row">
+                    <span>Top Helper</span>
+                    <strong>alex_dev</strong>
+                </div>
+            </div>
+
+        </aside>
+
+        <section class="chat-panel help-panel">
+
+            <div class="chat-header">
+
+                <div class="chat-title">
+                    <div class="chat-icon">?</div>
+
+                    <div>
+                        <h2 id="categoryName">Help Questions</h2>
+                        <p>34 questions · 18 active today</p>
+                    </div>
+                </div>
+
+                <div class="chat-tabs">
+                    <button class="tab active" type="button">Questions</button>
+                    <button class="tab" type="button">Solved</button>
+                    <button class="tab" type="button">Popular</button>
+                </div>
+
+            </div>
+
+            <div class="messages" id="questions">
+
+                <div class="message-row">
+                    <div class="avatar">A</div>
+
+                    <div>
+                        <div class="message-meta">
+                            <strong>alex_dev</strong>
+                            <span>2m ago</span>
+                        </div>
+
+                        <div class="message-bubble">
+                            Can someone explain how recursion works in Python?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-row">
+                    <div class="avatar">J</div>
+
+                    <div>
+                        <div class="message-meta">
+                            <strong>jess_learns</strong>
+                            <span>5m ago</span>
+                        </div>
+
+                        <div class="message-bubble">
+                            How do I centre a div using CSS?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="streak-message popular-question">
+                    <strong>Popular Question: How do JavaScript functions work?</strong>
+                    <span>8m ago</span>
+                </div>
+
+                <div class="activity-message">
+                    Question marked as solved
+                </div>
+
+                <div class="message-row">
+                    <div class="avatar">C</div>
+
+                    <div>
+                        <div class="message-meta">
+                            <strong>code_tia</strong>
+                            <span>25m ago</span>
+                        </div>
+
+                        <div class="message-bubble">
+                            What is the difference between let, const and var in JavaScript?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-row">
+                    <div class="avatar">A</div>
+
+                    <div>
+                        <div class="message-meta">
+                            <strong>alex_dev</strong>
+                            <span>22m ago</span>
+                        </div>
+
+                        <div class="message-bubble wide">
+                            Try breaking the problem into smaller steps first. That usually makes it easier to understand.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <form class="message-form" id="questionForm">
+
+                <input
+                    type="text"
+                    id="questionInput"
+                    placeholder="Ask a question..."
+                    autocomplete="off"
+                >
+
+                <button type="submit">Post →</button>
+
+            </form>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="js/helpboard.js"></script>
+
+</body>
+</html>
