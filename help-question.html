@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Details | CodeXperts</title>
+
+    <link rel="stylesheet" href="css/help-question.css">
+</head>
+<body>
+
+    <!-- ==========================================
+         DASHBOARD NAVIGATION
+    =========================================== -->
+
+    <header class="topbar">
+
+        <a href="home.html" class="logo-link" aria-label="CodeXperts home">
+            <img
+                src="assets/codeXpert_logo.jpeg"
+                alt="CodeXperts logo"
+                class="logo-image"
+            >
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="home.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="reels.html">Reels</a>
+            <a href="community.html">Community</a>
+            <a href="helpboard.html" class="active">Help Board</a>
+        </nav>
+
+        <div class="top-actions">
+
+            <div class="top-stat streak-top">
+                <span>STREAK</span>
+                <strong id="topStreak">0</strong>
+            </div>
+
+            <div class="top-stat xp-top">
+                <strong id="topXp">0</strong>
+                <span>XP</span>
+            </div>
+
+            <!-- Notifications -->
+            <div class="notification-wrapper">
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
+                    aria-label="Notifications"
+                    aria-expanded="false"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="21"
+                        height="21"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                        <path d="M10 21h4"></path>
+                    </svg>
+
+                    <span id="notificationCount" class="notification-count hidden">
+                        0
+                    </span>
+                </button>
+
+                <div
+                    class="notification-panel hidden"
+                    id="notificationPanel"
+                >
+
+                    <div class="notification-panel-header">
+                        <div>
+                            <h3>Notifications</h3>
+                            <p>Stay updated with CodeXperts</p>
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeNotifications"
+                            class="close-notifications"
+                            aria-label="Close notifications"
+                        >
+                            &times;
+                        </button>
+                    </div>
+
+                    <div
+                        class="notification-list"
+                        id="notificationList"
+                    >
+                        <div class="notification-loading">
+                            Loading notifications...
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Profile -->
+            <a
+                href="profile.html"
+                class="profile-circle"
+                id="profileInitial"
+                aria-label="Your profile"
+            >
+                U
+            </a>
+
+            <!-- Mobile Menu -->
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==========================================
+         QUESTION PAGE
+    =========================================== -->
+
+    <main class="help-question-page">
+
+        <div class="question-page-top">
+
+            <a href="helpboard.html" class="back-link">
+                <span aria-hidden="true">&larr;</span>
+                Back to Help Board
+            </a>
+
+            <span class="page-label">COMMUNITY HELP</span>
+
+        </div>
+
+        <div id="pageMessage" class="page-message hidden"></div>
+
+        <section id="questionContainer" class="question-container">
+
+            <div class="loading-state">
+                Loading question...
+            </div>
+
+        </section>
+
+
+        <section id="repliesSection" class="replies-section hidden">
+
+            <div class="replies-heading">
+
+                <div>
+                    <h2>Discussion</h2>
+                    <p id="replyCount">0 replies</p>
+                </div>
+
+                <span class="discussion-label">
+                    COMMUNITY DISCUSSION
+                </span>
+
+            </div>
+
+            <div id="repliesContainer" class="replies-container"></div>
+
+
+            <!-- Reply Form -->
+            <div id="replyFormSection" class="reply-form-section">
+
+                <h3>Share your answer</h3>
+
+                <p>
+                    Help another developer understand and solve their problem.
+                </p>
+
+                <form id="replyForm">
+
+                    <textarea
+                        id="replyText"
+                        placeholder="Write your answer or explanation..."
+                        rows="6"
+                        required
+                        maxlength="10000"
+                    ></textarea>
+
+
+                    <!-- Reply Image Upload -->
+                    <div class="reply-image-upload">
+
+                        <label for="replyImages">
+                            Attach Images (Optional)
+                        </label>
+
+                        <p class="image-upload-description">
+                            Add screenshots or images to explain your answer.
+                            JPG, PNG and WebP supported. Maximum 3 images,
+                            5 MB each.
+                        </p>
+
+                        <input
+                            type="file"
+                            id="replyImages"
+                            accept="image/jpeg,image/png,image/webp"
+                            multiple
+                        >
+
+                        <div
+                            id="replyImagePreview"
+                            class="image-preview-container"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="reply-form-bottom">
+
+                        <span id="replyCharCount">0 / 10000</span>
+
+                        <button type="submit" id="submitReplyButton">
+                            Post Answer
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div id="solvedMessage" class="solved-message hidden">
+                This question has been marked as solved.
+                The discussion is closed.
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         IMAGE LIGHTBOX
+    =========================================== -->
+
+    <div
+        id="imageLightbox"
+        class="image-lightbox hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Enlarged image"
+    >
+
+        <button
+            type="button"
+            class="image-lightbox-close"
+            id="closeImageLightbox"
+            aria-label="Close image viewer"
+        >
+            &times;
+        </button>
+
+        <img
+            id="lightboxImage"
+            src=""
+            alt="Enlarged attachment"
+        >
+
+    </div>
+
+
+    <script src="js/help-question.js"></script>
+
+</body>
+</html>

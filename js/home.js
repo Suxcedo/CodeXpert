@@ -1,613 +1,765 @@
 
-document.addEventListener("DOMContentLoaded", async function () {
-    const API_BASE = "http://localhost:5000/api";
+const API_BASE = "http://localhost:5000/api";
 
-    const $ = (id) => document.getElementById(id);
+const elements = {
+    menuButton: document.getElementById("menuButton"),
+    mainNav: document.getElementById("mainNav"),
+    toast: document.getElementById("toast"),
+    pageMessage: document.getElementById("pageMessage"),
 
-    const elements = {
-        menuButton: $("menuButton"),
-        mainNav: $("mainNav"),
-        toast: $("toast"),
-        pageMessage: $("pageMessage"),
-        welcomeName: $("welcomeName"),
-        welcomeMessage: $("welcomeMessage"),
-        profileInitial: $("profileInitial"),
-        topStreak: $("topStreak"),
-        topXp: $("topXp"),
-        streakValue: $("streakValue"),
-        xpValue: $("xpValue"),
-        levelValue: $("levelValue"),
-        levelOutOf: $("levelOutOf"),
-        lessonsValue: $("lessonsValue"),
-        levelHeading: $("levelHeading"),
-        levelXpText: $("levelXpText"),
-        levelPercentage: $("levelPercentage"),
-        levelProgress: $("levelProgress"),
-        levelMessage: $("levelMessage"),
-        weekMessage: $("weekMessage"),
-        rewardProgress: $("rewardProgress"),
-        rewardText: $("rewardText"),
-        lessonButton: $("lessonButton"),
-        lessonMessage: $("lessonMessage"),
-        pathHeading: $("pathHeading"),
-        pathDescription: $("pathDescription"),
-        pathProgress: $("pathProgress"),
-        learningContent: $("learningContent"),
-        choosePathButton: $("choosePathButton"),
-        activityContent: $("activityContent")
-    };
+    welcomeName: document.getElementById("welcomeName"),
+    welcomeMessage: document.getElementById("welcomeMessage"),
+    profileInitial: document.getElementById("profileInitial"),
 
-    let user = {};
-    let activeEnrollment = null;
-    let activePath = null;
-    let firstModule = null;
-    let toastTimer = null;
-    let activeTab = "activity";
+    topStreak: document.getElementById("topStreak"),
+    topXp: document.getElementById("topXp"),
 
-    function showToast(message) {
-        elements.toast.textContent = message;
-        elements.toast.classList.add("show");
+    streakValue: document.getElementById("streakValue"),
+    streakMessage: document.getElementById("streakMessage"),
+    xpValue: document.getElementById("xpValue"),
+    pathXpText: document.getElementById("pathXpText"),
 
-        clearTimeout(toastTimer);
+    levelValue: document.getElementById("levelValue"),
+    levelOutOf: document.getElementById("levelOutOf"),
+    levelHeading: document.getElementById("levelHeading"),
+    levelXpText: document.getElementById("levelXpText"),
+    levelPercentage: document.getElementById("levelPercentage"),
+    levelProgress: document.getElementById("levelProgress"),
+    levelMessage: document.getElementById("levelMessage"),
 
-        toastTimer = setTimeout(function () {
-            elements.toast.classList.remove("show");
-        }, 2500);
+    lessonsValue: document.getElementById("lessonsValue"),
+    weekMessage: document.getElementById("weekMessage"),
+
+    rewardProgress: document.getElementById("rewardProgress"),
+    rewardText: document.getElementById("rewardText"),
+
+    lessonButton: document.getElementById("lessonButton"),
+    lessonMessage: document.getElementById("lessonMessage"),
+
+    pathHeading: document.getElementById("pathHeading"),
+    pathDescription: document.getElementById("pathDescription"),
+    pathProgress: document.getElementById("pathProgress"),
+
+    learningContent: document.getElementById("learningContent"),
+    choosePathButton: document.getElementById("choosePathButton"),
+
+    activityContent: document.getElementById("activityContent")
+};
+
+let activeEnrollment = null;
+let activePath = null;
+let activeModule = null;
+let nextLesson = null;
+let dashboardStats = null;
+let completedLessonsCount = null;
+let toastTimer = null;
+
+function getAccessToken() {
+    return sessionStorage.getItem("supabaseAccessToken");
+}
+
+function getStoredUser() {
+    const storedUser = sessionStorage.getItem("loggedInUser");
+
+    if (!storedUser) return null;
+
+    try {
+        return JSON.parse(storedUser);
+    } catch {
+        return null;
     }
+}
 
-    function showPageMessage(message, isError = false) {
-        elements.pageMessage.textContent = message;
-        elements.pageMessage.classList.toggle("error", isError);
-        elements.pageMessage.hidden = false;
-    }
+function redirectToLogin() {
+    window.location.href = "login.html";
+}
 
-    function clearPageMessage() {
-        elements.pageMessage.textContent = "";
-        elements.pageMessage.classList.remove("error");
-        elements.pageMessage.hidden = true;
-    }
 
-    function getAccessToken() {
-        return sessionStorage.getItem("supabaseAccessToken");
-    }
+async function apiRequest(endpoint, options = {}) {
+    const token = getAccessToken();
+    const startTime = performance.now();
 
-    function getStoredUser() {
-        try {
-            const stored = sessionStorage.getItem("loggedInUser");
-            return stored ? JSON.parse(stored) : null;
-        } catch (error) {
-            return null;
-        }
-    }
-
-    function redirectToLogin() {
-        const currentPage =
-            window.location.pathname + window.location.search;
-
-        window.location.href =
-            `login.html?redirect=${encodeURIComponent(currentPage)}`;
-    }
-
-    function escapeText(value) {
-        return String(value ?? "");
-    }
-
-    function formatNumber(value) {
-        return (Number(value) || 0).toLocaleString();
-    }
-
-    function showEmptyState(title, description) {
-        const container = document.createElement("div");
-        container.className = "empty-state";
-
-        const heading = document.createElement("strong");
-        heading.textContent = title;
-
-        const paragraph = document.createElement("p");
-        paragraph.textContent = description;
-
-        container.append(heading, paragraph);
-
-        return container;
-    }
-
-    async function apiRequest(url, options = {}) {
-        const token = getAccessToken();
-
-        const headers = {
-            ...(options.headers || {})
-        };
-
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
-        }
-
-        if (options.body && !headers["Content-Type"]) {
-            headers["Content-Type"] = "application/json";
-        }
-
-        const response = await fetch(`${API_BASE}${url}`, {
+    try {
+        const response = await fetch(`${API_BASE}${endpoint}`, {
             ...options,
-            headers
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {}),
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            }
         });
 
-        let data;
+        const data = await response.json().catch(() => ({}));
 
-        try {
-            data = await response.json();
-        } catch (error) {
-            throw new Error("The server returned an invalid response.");
-        }
-
-        if (!response.ok || data.success === false) {
-            const error = new Error(
-                data.message || `Request failed (${response.status}).`
+        if (!response.ok) {
+            throw new Error(
+                data.message ||
+                data.error ||
+                `Request failed with status ${response.status}.`
             );
-
-            error.status = response.status;
-            throw error;
         }
 
         return data;
+
+    } finally {
+        const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+
+        console.log(`[API] ${endpoint} took ${duration} seconds`);
     }
+}
 
-    function displayUser() {
-        const storedUser = getStoredUser();
 
-        if (!storedUser) {
-            redirectToLogin();
-            return false;
-        }
+function showToast(message, type = "success") {
+    if (!elements.toast) return;
 
-        user = storedUser.user || storedUser;
+    elements.toast.textContent = message;
+    elements.toast.className = `toast show ${type}`;
 
-        const username =
-            user.username ||
-            user.user_name ||
-            user.email ||
-            "Learner";
+    clearTimeout(toastTimer);
 
-        elements.welcomeName.textContent = `${username}.`;
-        elements.profileInitial.textContent =
-            username.charAt(0).toUpperCase() || "L";
+    toastTimer = setTimeout(() => {
+        elements.toast.classList.remove("show");
+    }, 3500);
+}
 
-        return true;
+function showPageMessage(message, type = "error") {
+    if (!elements.pageMessage) return;
+
+    elements.pageMessage.textContent = message;
+    elements.pageMessage.className = `page-message ${type}`;
+    elements.pageMessage.hidden = false;
+}
+
+function hidePageMessage() {
+    if (!elements.pageMessage) return;
+
+    elements.pageMessage.hidden = true;
+    elements.pageMessage.textContent = "";
+}
+
+function setText(element, value) {
+    if (element) {
+        element.textContent = value;
     }
+}
 
-    function displayInitialStats() {
-        const xp = Number(user.overall_xp) || 0;
+function displayUser() {
+    const storedUser = getStoredUser();
+    const user = storedUser?.user || storedUser || {};
 
-        elements.topXp.textContent = formatNumber(xp);
-        elements.xpValue.textContent = formatNumber(xp);
+    const name =
+        user.first_name ||
+        user.firstName ||
+        user.username ||
+        "Learner";
 
-        elements.topStreak.textContent = "0";
-        elements.streakValue.textContent = "0";
+    setText(elements.welcomeName, name);
 
-        elements.lessonsValue.textContent =
-            formatNumber(user.lessons_completed);
+    setText(
+        elements.profileInitial,
+        name.charAt(0).toUpperCase()
+    );
 
-        const level = Math.min(
-            Math.max(Number(activeEnrollment?.current_level) || 1, 1),
-            10
+    if (elements.welcomeMessage) {
+        elements.welcomeMessage.textContent =
+            "Keep learning and build your programming skills one day at a time.";
+    }
+}
+
+function setupNavigation() {
+    elements.menuButton?.addEventListener("click", () => {
+        const isOpen = elements.mainNav.classList.toggle("open");
+
+        elements.menuButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+    });
+
+    elements.mainNav?.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            elements.mainNav.classList.remove("open");
+            elements.menuButton?.setAttribute("aria-expanded", "false");
+        });
+    });
+}
+
+function setupTabs() {
+    const tabs = document.querySelectorAll("[data-tab]");
+    const panels = document.querySelectorAll("[data-panel]");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            const selectedTab = tab.dataset.tab;
+
+            tabs.forEach(item => {
+                item.classList.toggle("active", item === tab);
+            });
+
+            panels.forEach(panel => {
+                panel.hidden = panel.dataset.panel !== selectedTab;
+            });
+        });
+    });
+}
+
+async function loadDashboardStats() {
+    try {
+        dashboardStats = await apiRequest("/paths/dashboard/stats");
+        displayInitialStats();
+    } catch (error) {
+        console.error("Could not load dashboard statistics:", error);
+    }
+}
+
+async function loadCompletedLessons() {
+    try {
+        const data = await apiRequest(
+            "/paths/dashboard/lessons-completed"
         );
 
-        elements.levelValue.textContent = level;
-        elements.levelOutOf.textContent = "/ 10";
+        completedLessonsCount = Number(data.lessonsCompleted || 0);
 
-        const pathXp = Number(activeEnrollment?.path_xp) || 0;
-        const xpPerLevel = 1000;
-        const xpIntoLevel = pathXp % xpPerLevel;
-        const percentage = Math.round(
-            (xpIntoLevel / xpPerLevel) * 100
+        setText(
+            elements.lessonsValue,
+            completedLessonsCount
         );
 
-        elements.levelHeading.textContent =
-            level >= 10 ? "Level 10" : `Level ${level} → Level ${level + 1}`;
-
-        elements.levelXpText.textContent =
-            `${formatNumber(pathXp)} path XP`;
-
-        elements.levelPercentage.textContent = `${percentage}%`;
-        elements.levelProgress.style.width = `${percentage}%`;
-
-        elements.levelMessage.textContent =
-            level >= 10
-                ? "You have reached the highest current level."
-                : `${formatNumber(xpPerLevel - xpIntoLevel)} XP until the next level.`;
-
-        elements.weekMessage.textContent =
-            "Weekly activity tracking will appear here when connected to your progress records.";
-
-        const streak = Number(activeEnrollment?.streak) || 0;
-
-        elements.rewardProgress.style.width =
-            `${Math.min(streak, 100)}%`;
-
-        elements.rewardText.textContent =
-            `${streak}/100 days · ${Math.max(100 - streak, 0)} days to go`;
-
-        document.querySelectorAll(".day").forEach(function (day) {
-            day.classList.remove("completed");
-            day.querySelector("span").textContent = "";
-        });
-
-        document.querySelectorAll("[data-streak]").forEach(function (badge) {
-            const required = Number(badge.dataset.streak);
-
-            badge.classList.toggle("unlocked", streak >= required);
-            badge.classList.toggle("locked", streak < required);
-        });
+    } catch (error) {
+        console.error("Could not load completed lessons:", error);
     }
+}
 
-    function getPathsFromResponse(result) {
-        if (Array.isArray(result.paths)) {
-            return result.paths;
-        }
+async function loadAvailablePaths() {
+    const data = await apiRequest("/paths");
+    return data.paths || [];
+}
 
-        if (Array.isArray(result.data?.paths)) {
-            return result.data.paths;
-        }
 
-        if (Array.isArray(result.data)) {
-            return result.data;
-        }
+async function findUserEnrollment(paths) {
+    console.log("Available paths:", paths);
 
-        return [];
-    }
+    for (const path of paths) {
+        try {
+            const data = await apiRequest(
+                `/paths/${path.path_id}/enrollment`
+            );
 
-    async function loadAvailablePaths() {
-        const result = await apiRequest("/paths");
-        return getPathsFromResponse(result);
-    }
+            console.log(`Enrollment response for ${path.path_name}:`, data);
 
-    async function findUserEnrollment(paths) {
-        for (const path of paths) {
-            const pathId = Number(path.path_id);
+            const enrollment = data.enrollment;
 
-            if (!Number.isSafeInteger(pathId) || pathId < 1) {
-                continue;
+            if (
+                data.enrolled &&
+                enrollment &&
+                enrollment.status === "active"
+            ) {
+                console.log("Active enrollment found:", enrollment);
+
+                return {
+                    path,
+                    enrollment
+                };
             }
+        } catch (error) {
+            console.error(
+                `Could not check enrollment for ${path.path_name}:`,
+                error
+            );
 
-            try {
-                const result = await apiRequest(
-                    `/paths/${encodeURIComponent(pathId)}/enrollment`
-                );
+            throw error;
+        }
+    }
 
-                const enrollment =
-                    result.enrollment ||
-                    result.data?.enrollment;
+    console.log("No active enrollment found.");
+    return null;
+}
 
-                const isEnrolled =
-                    result.hasEnrollment === true ||
-                    result.enrolled === true ||
-                    enrollment?.status === "active";
 
-                if (isEnrolled) {
-                    return {
-                        path,
-                        enrollment: enrollment || result
-                    };
-                }
-            } catch (error) {
-                if (error.status === 401) {
-                    throw error;
-                }
+async function loadFirstModule(pathId) {
+    const data = await apiRequest(`/paths/${pathId}/modules`);
+    const modules = data.modules || [];
 
-                if (error.status === 403 || error.status === 404) {
-                    continue;
-                }
+    return modules.length ? modules[0] : null;
+}
 
-                console.error(
-                    `Could not check enrollment for path ${pathId}:`,
-                    error
-                );
-            }
+async function loadModuleLessons(moduleId) {
+    const data = await apiRequest(
+        `/paths/modules/${moduleId}/lessons`
+    );
+
+    return data.lessons || [];
+}
+
+
+async function findNextLesson(lessons) {
+    if (!lessons.length) return null;
+
+    return lessons.find(lesson =>
+        lesson.published === true &&
+        lesson.can_access === true &&
+        lesson.progress_status !== "completed"
+    ) || null;
+}
+
+
+function displayNoLessonAvailable() {
+    nextLesson = null;
+
+    if (elements.lessonButton) {
+        elements.lessonButton.disabled = true;
+        elements.lessonButton.textContent = "No Lessons Available";
+    }
+
+    if (elements.lessonMessage) {
+        elements.lessonMessage.textContent =
+            "You have completed all the lessons currently available in this module.";
+    }
+}
+
+function setupLessonButton() {
+    elements.lessonButton?.addEventListener("click", () => {
+        if (!nextLesson) {
+            showToast("There is no lesson available yet.", "error");
+            return;
         }
 
-        return null;
+        window.location.href =
+            `lesson.html?lessonId=${encodeURIComponent(nextLesson.lesson_id)}`;
+    });
+}
+
+function renderNoEnrollment() {
+    activeEnrollment = null;
+    activePath = null;
+    activeModule = null;
+    nextLesson = null;
+
+    setText(elements.pathHeading, "Choose your learning path");
+    setText(
+        elements.pathDescription,
+        "Select a programming language to begin your learning journey."
+    );
+    setText(elements.pathProgress, "Not enrolled");
+
+    if (elements.learningContent) {
+        elements.learningContent.innerHTML = `
+            <div class="empty-state">
+                <strong>Start your learning journey</strong>
+                <p>Choose a programming language and begin learning.</p>
+            </div>
+        `;
     }
 
-    async function loadFirstModule(pathId) {
-        const result = await apiRequest(
-            `/paths/${encodeURIComponent(pathId)}/modules`
-        );
-
-        const modules = Array.isArray(result.modules)
-            ? result.modules
-            : Array.isArray(result.data?.modules)
-                ? result.data.modules
-                : [];
-
-        modules.sort(function (a, b) {
-            return Number(a.module_number) - Number(b.module_number);
-        });
-
-        return modules.find(
-            (module) => Number(module.module_number) === 1
-        ) || modules[0] || null;
+    if (elements.choosePathButton) {
+        elements.choosePathButton.hidden = false;
     }
 
-    function renderNoEnrollment() {
-        activeEnrollment = null;
-        activePath = null;
-        firstModule = null;
-
-        elements.pathHeading.textContent = "Choose Your Learning Path";
-
-        elements.pathDescription.textContent =
-            "Select a course to start learning programming with CodeXperts.";
-
-        elements.pathProgress.textContent = "Not enrolled";
-
-        elements.learningContent.replaceChildren(
-            showEmptyState(
-                "You haven't enrolled yet",
-                "Choose a learning path to begin your programming journey."
-            )
-        );
-
+    if (elements.lessonButton) {
         elements.lessonButton.disabled = true;
         elements.lessonButton.textContent = "Choose a Learning Path";
-        elements.lessonMessage.textContent =
-            "Select a course before continuing to a lesson.";
-
-        elements.choosePathButton.hidden = false;
-        elements.welcomeMessage.textContent =
-            "Welcome! Choose a learning path to begin building your skills.";
     }
 
-    function renderEnrolledPath() {
-        elements.pathHeading.textContent =
-            activePath.path_name || "Your Learning Path";
-
-        elements.pathDescription.textContent =
-            activePath.description || "Continue learning at your own pace.";
-
-        elements.pathProgress.textContent = "Enrolled";
-
-        elements.learningContent.replaceChildren();
-
-        const pathCard = document.createElement("div");
-        pathCard.className = "enrolled-path-card";
-
-        const heading = document.createElement("h4");
-        heading.textContent = activePath.path_name || "Your Learning Path";
-
-        const description = document.createElement("p");
-        description.textContent =
-            activePath.description ||
-            "Your enrolled course is ready to continue.";
-
-        pathCard.append(heading, description);
-        elements.learningContent.appendChild(pathCard);
-
-        const moduleRow = document.createElement("div");
-        moduleRow.className = "module-row current";
-
-        const number = document.createElement("span");
-        number.className = "module-number";
-        number.textContent = String(
-            firstModule.module_number || 1
-        ).padStart(2, "0");
-
-        const details = document.createElement("div");
-
-        const moduleTitle = document.createElement("h4");
-        moduleTitle.textContent =
-            firstModule.module_name || "First Module";
-
-        const moduleDescription = document.createElement("p");
-        moduleDescription.textContent =
-            "Open this module to continue to its first lesson.";
-
-        details.append(moduleTitle, moduleDescription);
-        moduleRow.append(number, details);
-        elements.learningContent.appendChild(moduleRow);
-
-        elements.lessonButton.disabled = false;
-        elements.lessonButton.textContent = "Continue Learning →";
+    if (elements.lessonMessage) {
         elements.lessonMessage.textContent =
-            "Your enrollment is active. Continue to your first module.";
+            "Enroll in a learning path to access your lessons.";
+    }
 
+    displayInitialStats();
+}
+
+function renderEnrolledPath() {
+    if (!activePath || !activeEnrollment) return;
+
+    const pathName = activePath.path_name || "Your Learning Path";
+
+    setText(elements.pathHeading, pathName);
+    setText(
+        elements.pathDescription,
+        activePath.description || "Continue learning and improving your skills."
+    );
+    setText(
+        elements.pathProgress,
+        `Level ${activeEnrollment.current_level || 1}`
+    );
+
+    if (elements.choosePathButton) {
         elements.choosePathButton.hidden = true;
-
-        const username =
-            user.username ||
-            user.user_name ||
-            user.email ||
-            "Learner";
-
-        elements.welcomeMessage.textContent =
-            `Welcome back, ${username}. Your learning path is ready.`;
     }
 
-    function openLesson() {
-        if (!activePath || !firstModule) {
-            showToast("No enrolled learning path was found.");
-            return;
+    if (elements.learningContent) {
+        elements.learningContent.innerHTML = `
+            <h4 class="learning-path-name"></h4>
+            <p class="learning-path-description"></p>
+            <span class="module-label"></span>
+        `;
+
+        elements.learningContent.querySelector(
+            ".learning-path-name"
+        ).textContent = pathName;
+
+        elements.learningContent.querySelector(
+            ".learning-path-description"
+        ).textContent =
+            activePath.description || "Continue with your learning journey.";
+
+        elements.learningContent.querySelector(
+            ".module-label"
+        ).textContent =
+            activeModule?.module_name || "Learning module";
+    }
+
+    if (nextLesson) {
+        if (elements.lessonButton) {
+            elements.lessonButton.disabled = false;
+            elements.lessonButton.textContent = "Continue Learning";
         }
 
-        const pathId = Number(activePath.path_id);
-        const moduleId = Number(firstModule.module_id);
+        if (elements.lessonMessage) {
+            elements.lessonMessage.textContent =
+                `Next lesson: ${nextLesson.lesson_title || "Continue your lesson"}`;
+        }
+    } else {
+        displayNoLessonAvailable();
+    }
+
+    displayInitialStats();
+}
+
+
+
+function displayWeeklyActivity() {
+    const weeklyActivity = dashboardStats?.weeklyActivity || [];
+    const weekStart = dashboardStats?.weekStart;
+
+    const dayElements = document.querySelectorAll(".day[data-day]");
+
+    dayElements.forEach(dayElement => {
+        dayElement.classList.remove("completed", "today");
+
+        const countElement = dayElement.querySelector("span");
+
+        if (countElement) {
+            countElement.textContent = "";
+        }
+    });
+
+    if (!weekStart) {
+        setText(
+            elements.weekMessage,
+            "Complete a lesson to start tracking your weekly activity."
+        );
+        return;
+    }
+
+    const activityMap = {};
+
+    weeklyActivity.forEach(activity => {
+        const date = String(activity.activity_date).slice(0, 10);
+        activityMap[date] = Number(activity.lessons_completed || 0);
+    });
+
+    const startDate = new Date(`${weekStart}T00:00:00Z`);
+    const today = dashboardStats?.today;
+
+    let totalLessons = 0;
+    let activeDays = 0;
+
+    dayElements.forEach(dayElement => {
+        const dayNumber = Number(dayElement.dataset.day);
+
+        const activityDate = new Date(startDate);
+        activityDate.setUTCDate(startDate.getUTCDate() + dayNumber);
+
+        const year = activityDate.getUTCFullYear();
+        const month = String(activityDate.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(activityDate.getUTCDate()).padStart(2, "0");
+
+        const dateKey = `${year}-${month}-${day}`;
+        const completedLessons = activityMap[dateKey] || 0;
+
+        const countElement = dayElement.querySelector("span");
+
+        dayElement.classList.toggle(
+            "completed",
+            completedLessons > 0
+        );
+
+        // dayElement.classList.toggle(
+        //     "today",
+        //     dateKey === today
+        // );
+
+        if (countElement && completedLessons > 0) {
+            countElement.textContent = completedLessons;
+        }
+
+        if (completedLessons > 0) {
+            totalLessons += completedLessons;
+            activeDays++;
+        }
+    });
+
+    if (elements.weekMessage) {
+        elements.weekMessage.textContent = totalLessons > 0
+            ? `You completed ${totalLessons} lesson${totalLessons === 1 ? "" : "s"} across ${activeDays} active day${activeDays === 1 ? "" : "s"} this week.`
+            : "No completed lessons this week yet. Complete a lesson to get started.";
+    }
+}
+
+
+
+
+
+function displayBadges() {
+    const badges = dashboardStats?.badges || [];
+
+    // Store earned streak badges using their milestone value.
+    const earnedBadges = new Map();
+
+    badges.forEach(item => {
+        const badgeInfo = item.badge;
 
         if (
-            !Number.isSafeInteger(pathId) ||
-            pathId < 1 ||
-            !Number.isSafeInteger(moduleId) ||
-            moduleId < 1
+            badgeInfo &&
+            badgeInfo.badge_category === "STREAK"
         ) {
-            showPageMessage(
-                "The learning path or module information is invalid.",
-                true
-            );
-            return;
+            const milestone = Number(badgeInfo.requirement_value);
+
+            earnedBadges.set(milestone, badgeInfo);
+        }
+    });
+
+    document.querySelectorAll(".badge[data-streak]").forEach(badge => {
+        const milestone = Number(badge.dataset.streak);
+        const earnedBadge = earnedBadges.get(milestone);
+        const unlocked = Boolean(earnedBadge);
+
+        const milestoneLabel = badge.querySelector("span");
+        const status = badge.querySelector(".badge-status");
+
+        // Update the badge's locked/unlocked appearance.
+        badge.classList.toggle("unlocked", unlocked);
+        badge.classList.toggle("locked", !unlocked);
+
+        // Remove an old image before updating the badge.
+        const existingImage = badge.querySelector(".badge-image");
+
+        if (existingImage) {
+            existingImage.remove();
         }
 
-        // The lesson page checks enrollment and publication status itself.
-        window.location.href =
-            `lesson.html?path_id=${encodeURIComponent(pathId)}` +
-            `&module_id=${encodeURIComponent(moduleId)}` +
-            `&lesson_id=1`;
-    }
+        if (unlocked) {
+            const imageUrl = earnedBadge.image_url;
 
-    function renderActivity() {
-        elements.activityContent.replaceChildren();
+            if (imageUrl) {
+                const badgeImage = document.createElement("img");
 
-        if (activeTab === "ranks") {
-            elements.activityContent.appendChild(
-                showEmptyState(
-                    "Rankings are not connected yet",
-                    "Leaderboard rankings will appear here when the ranking feature is connected."
-                )
-            );
-            return;
-        }
+                badgeImage.className = "badge-image";
+                badgeImage.src = imageUrl;
+                badgeImage.alt = earnedBadge.badge_name || `${milestone}-day streak badge`;
+                badgeImage.loading = "lazy";
 
-        elements.activityContent.appendChild(
-            showEmptyState(
-                "No activity loaded",
-                "Completed lessons will appear here when lesson progress is connected to the backend."
-            )
-        );
-    }
+                // Hide the original milestone text when the image is available.
+                if (milestoneLabel) {
+                    milestoneLabel.hidden = true;
+                }
 
-    function setupTabs() {
-        document.querySelectorAll(".tab-button").forEach(function (button) {
-            button.addEventListener("click", function () {
-                activeTab = button.dataset.tab || "activity";
+                // Display the earned badge image.
+                badge.insertBefore(badgeImage, badge.firstChild);
 
-                document.querySelectorAll(".tab-button").forEach(
-                    function (tab) {
-                        tab.classList.toggle("active", tab === button);
+                // If the image fails to load, show the milestone text instead.
+                badgeImage.addEventListener("error", () => {
+                    badgeImage.remove();
+
+                    if (milestoneLabel) {
+                        milestoneLabel.hidden = false;
                     }
-                );
+                });
+            } else if (milestoneLabel) {
+                milestoneLabel.hidden = false;
+            }
 
-                renderActivity();
-            });
-        });
+        } else {
+            // Locked badges always display their original milestone text.
+            if (milestoneLabel) {
+                milestoneLabel.hidden = false;
+                milestoneLabel.textContent = `${milestone}D`;
+            }
+        }
+
+        if (status) {
+            status.textContent = unlocked ? "Unlocked" : "Locked";
+        }
+    });
+}
+
+
+
+
+function displayInitialStats() {
+    const storedUser = getStoredUser();
+    const user = storedUser?.user || storedUser || {};
+
+    const overallXp = Number(
+        dashboardStats?.xp?.overallXp ??
+        user.overall_xp ??
+        0
+    );
+
+    const streak = dashboardStats?.streak || {};
+
+    const currentStreak = Number(streak.currentStreak || 0);
+    const longestStreak = Number(streak.longestStreak || 0);
+
+    const lessonsCompleted = Number(
+        completedLessonsCount ??
+        dashboardStats?.lessonsCompleted ??
+        0
+    );
+
+    const pathXp = Number(activeEnrollment?.path_xp || 0);
+    const currentLevel = Number(activeEnrollment?.current_level || 1);
+
+    const xpPerLevel = 100;
+    const xpInCurrentLevel = pathXp % xpPerLevel;
+
+    const progressPercentage = Math.min(
+        (xpInCurrentLevel / xpPerLevel) * 100,
+        100
+    );
+
+    setText(elements.topStreak, currentStreak);
+    setText(elements.topXp, overallXp.toLocaleString());
+    setText(elements.streakValue, currentStreak);
+    setText(elements.xpValue, overallXp.toLocaleString());
+    setText(elements.pathXpText, `Path XP: ${pathXp.toLocaleString()}`);
+    setText(elements.levelValue, currentLevel);
+    setText(elements.levelOutOf, "/ 10");
+    setText(elements.lessonsValue, lessonsCompleted);
+    setText(elements.levelHeading, `Level ${currentLevel}`);
+
+    setText(
+        elements.levelXpText,
+        `${xpInCurrentLevel} / ${xpPerLevel} XP`
+    );
+
+    setText(
+        elements.levelPercentage,
+        `${Math.round(progressPercentage)}%`
+    );
+
+    if (elements.levelProgress) {
+        elements.levelProgress.style.width =
+            `${progressPercentage}%`;
     }
 
-    function setupNavigation() {
-        elements.menuButton.addEventListener("click", function () {
-            const isOpen = elements.mainNav.classList.toggle("open");
+    setText(
+        elements.levelMessage,
+        `${xpPerLevel - xpInCurrentLevel} XP until your next level.`
+    );
 
-            elements.menuButton.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
-        });
+    setText(
+        elements.streakMessage,
+        currentStreak > 0
+            ? `Your longest streak is ${longestStreak} days. Keep it going!`
+            : "Complete a lesson to start your streak."
+    );
 
-        elements.mainNav.querySelectorAll("a").forEach(function (link) {
-            link.addEventListener("click", function () {
-                elements.mainNav.classList.remove("open");
-                elements.menuButton.setAttribute("aria-expanded", "false");
-            });
-        });
+    const milestones = [3, 7, 14, 30, 50, 75, 100];
 
-        elements.lessonButton.addEventListener("click", openLesson);
+    const nextMilestone = milestones.find(
+        milestone => milestone > currentStreak
+    );
 
-        elements.choosePathButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            window.location.href = "selection.html";
-        });
+    const rewardTarget = nextMilestone || 100;
 
-        ["reels", "help", "community"].forEach(function (id) {
-            $(id).addEventListener("click", function (event) {
-                event.preventDefault();
+    const rewardPercentage = Math.min(
+        (currentStreak / rewardTarget) * 100,
+        100
+    );
 
-                showToast(
-                    `${id === "reels" ? "Reels" : id === "help" ? "Help Board" : "Community"} will be connected here.`
-                );
-            });
-        });
+    if (elements.rewardProgress) {
+        elements.rewardProgress.style.width =
+            `${rewardPercentage}%`;
     }
 
-    async function init() {
-        setupNavigation();
-        setupTabs();
+    setText(
+        elements.rewardText,
+        nextMilestone
+            ? `${currentStreak} / ${nextMilestone} days`
+            : "All streak milestones reached!"
+    );
+
+    displayWeeklyActivity();
+    displayBadges();
+}
+
+
+function renderActivity() {
+    if (!elements.activityContent) return;
+
+    elements.activityContent.innerHTML = `
+        <div class="empty-state">
+            <strong>Your activity will appear here</strong>
+            <p>Complete lessons to build your learning history.</p>
+        </div>
+    `;
+}
+
+async function init() {
+    setupNavigation();
+    setupTabs();
+    setupLessonButton();
+    displayUser();
+
+    if (!getAccessToken()) {
+        redirectToLogin();
+        return;
+    }
+
+    hidePageMessage();
+
+    // Start both dashboard requests immediately without waiting for either.
+    loadDashboardStats();
+    loadCompletedLessons();
+
+    try {
+        const paths = await loadAvailablePaths();
+        const enrollmentData = await findUserEnrollment(paths);
+
+        if (!enrollmentData) {
+            renderNoEnrollment();
+            renderActivity();
+            return;
+        }
+
+        activePath = enrollmentData.path;
+        activeEnrollment = enrollmentData.enrollment;
+
+        activeModule = await loadFirstModule(activePath.path_id);
+
+        if (activeModule) {
+            const lessons = await loadModuleLessons(activeModule.module_id);
+            nextLesson = await findNextLesson(lessons);
+        }
+
+        renderEnrolledPath();
         renderActivity();
 
-        if (!displayUser()) {
-            return;
-        }
+    } catch (error) {
+        console.error("Dashboard loading error:", error);
 
-        const token = getAccessToken();
+        showPageMessage(
+            "We could not load your learning path. Please refresh the page.",
+            "error"
+        );
 
-        if (!token) {
-            showPageMessage(
-                "Your login session could not be found. Please sign in again.",
-                true
-            );
-
-            redirectToLogin();
-            return;
-        }
-
-        try {
-            clearPageMessage();
-
+        if (elements.lessonButton) {
             elements.lessonButton.disabled = true;
-            elements.lessonButton.textContent = "Loading your learning path...";
-
-            const paths = await loadAvailablePaths();
-            const result = await findUserEnrollment(paths);
-
-            if (!result) {
-                renderNoEnrollment();
-                displayInitialStats();
-
-                showPageMessage(
-                    "No active enrollment was found for your account. You can choose a learning path to get started."
-                );
-
-                return;
-            }
-
-            activePath = result.path;
-            activeEnrollment = result.enrollment;
-
-            firstModule = await loadFirstModule(activePath.path_id);
-
-            if (!firstModule) {
-                renderEnrolledPath();
-
-                elements.lessonButton.disabled = true;
-                elements.lessonMessage.textContent =
-                    "Your enrollment is active, but this course does not have a module available yet.";
-
-                showPageMessage(
-                    "Your learning path has no modules available yet.",
-                    true
-                );
-
-                displayInitialStats();
-                return;
-            }
-
-            renderEnrolledPath();
-            displayInitialStats();
-        } catch (error) {
-            console.error("Dashboard loading error:", error);
-
-            if (error.status === 401) {
-                showPageMessage(
-                    "Your login session has expired. Please sign in again.",
-                    true
-                );
-
-                redirectToLogin();
-                return;
-            }
-
-            renderNoEnrollment();
-
-            showPageMessage(
-                error.message ||
-                "We couldn't load your dashboard. Check that your backend is running and try again.",
-                true
-            );
+            elements.lessonButton.textContent = "Try Again Later";
         }
     }
+}
 
-    await init();
-});
+document.addEventListener("DOMContentLoaded", init);

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +17,9 @@
     <nav class="main-nav" id="mainNav">
         <a href="home.html" class="active">Dashboard</a>
         <a href="#learning">Learning Path</a>
-        <a href="#reels">Reels</a>
-        <a href="#community">Community</a>
-        <a href="#help">Help Board</a>
+        <a href="#">Reels</a>
+        <a href="community.html">Community</a>
+        <a href="helpboard.html">Help Board</a>
     </nav>
 
     <div class="top-actions">
@@ -34,7 +33,7 @@
             <span>XP</span>
         </div>
 
-        <div class="profile-circle" id="profileInitial">U</div>
+        <a href="#" class="profile-circle" id="profileInitial">U</a>
 
         <button type="button" class="menu-button" id="menuButton"
                 aria-label="Open menu" aria-expanded="false">
@@ -49,38 +48,58 @@
 
     <section class="welcome-section">
         <div class="dashboard-wordmark">
-            <img src="assets/cXlogo.jpeg" alt="CodeXperts">
+            <img src="assets/cXlogo.jpeg" alt="CodeXperts" class="dashboard-logo"> 
         </div>
-
-        <h1>Welcome back, <span id="welcomeName">Learner.</span></h1>
-        <p id="welcomeMessage">Loading your learning dashboard...</p>
+        
+        <div class="welcome-text">
+            <h1>Welcome back, <span id="welcomeName">Learner.</span></h1>
+            <p id="welcomeMessage">Loading your learning dashboard...</p>
+        </div>
     </section>
 
     <div id="pageMessage" class="page-message" role="status" hidden></div>
 
     <section class="stats-grid">
+
         <article class="stat-card streak-card">
             <p>DAY STREAK</p>
-            <div><h2 id="streakValue">0</h2><span>days</span></div>
+            <div>
+                <h2 id="streakValue">0</h2>
+                <span>days</span>
+            </div>
+            <small id="streakMessage">Complete a lesson to start your streak.</small>
         </article>
 
         <article class="stat-card xp-card">
             <p>TOTAL XP</p>
-            <div><h2 id="xpValue">0</h2><span>points</span></div>
+            <div>
+                <h2 id="xpValue">0</h2>
+                <span>points</span>
+            </div>
+            <small id="pathXpText">Path XP: 0</small>
         </article>
 
         <article class="stat-card level-card">
             <p>CURRENT LEVEL</p>
-            <div><h2 id="levelValue">1</h2><span id="levelOutOf">/ 10</span></div>
+            <div>
+                <h2 id="levelValue">1</h2>
+                <span id="levelOutOf">/ 10</span>
+            </div>
+            <small id="levelMessage">Your progress will appear here.</small>
         </article>
 
         <article class="stat-card lessons-card">
             <p>LESSONS DONE</p>
-            <div><h2 id="lessonsValue">0</h2><span>total</span></div>
+            <div>
+                <h2 id="lessonsValue">0</h2>
+                <span>total</span>
+            </div>
         </article>
+
     </section>
 
     <section class="dashboard-layout">
+
         <div class="main-column">
 
             <section class="level-panel">
@@ -95,25 +114,48 @@
                 <div class="progress-bar">
                     <div class="progress-fill level-progress" id="levelProgress"></div>
                 </div>
-
-                <small id="levelMessage">Your progress will appear here.</small>
+                <small id="levelMessageBottom" style="display:none;"></small>
             </section>
 
             <section class="week-panel">
-                <h3>This Week</h3>
+                <div class="week-heading">
+                    <h3>This Week</h3>
+                    <span>Monday – Sunday</span>
+                </div>
 
                 <div class="week-grid">
-                    <div class="day" data-day="0"><span></span><p>Mon</p></div>
-                    <div class="day" data-day="1"><span></span><p>Tue</p></div>
-                    <div class="day" data-day="2"><span></span><p>Wed</p></div>
-                    <div class="day" data-day="3"><span></span><p>Thu</p></div>
-                    <div class="day" data-day="4"><span></span><p>Fri</p></div>
-                    <div class="day" data-day="5"><span></span><p>Sat</p></div>
-                    <div class="day" data-day="6"><span></span><p>Sun</p></div>
+                    <div class="day" data-day="0">
+                        <span></span>
+                        <p>Mon</p>
+                    </div>
+                    <div class="day" data-day="1">
+                        <span></span>
+                        <p>Tue</p>
+                    </div>
+                    <div class="day" data-day="2">
+                        <span></span>
+                        <p>Wed</p>
+                    </div>
+                    <div class="day" data-day="3">
+                        <span></span>
+                        <p>Thu</p>
+                    </div>
+                    <div class="day" data-day="4">
+                        <span></span>
+                        <p>Fri</p>
+                    </div>
+                    <div class="day" data-day="5">
+                        <span></span>
+                        <p>Sat</p>
+                    </div>
+                    <div class="day" data-day="6">
+                        <span></span>
+                        <p>Sun</p>
+                    </div>
                 </div>
 
                 <div class="week-message" id="weekMessage">
-                    Your learning activity will appear here.
+                    Complete a lesson to start tracking your weekly activity.
                 </div>
             </section>
 
@@ -137,11 +179,13 @@
                     </div>
                 </div>
 
-                <a href="selection.html" class="secondary-button" id="choosePathButton" hidden>
+                <a href="selection.html" class="secondary-button"
+                   id="choosePathButton" hidden>
                     Explore Learning Paths
                 </a>
 
-                <button type="button" class="continue-button" id="lessonButton" disabled>
+                <button type="button" class="continue-button"
+                        id="lessonButton" disabled>
                     Loading...
                 </button>
 
@@ -149,19 +193,19 @@
             </section>
 
             <section class="quick-actions">
-                <a class="quick-card reel-card" id="reels" href="#reels">
+                <a class="quick-card reel-card" href="reels.html">
                     <span>REELS</span>
                     <strong>Watch a Reel</strong>
                     <small>Quick coding content</small>
                 </a>
 
-                <a class="quick-card help-card" id="help" href="#help">
+                <a class="quick-card help-card" href="help-board.html">
                     <span>HELP</span>
                     <strong>Ask Help Board</strong>
                     <small>Get unstuck</small>
                 </a>
 
-                <a class="quick-card community-card" id="community" href="#community">
+                <a class="quick-card community-card" href="community.html">
                     <span>COMMUNITY</span>
                     <strong>View Community</strong>
                     <small>Learn with others</small>
@@ -171,6 +215,7 @@
         </div>
 
         <aside class="side-column">
+
             <section class="activity-panel">
                 <div class="panel-tabs">
                     <button type="button" class="tab-button active" data-tab="activity">
@@ -181,10 +226,17 @@
                     </button>
                 </div>
 
-                <div id="activityContent">
+                <div id="activityContent" data-panel="activity">
                     <div class="empty-state">
                         <strong>No activity loaded</strong>
                         <p>Your learning activity will appear here when available.</p>
+                    </div>
+                </div>
+
+                <div id="ranksContent" data-panel="ranks" hidden>
+                    <div class="empty-state">
+                        <strong>Ranks coming soon</strong>
+                        <p>Your learning rankings will appear here.</p>
                     </div>
                 </div>
             </section>
@@ -193,24 +245,49 @@
                 <h3>Your Badges</h3>
 
                 <div class="badges-grid">
+
+                    <div class="badge locked" data-streak="3">
+                        <span>3D</span>
+                        <p>First Steps</p>
+                        <small class="badge-status">Locked</small>
+                    </div>
+
                     <div class="badge locked" data-streak="7">
-                        <span>7D</span><p>7-Day</p>
+                        <span>7D</span>
+                        <p>One Week</p>
+                        <small class="badge-status">Locked</small>
                     </div>
+
+                    <div class="badge locked" data-streak="14">
+                        <span>14D</span>
+                        <p>Two Weeks</p>
+                        <small class="badge-status">Locked</small>
+                    </div>
+
                     <div class="badge locked" data-streak="30">
-                        <span>30D</span><p>30-Day</p>
+                        <span>30D</span>
+                        <p>Monthly</p>
+                        <small class="badge-status">Locked</small>
                     </div>
+
+                    <div class="badge locked" data-streak="50">
+                        <span>50D</span>
+                        <p>Unstoppable</p>
+                        <small class="badge-status">Locked</small>
+                    </div>
+
+                    <div class="badge locked" data-streak="75">
+                        <span>75D</span>
+                        <p>Elite Learner</p>
+                        <small class="badge-status">Locked</small>
+                    </div>
+
                     <div class="badge locked" data-streak="100">
-                        <span>100D</span><p>100-Day</p>
+                        <span>100D</span>
+                        <p>Century Legend</p>
+                        <small class="badge-status">Locked</small>
                     </div>
-                    <div class="badge locked">
-                        <span>FA</span><p>First Answer</p>
-                    </div>
-                    <div class="badge locked">
-                        <span>TH</span><p>Top Helper</p>
-                    </div>
-                    <div class="badge locked">
-                        <span>SL</span><p>Speed</p>
-                    </div>
+
                 </div>
             </section>
 
@@ -227,9 +304,11 @@
                     <div class="progress-fill reward-progress" id="rewardProgress"></div>
                 </div>
 
-                <small id="rewardText">0/100 days</small>
+                <small id="rewardText">0 / 100 days</small>
             </section>
+
         </aside>
+
     </section>
 </main>
 

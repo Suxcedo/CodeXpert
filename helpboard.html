@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get help with programming questions from the CodeXperts community.">
+    <title>CodeXperts | Help Board</title>
+
+    <link rel="stylesheet" href="css/community.css">
+    <link rel="stylesheet" href="css/helpboard.css">
+</head>
+
+<body>
+
+    <!-- ==========================================
+         NAVIGATION
+    =========================================== -->
+
+    <header class="topbar">
+
+        <a href="home.html" class="logo-link" aria-label="CodeXperts home">
+            <img
+                src="assets/codeXpert_logo.jpeg"
+                alt="CodeXperts logo"
+                class="logo-image"
+            >
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="home.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="reels.html">Reels</a>
+            <a href="community.html">Community</a>
+            <a href="helpboard.html" class="active">Help Board</a>
+        </nav>
+
+        <div class="top-actions">
+
+            <div class="top-stat streak-top">
+                <span>STREAK</span>
+                <strong id="topStreak">0</strong>
+            </div>
+
+            <div class="top-stat xp-top">
+                <strong id="topXp">0</strong>
+                <span>XP</span>
+            </div>
+
+            <!-- Notifications -->
+            <div class="notification-wrapper">
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
+                    aria-label="Notifications"
+                    aria-expanded="false"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="21"
+                        height="21"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                        <path d="M10 21h4"></path>
+                    </svg>
+
+                    <span id="notificationCount" class="notification-count hidden">
+                        0
+                    </span>
+                </button>
+
+                <div class="notification-panel hidden" id="notificationPanel">
+
+                    <div class="notification-panel-header">
+                        <div>
+                            <h3>Notifications</h3>
+                            <p>Stay updated with CodeXperts</p>
+                        </div>
+
+                        <button
+                            type="button"
+                            id="closeNotifications"
+                            class="close-notifications"
+                            aria-label="Close notifications"
+                        >
+                            &times;
+                        </button>
+                    </div>
+
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-loading">
+                            Loading notifications...
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Profile -->
+            <a
+                href="profile.html"
+                class="profile-circle"
+                id="profileInitial"
+                aria-label="Your profile"
+            >
+                U
+            </a>
+
+            <!-- Mobile Menu -->
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==========================================
+         MAIN PAGE
+    =========================================== -->
+
+    <main class="page-shell">
+
+        <section class="page-heading">
+
+            <div>
+                <span class="section-eyebrow">CODEXPERTS COMMUNITY</span>
+
+                <h1>Help Board</h1>
+
+                <p id="questionSubtitle">
+                    Ask questions, share knowledge and learn together.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="ask-question-button"
+                id="openQuestionModal"
+            >
+                <span>+</span>
+                Ask a Question
+            </button>
+
+        </section>
+
+
+        <!-- ==========================================
+             BOARD LAYOUT
+        =========================================== -->
+
+        <section class="community-layout">
+
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+
+                <div class="sidebar-section">
+
+                    <div class="sidebar-heading">
+                        <span>PROGRAMMING LANGUAGES</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="group-card selected"
+                        data-language=""
+                    >
+                        <span class="language-icon all-icon">⌘</span>
+
+                        <span>
+                            <strong>All Questions</strong>
+                            <small>Explore everything</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="HTML"
+                    >
+                        <span class="language-icon html-icon">H</span>
+
+                        <span>
+                            <strong>HTML</strong>
+                            <small>Web structure</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="CSS"
+                    >
+                        <span class="language-icon css-icon">C</span>
+
+                        <span>
+                            <strong>CSS</strong>
+                            <small>Web styling</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="JavaScript"
+                    >
+                        <span class="language-icon js-icon">JS</span>
+
+                        <span>
+                            <strong>JavaScript</strong>
+                            <small>Web programming</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="Python"
+                    >
+                        <span class="language-icon python-icon">Py</span>
+
+                        <span>
+                            <strong>Python</strong>
+                            <small>General programming</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="Java"
+                    >
+                        <span class="language-icon java-icon">J</span>
+
+                        <span>
+                            <strong>Java</strong>
+                            <small>Object-oriented programming</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="C#"
+                    >
+                        <span class="language-icon csharp-icon">C#</span>
+
+                        <span>
+                            <strong>C#</strong>
+                            <small>.NET development</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="group-card"
+                        data-language="C++"
+                    >
+                        <span class="language-icon cpp-icon">C++</span>
+
+                        <span>
+                            <strong>C++</strong>
+                            <small>Systems programming</small>
+                        </span>
+                    </button>
+
+                </div>
+
+
+                <!-- BOARD STATISTICS -->
+                <div class="sidebar-section board-statistics">
+
+                    <div class="sidebar-heading">
+                        <span>BOARD STATISTICS</span>
+                    </div>
+
+                    <div class="board-stat-row">
+                        <span>Total questions</span>
+                        <strong id="totalQuestions">0</strong>
+                    </div>
+
+                    <div class="board-stat-row">
+                        <span>Solved questions</span>
+                        <strong id="solvedQuestions">0</strong>
+                    </div>
+
+                    <div class="board-stat-row">
+                        <span>Currently showing</span>
+                        <strong id="showingQuestions">0</strong>
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            <!-- QUESTIONS PANEL -->
+            <section class="chat-panel help-panel">
+
+                <div class="help-panel-heading">
+
+                    <div>
+                        <span class="section-eyebrow">COMMUNITY KNOWLEDGE</span>
+                        <h2 id="categoryName">All Questions</h2>
+                        <p id="allQuestionCount">0 questions</p>
+                    </div>
+
+                    <div class="online-indicator">
+                        <span></span>
+                        Community board
+                    </div>
+
+                </div>
+
+
+                <!-- SEARCH AND FILTERS -->
+                <div class="help-controls">
+
+                    <div class="help-search">
+                        <span aria-hidden="true">⌕</span>
+
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search questions..."
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <select id="languageFilter" class="help-filter">
+                        <option value="">All languages</option>
+                        <option value="HTML">HTML</option>
+                        <option value="CSS">CSS</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                        <option value="C#">C#</option>
+                        <option value="C++">C++</option>
+                    </select>
+
+                </div>
+
+
+                <!-- QUESTION TABS -->
+                <div class="help-tabs">
+
+                    <button
+                        type="button"
+                        class="tab active"
+                        data-status=""
+                    >
+                        All
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab"
+                        data-status="unanswered"
+                    >
+                        Unanswered
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab"
+                        data-status="answered"
+                    >
+                        Answered
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab"
+                        data-status="solved"
+                    >
+                        Solved
+                    </button>
+
+                    <button
+                        type="button"
+                        class="tab"
+                        data-sort="popular"
+                    >
+                        Popular
+                    </button>
+
+                </div>
+
+
+                <!-- QUESTION LIST -->
+                <div class="help-question-list" id="questions">
+
+                    <div class="help-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading questions...</p>
+                    </div>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+                <div class="help-pagination" id="pagination"></div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==========================================
+         ASK QUESTION MODAL
+    =========================================== -->
+
+    <div class="help-modal-overlay hidden" id="questionModal">
+
+        <div
+            class="help-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="questionModalTitle"
+        >
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-eyebrow">COMMUNITY CONTRIBUTION</span>
+                    <h2 id="questionModalTitle">Ask a Question</h2>
+                    <p>Share your programming challenge with the community.</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-close-button"
+                    id="closeQuestionModal"
+                    aria-label="Close"
+                >
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="questionForm" enctype="multipart/form-data">
+
+                <div class="form-group">
+
+                    <label for="questionTitle">Question title</label>
+
+                    <input
+                        type="text"
+                        id="questionTitle"
+                        name="title"
+                        placeholder="e.g. Why is my JavaScript function not working?"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="similar-questions hidden" id="similarQuestions">
+
+                    <strong>Similar questions</strong>
+
+                    <p>Check whether someone has already asked this question.</p>
+
+                    <div id="similarQuestionResults"></div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="questionDescription">Describe your question</label>
+
+                    <textarea
+                        id="questionDescription"
+                        name="description"
+                        rows="6"
+                        placeholder="Explain what you are trying to achieve, what you have tried and what problem you are experiencing..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="questionLanguage">Programming language</label>
+
+                        <select id="questionLanguage" name="programming_language" required>
+                            <option value="">Select language</option>
+                            <option value="HTML">HTML</option>
+                            <option value="CSS">CSS</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="Python">Python</option>
+                            <option value="Java">Java</option>
+                            <option value="C#">C#</option>
+                            <option value="C++">C++</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="questionDifficulty">Difficulty level</label>
+
+                        <select id="questionDifficulty" name="difficulty_level">
+                            <option value="">Select difficulty</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="questionImages">Attach images (optional)</label>
+
+                    <div class="image-upload-area">
+
+                        <input
+                            type="file"
+                            id="questionImages"
+                            name="images"
+                            accept="image/jpeg,image/png,image/webp"
+                            multiple
+                        >
+
+                        <p>Upload screenshots or code images.</p>
+                        <small>JPG, PNG or WebP. Maximum 3 images, 5 MB each.</small>
+
+                    </div>
+
+                    <div
+                        class="image-preview-container"
+                        id="questionImagePreview"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    class="modal-message"
+                    id="questionFormMessage"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        id="cancelQuestion"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submit-question-button"
+                        id="submitQuestion"
+                    >
+                        Post Question
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/helpboard.js"></script>
+
+</body>
+</html>

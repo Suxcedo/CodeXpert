@@ -959,11 +959,40 @@ router.post("/lessons/:lessonId/progress", async (req, res) => {
                 ? xpResult[0]
                 : xpResult;
 
+            
             if (reward) {
                 xpAwarded = reward.awarded ? Number(reward.amount) : 0;
                 overallXp = reward.overall_xp ?? null;
                 pathXp = reward.path_xp ?? null;
             }
+
+            // Process the learner's daily activity, streaks, badges and rewards.
+            const { data: completionResult, error: completionError } =
+                await supabase.rpc("process_lesson_completion", {
+                    p_user_id: user.id,
+                    p_lesson_id: lessonId
+                });
+
+            if (completionError) {
+                console.error(
+                    "Process lesson completion error:",
+                    completionError
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message:
+                        "Your lesson and XP were saved, but your streak and achievements could not be updated. Please try again.",
+                    progress
+                });
+            }
+
+            // Refresh XP totals because a streak reward may have added bonus XP.
+            if (completionResult) {
+                overallXp = completionResult.overall_xp ?? overallXp;
+                pathXp = completionResult.path_xp ?? pathXp;
+            }
+
         }
 
         return res.status(200).json({
@@ -1164,6 +1193,306 @@ router.get("/:pathId/navigation", async (req, res) => {
 });
 
 
+
+// GET /api/paths/dashboard/stats
+// Load the learner's XP, streak, badges, rewards and weekly activity.
+router.get("/dashboard/stats", async (req, res) => {
+    try {
+        const { user, message } = await getAuthenticatedUser(req);
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: message || "Please log in to continue."
+            });
+        }
+
+        const userId = user.id;
+
+        // Get the learner's profile and timezone.
+        const { data: profile, error: profileError } = await supabase
+            .from("user_profile")
+            .select("overall_xp, timezone")
+            .eq("user_id", userId)
+            .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        const timezone = profile?.timezone || "Africa/Johannesburg";
+
+        // Get today's date using the learner's timezone.
+        const dateParts = new Intl.DateTimeFormat("en-CA", {
+            timeZone: timezone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }).formatToParts(new Date());
+
+        const dateValues = {};
+
+        dateParts.forEach(part => {
+            dateValues[part.type] = part.value;
+        });
+
+        const today = `${dateValues.year}-${dateValues.month}-${dateValues.day}`;
+
+       // Calculate the Monday of the current week.
+const todayDate = new Date();
+const weekStartDate = new Date(todayDate);
+
+const dayOfWeek = weekStartDate.getUTCDay();
+        const daysSinceMonday = (dayOfWeek + 6) % 7;
+
+        weekStartDate.setUTCDate(weekStartDate.getUTCDate() - daysSinceMonday);
+
+        const weekStart = weekStartDate.toISOString().slice(0, 10);
+
+        // Load dashboard information in parallel.
+        const [
+            streakResult,
+            activityResult,
+            badgeResult,
+            rewardResult,
+            lessonsResult
+        ] = await Promise.all([
+            // Current and longest streak.
+            supabase
+                .from("streak")
+                .select("current_streak, longest_streak, last_activity_date")
+                .eq("user_id", userId)
+                .maybeSingle(),
+
+            // Activity for the last seven days.
+            supabase
+                .from("daily_activity")
+                .select("activity_date, lessons_completed")
+                .eq("user_id", userId)
+                .gte("activity_date", weekStart)
+                .lte("activity_date", today)
+                .order("activity_date", { ascending: true }),
+
+            // Badges earned by the learner.
+            supabase
+                .from("user_badge")
+                .select(`
+                    user_badge_id,
+                    earned_at,
+                    badge:badge_id (
+                        badge_id,
+                        badge_name,
+                        description,
+                        badge_category,
+                        requirement_value,
+                        image_url
+                    )
+                `)
+                .eq("user_id", userId)
+                .order("earned_at", { ascending: false }),
+
+            // Rewards earned by the learner.
+            supabase
+                .from("user_reward")
+                .select(`
+                    user_reward_id,
+                    earned_at,
+                    claimed_at,
+                    reward_status,
+                    reward:reward_id (
+                        reward_id,
+                        reward_code,
+                        reward_name,
+                        description,
+                        reward_type,
+                        requirement_category,
+                        requirement_value,
+                        reward_value,
+                        image_url
+                    )
+                `)
+                .eq("user_id", userId)
+                .order("earned_at", { ascending: false }),
+
+            // Total completed lessons.
+            supabase
+                .from("lesson_progress")
+                .select("progress_id", {
+                    count: "exact",
+                    head: true
+                })
+                .eq("user_id", userId)
+                .eq("status", "completed")
+        ]);
+
+        // Check for database errors.
+        if (streakResult.error) throw streakResult.error;
+        if (activityResult.error) throw activityResult.error;
+        if (badgeResult.error) throw badgeResult.error;
+        if (rewardResult.error) throw rewardResult.error;
+        if (lessonsResult.error) throw lessonsResult.error;
+
+        // Create all seven days, including days with no activity.
+        const activityByDate = new Map(
+            (activityResult.data || []).map(activity => [
+                activity.activity_date,
+                Number(activity.lessons_completed || 0)
+            ])
+        );
+
+        // const weeklyActivity = [];
+
+        // for (let i = 0; i < 7; i++) {
+        //     const activityDate = new Date(weekStartDate);
+
+        //     activityDate.setUTCDate(activityDate.getUTCDate() + i);
+
+        //     const date = activityDate.toISOString().slice(0, 10);
+
+        //     weeklyActivity.push({
+        //         date,
+        //         day: new Intl.DateTimeFormat("en", {
+        //             weekday: "short",
+        //             timeZone: "UTC"
+        //         }).format(activityDate),
+        //         lessonsCompleted: activityByDate.get(date) || 0
+        //     });
+        // }
+
+        
+const weeklyActivity = [];
+
+for (let i = 0; i < 7; i++) {
+    const activityDate = new Date(weekStartDate);
+    activityDate.setUTCDate(activityDate.getUTCDate() + i);
+
+    const date = activityDate.toISOString().slice(0, 10);
+
+    weeklyActivity.push({
+        activity_date: date,
+        lessons_completed: activityByDate.get(date) || 0
+    });
+}
+
+
+        const streak = streakResult.data || {
+            current_streak: 0,
+            longest_streak: 0,
+            last_activity_date: null
+        };
+
+        // return res.status(200).json({
+        //     success: true,
+
+        //     xp: {
+        //         overallXp: Number(profile?.overall_xp || 0)
+        //     },
+
+        //     streak: {
+        //         currentStreak: Number(streak.current_streak || 0),
+        //         longestStreak: Number(streak.longest_streak || 0),
+        //         lastActivityDate: streak.last_activity_date
+        //     },
+
+        //     lessonsCompleted: lessonsResult.count || 0,
+
+        //     weeklyActivity,
+
+        //     badges: (badgeResult.data || []).map(item => ({
+        //         userBadgeId: item.user_badge_id,
+        //         earnedAt: item.earned_at,
+        //         badge: item.badge
+        //     })),
+
+        //     rewards: (rewardResult.data || []).map(item => ({
+        //         userRewardId: item.user_reward_id,
+        //         earnedAt: item.earned_at,
+        //         claimedAt: item.claimed_at,
+        //         status: item.reward_status,
+        //         reward: item.reward
+        //     }))
+        // });
+
+        
+return res.status(200).json({
+    success: true,
+    today,
+    weekStart,
+    xp: {
+        overallXp: Number(profile?.overall_xp || 0)
+    },
+    streak: {
+        currentStreak: Number(streak.current_streak || 0),
+        longestStreak: Number(streak.longest_streak || 0),
+        lastActivityDate: streak.last_activity_date
+    },
+    lessonsCompleted: lessonsResult.count || 0,
+    weeklyActivity,
+    badges: (badgeResult.data || []).map(item => ({
+        userBadgeId: item.user_badge_id,
+        earnedAt: item.earned_at,
+        badge: item.badge
+    })),
+    rewards: (rewardResult.data || []).map(item => ({
+        userRewardId: item.user_reward_id,
+        earnedAt: item.earned_at,
+        claimedAt: item.claimed_at,
+        status: item.reward_status,
+        reward: item.reward
+    }))
+});
+
+    } catch (error) {
+        console.error("Dashboard statistics error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to load your dashboard statistics."
+        });
+    }
+});
+
+
+// GET /api/paths/dashboard/lessons-completed
+// Count all lessons completed by the logged-in user.
+router.get("/dashboard/lessons-completed", async (req, res) => {
+    try {
+        const authResult = await getAuthenticatedUser(req);
+
+        if (!authResult.user) {
+            return res.status(401).json({
+                success: false,
+                message: authResult.message || "Please log in to continue."
+            });
+        }
+
+        const userId = authResult.user.id;
+
+        const { count, error } = await supabase
+            .from("lesson_progress")
+            .select("progress_id", {
+                count: "exact",
+                head: true
+            })
+            .eq("user_id", userId)
+            .eq("status", "completed");
+
+        if (error) {
+            throw error;
+        }
+
+        return res.json({
+            success: true,
+            lessonsCompleted: count || 0
+        });
+
+    } catch (error) {
+        console.error("Completed lessons count error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to load completed lessons."
+        });
+    }
+});
 
 
 module.exports = router;

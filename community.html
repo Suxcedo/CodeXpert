@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeXpert | Community Chatroom</title>
+    <link rel="stylesheet" href="css/community.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <nav class="navbar">
+            <a href="home.html" class="nav-link">Dashboard</a>
+            <a href="lesson.html" class="nav-link">Lesson</a>
+            <a href="#" class="nav-link">Reels</a>
+            <a href="community.html" class="nav-link active">Community</a>
+            <a href="helpboard.html" class="nav-link">Help Board</a>
+
+            <div class="nav-spacer"></div>
+
+            <div class="streak" id="userStreak" title="Current streak">🔥 --</div>
+            <div class="xp" id="userXP">0 XP</div>
+
+            <div class="notification-wrapper">
+                <button class="notification-button" id="notificationButton" type="button" aria-label="Notifications">
+                    ♢
+                    <span class="notification-count hidden" id="notificationCount">0</span>
+                </button>
+
+                <div class="notification-panel hidden" id="notificationPanel">
+                    <div class="notification-heading">
+                        <strong>Notifications</strong>
+                        <button type="button" id="closeNotifications">×</button>
+                    </div>
+                    <div id="notificationList" class="notification-list">
+                        <p class="empty-state">No notifications yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile" id="userProfile">?</div>
+
+            <button class="menu-button" type="button" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+
+        <section class="page-heading">
+            <h1>Community Chatroom</h1>
+            <p>Connect, learn and code together with your community.</p>
+        </section>
+
+        <section class="community-layout">
+
+            <aside class="sidebar">
+
+                <p class="section-label">YOUR GROUPS</p>
+
+                <div id="groupList">
+                    <p class="loading-text">Loading your groups...</p>
+                </div>
+
+                <div class="stats-card" id="groupStats">
+                    <p class="section-label">GROUP STATS</p>
+
+                    <div class="stat-row">
+                        <span>Members</span>
+                        <strong id="statMembers">--</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Your level</span>
+                        <strong id="statLevel">--</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Your course XP</span>
+                        <strong id="statXP">--</strong>
+                    </div>
+                </div>
+
+            </aside>
+
+            <section class="chat-panel">
+
+                <div class="chat-header">
+
+                    <div class="chat-title">
+                        <div class="chat-icon" id="chatIcon">C</div>
+
+                        <div>
+                            <h2 id="groupName">Select a community</h2>
+                            <p id="groupDetails">Choose one of your enrolled learning paths.</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-tabs">
+                        <button class="tab active" data-tab="chat" type="button">Chat</button>
+                        <button class="tab" data-tab="members" type="button">Members</button>
+                        <button class="tab" data-tab="challenges" type="button" disabled title="Coming soon">Challenges</button>
+                    </div>
+
+                </div>
+
+                <div class="messages" id="messages">
+                    <div class="empty-state">
+                        Your community conversations will appear here.
+                    </div>
+                </div>
+
+                <div class="typing-indicator hidden" id="typingIndicator"></div>
+
+                <form class="message-form" id="messageForm">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Message the group..."
+                        autocomplete="off"
+                        maxlength="2000"
+                        disabled
+                    >
+                    <button type="submit" id="sendButton" disabled>Send →</button>
+                </form>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/community.js"></script>
+
+</body>
+</html>
