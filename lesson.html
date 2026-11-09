@@ -7,6 +7,11 @@
     <meta name="theme-color" content="#090b10">
     <title>Lesson | CodeXperts</title>
     <link rel="stylesheet" href="css/lesson.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+    >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script src="js/lesson.js" defer></script>
 </head>
 <body>
@@ -14,15 +19,13 @@
 <header class="topbar">
     <a href="home.html" class="brand" aria-label="CodeXperts Dashboard">
         <img src="assets/cXlogo.jpeg" alt="CodeXperts logo">
-        <span>CodeXperts</span>
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Main navigation">
         <a href="home.html">Dashboard</a>
         <a href="selection.html">Selection</a>
-        <a href="learning-path.html">Learning Path</a>
         <a href="#lessonContent" class="active" aria-current="page">Lesson</a>
-        <a href="#">Reels</a>
+        <a href="reels.html">Reels</a>
         <a href="community.html">Community</a>
         <a href="helpboard.html">Help Board</a>
     </nav>
@@ -49,8 +52,8 @@
         <span id="usernameDisplay">Learner</span>
 
         <button type="button" class="logout-button" id="logoutButton">
-    Log out
-</button>
+            Log out
+        </button>
     </div>
 </header>
 
@@ -138,33 +141,6 @@
                     </button>
                 </div>
             </section>
-
-            <!-- <nav class="lesson-page-navigation"
-                 id="lessonPageNavigation"
-                 aria-label="Lesson navigation">
-
-                <button type="button"
-                        class="lesson-nav-button previous-lesson-button"
-                        id="previousLessonButton"
-                        disabled>
-                    <span class="lesson-nav-arrow" aria-hidden="true">←</span>
-                    <span class="lesson-nav-button-text">
-                        <small>PREVIOUS</small>
-                        <strong>Previous Lesson</strong>
-                    </span>
-                </button>
-
-                <button type="button"
-                        class="lesson-nav-button next-lesson-button"
-                        id="nextLessonButton"
-                        disabled>
-                    <span class="lesson-nav-button-text">
-                        <small>NEXT</small>
-                        <strong>Next Lesson</strong>
-                    </span>
-                    <span class="lesson-nav-arrow" aria-hidden="true">→</span>
-                </button>
-            </nav> -->
         </div>
 
         <div class="lesson-locked-placeholder" id="lessonPlaceholder">

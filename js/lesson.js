@@ -149,19 +149,112 @@ document.addEventListener("DOMContentLoaded", () => {
         return {};
     }
 
-    function displayUser() {
-        const user = readStoredUser();
+    
 
-        const username =
-            user.username ||
-            user.user_name ||
-            user.full_name ||
-            user.email ||
-            "Learner";
 
-        usernameDisplay.textContent = username;
-        userAvatar.textContent = username.charAt(0).toUpperCase() || "L";
+async function displayUser() {
+    const storedUser = readStoredUser();
+    const user = storedUser?.user || storedUser || {};
+
+    let profile = {};
+
+    // First try to retrieve the latest profile information.
+    try {
+        const token =
+            sessionStorage.getItem("supabaseAccessToken");
+
+        const response = await fetch(
+            `${API_BASE}/paths/dashboard/stats`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? {
+                        Authorization: `Bearer ${token}`
+                    } : {})
+                }
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            profile = data.profile || {};
+        }
+
+    } catch (error) {
+        console.error("Could not retrieve profile information:", error);
     }
+
+    // Use the same fallback order as the dashboard.
+    const username =
+        profile.username ||
+        user.username ||
+        user.user_metadata?.username ||
+        user.email?.split("@")[0] ||
+        "Learner";
+
+    const profilePicture =
+        profile.profile_picture_url ||
+        profile.profilePicture ||
+        user.profile_picture_url ||
+        user.profilePictureUrl ||
+        user.user_metadata?.profile_picture_url ||
+        user.user_metadata?.avatar_url ||
+        null;
+
+    const usernameDisplay =
+        document.getElementById("usernameDisplay");
+
+    const userAvatar =
+        document.getElementById("userAvatar");
+
+    if (usernameDisplay) {
+        usernameDisplay.textContent = username;
+    }
+
+    if (userAvatar) {
+        userAvatar.innerHTML = "";
+
+        if (profilePicture) {
+            const image = document.createElement("img");
+
+            image.src = profilePicture;
+            image.alt = `${username}'s profile picture`;
+
+            image.onerror = () => {
+                userAvatar.innerHTML = "";
+                userAvatar.textContent =
+                    username.charAt(0).toUpperCase();
+            };
+
+            userAvatar.appendChild(image);
+
+        } else {
+            userAvatar.textContent =
+                username.charAt(0).toUpperCase();
+        }
+
+        // Make the avatar clickable.
+        userAvatar.style.cursor = "pointer";
+        userAvatar.title = "View your profile";
+
+        userAvatar.onclick = () => {
+            window.location.href = "profile.html";
+        };
+
+        userAvatar.onkeydown = event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                window.location.href = "profile.html";
+            }
+        };
+
+        userAvatar.setAttribute("role", "link");
+        userAvatar.setAttribute("tabindex", "0");
+    }
+}
+
+
+
 
     function showPlaceholder(title, message, showRetry = false) {
         lessonContent.hidden = true;
@@ -1005,22 +1098,36 @@ if (Number(lesson.lesson_number) === 7) {
             console.error("Unable to load XP totals:", error);
         }
     }
-function showModuleComingSoonModal() {
-    let modal = document.getElementById("moduleComingSoonModal");
+
+function showLessonComingSoonModal() {
+    let modal = document.getElementById("lessonComingSoonModal");
 
     if (!modal) {
         modal = document.createElement("div");
-        modal.id = "moduleComingSoonModal";
+        modal.id = "lessonComingSoonModal";
         modal.className = "module-coming-soon-overlay";
+
         modal.innerHTML = `
-            <div class="module-coming-soon-modal" role="dialog"
-                 aria-modal="true" aria-labelledby="moduleComingSoonTitle">
+            <div class="module-coming-soon-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="lessonComingSoonTitle">
+
                 <div class="module-coming-soon-icon">🚀</div>
-                <h2 id="moduleComingSoonTitle">Module 2 Coming Soon!</h2>
-                <p>Congratulations on completing Module 1!</p>
-                <p>We're preparing the next stage of your HTML learning journey.
-                   Check back soon.</p>
-                <button type="button" id="closeModuleComingSoon">
+
+                <h2 id="lessonComingSoonTitle">
+                    Lesson 3 Coming Soon!
+                </h2>
+
+                <p>Congratulations on completing Lesson 2!</p>
+
+                <p>
+                    You're making great progress in your HTML learning
+                    journey. We're preparing the next lesson for you.
+                    Check back soon!
+                </p>
+
+                <button type="button" id="closeLessonComingSoon">
                     Got it
                 </button>
             </div>
@@ -1028,7 +1135,7 @@ function showModuleComingSoonModal() {
 
         document.body.appendChild(modal);
 
-        modal.querySelector("#closeModuleComingSoon").addEventListener(
+        modal.querySelector("#closeLessonComingSoon").addEventListener(
             "click",
             () => {
                 modal.hidden = true;
@@ -1047,6 +1154,7 @@ function showModuleComingSoonModal() {
     modal.hidden = false;
     document.body.classList.add("modal-open");
 }
+
     async function completeCurrentLesson() {
         if (isCompletingLesson || lessonIsCompleted) return;
 
@@ -1105,12 +1213,14 @@ function showModuleComingSoonModal() {
              */
             await loadLessonNavigation(true);
 
+
 if (
-    Number(requestedLessonId) === 10 &&
-    Number(moduleId) === 1
+    Number(moduleId) === 2 &&
+    Number(currentLesson?.lesson_number) === 2
 ) {
-    showModuleComingSoonModal();
+    showLessonComingSoonModal();
 }
+
         } catch (error) {
             showPageMessage(
                 error.message || "Unable to save lesson completion.",
@@ -1214,6 +1324,148 @@ if (
         return figure;
     }
 
+
+function renderCodeBlock(block) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "lesson-code-block";
+
+    const header = document.createElement("div");
+    header.className = "lesson-code-header";
+
+    const title = document.createElement("span");
+    title.className = "lesson-code-title";
+    title.textContent = block.title || "Code Example";
+
+    const language = String(
+        block.language || "plaintext"
+    ).trim().toLowerCase();
+
+    const languageAliases = {
+        js: "javascript",
+        html5: "html",
+        xml: "xml",
+        py: "python",
+        cs: "csharp",
+        "c#": "csharp",
+        csharp: "csharp",
+        "c++": "cpp",
+        htm: "html",
+        yml: "yaml"
+    };
+
+    const normalizedLanguage =
+        languageAliases[language] || language;
+
+    const supportedLanguages = [
+        "html",
+        "xml",
+        "css",
+        "javascript",
+        "python",
+        "java",
+        "csharp",
+        "cpp",
+        "json",
+        "sql",
+        "bash",
+        "yaml",
+        "typescript",
+        "plaintext"
+    ];
+
+    const validLanguage =
+        supportedLanguages.includes(normalizedLanguage);
+
+    const languageLabel = document.createElement("span");
+    languageLabel.className = "lesson-code-language";
+    languageLabel.textContent =
+        normalizedLanguage.toUpperCase();
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "lesson-code-copy";
+    copyButton.textContent = "Copy Code";
+
+    const pre = document.createElement("pre");
+    pre.className = "lesson-code-pre";
+
+    const code = document.createElement("code");
+
+    code.className = validLanguage
+        ? `language-${normalizedLanguage}`
+        : "language-plaintext";
+
+    const codeContent = String(
+        block.code ??
+        block.text ??
+        block.content ??
+        ""
+    );
+
+    code.textContent = codeContent;
+
+    async function copyCode() {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(codeContent);
+            } else {
+                const temporaryTextarea =
+                    document.createElement("textarea");
+
+                temporaryTextarea.value = codeContent;
+                temporaryTextarea.style.position = "fixed";
+                temporaryTextarea.style.opacity = "0";
+
+                document.body.appendChild(temporaryTextarea);
+                temporaryTextarea.select();
+
+                const copied =
+                    document.execCommand("copy");
+
+                temporaryTextarea.remove();
+
+                if (!copied) {
+                    throw new Error("Copy operation failed.");
+                }
+            }
+
+            copyButton.textContent = "Copied!";
+            copyButton.classList.add("copied");
+
+            setTimeout(() => {
+                copyButton.textContent = "Copy Code";
+                copyButton.classList.remove("copied");
+            }, 2000);
+        } catch (error) {
+            console.error("Could not copy code:", error);
+
+            copyButton.textContent = "Copy failed";
+
+            setTimeout(() => {
+                copyButton.textContent = "Copy Code";
+            }, 2000);
+        }
+    }
+
+    copyButton.addEventListener("click", copyCode);
+
+    header.append(title, languageLabel, copyButton);
+    pre.appendChild(code);
+    wrapper.append(header, pre);
+
+    if (window.hljs && validLanguage &&
+        normalizedLanguage !== "plaintext") {
+        requestAnimationFrame(() => {
+            if (wrapper.isConnected) {
+                window.hljs.highlightElement(code);
+            }
+        });
+    }
+
+    return wrapper;
+}
+
+
     function renderBlock(block) {
         if (typeof block === "string" || typeof block === "number") {
             return createTextElement("p", String(block));
@@ -1242,7 +1494,9 @@ if (
                 appendInlineText(paragraph, text);
                 return paragraph;
             }
-
+            case "code":
+            case "code_block":
+         return renderCodeBlock(block);
             case "list":
                 return renderList(block, block.ordered === true);
 

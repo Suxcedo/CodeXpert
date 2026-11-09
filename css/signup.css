@@ -46,7 +46,7 @@ input {
 }
 
 .back-home {
-    color: #77798d;
+    color: #a2a4b5;
     font-size: 12px;
     transition: 0.2s;
 }
@@ -77,7 +77,7 @@ input {
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    border: 1px solid #252730;
+    border: 1px solid #30323d;
     border-radius: 9px;
 
     background: #111218;
@@ -90,7 +90,7 @@ input {
 
     border-radius: 7px;
 
-    color: #8a8c9f;
+    color: #b0b2c1;
 
     font-size: 12px;
     font-weight: 700;
@@ -113,7 +113,7 @@ input {
 .signup-card {
     padding: 34px 31px 30px;
 
-    border: 1px solid #272932;
+    border: 1px solid #30323d;
     border-radius: 14px;
 
     background:
@@ -132,7 +132,7 @@ input {
 .signup-heading h1 {
     margin-bottom: 7px;
 
-    color: #f5f5f7;
+    color: #ffffff;
 
     font-size: 25px;
     font-weight: 800;
@@ -141,8 +141,7 @@ input {
 }
 
 .signup-heading p {
-    color: #828497;
-
+    color: #a5a7b7;
     font-size: 12px;
 }
 
@@ -155,12 +154,12 @@ input {
 
     margin-bottom: 9px;
 
-    border: 1px solid #30323b;
+    border: 1px solid #383a46;
     border-radius: 7px;
 
     background: #191b21;
 
-    color: #e7e7ec;
+    color: #f0f0f4;
 
     font-size: 11px;
     font-weight: 700;
@@ -183,7 +182,7 @@ input {
 
     margin-right: 4px;
 
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 800;
 }
 
@@ -212,13 +211,12 @@ input {
 
     height: 1px;
 
-    background: #292b33;
+    background: #353743;
 }
 
 .divider p {
-    color: #5f6173;
-
-    font-size: 9px;
+    color: #999bac;
+    font-size: 10px;
 }
 
 
@@ -233,11 +231,13 @@ input {
 
     margin-bottom: 7px;
 
-    color: #85879a;
+    color: #c0c2d0;
 
     font-family: Consolas, monospace;
 
-    font-size: 8px;
+    font-size: 9px;
+
+    font-weight: 700;
 
     letter-spacing: 1.4px;
 }
@@ -248,7 +248,7 @@ input {
 
     padding: 0 13px;
 
-    border: 1px solid #30323b;
+    border: 1px solid #383a46;
     border-radius: 7px;
 
     outline: none;
@@ -257,20 +257,21 @@ input {
 
     color: #ffffff;
 
-    font-size: 11px;
+    font-size: 12px;
 
     transition: 0.2s;
 }
 
 .form-group input::placeholder {
-    color: #686a76;
+    color: #9294a3;
+    opacity: 1;
 }
 
 .form-group input:focus {
     border-color: #00d8a7;
 
     box-shadow:
-        0 0 0 2px rgba(0, 216, 167, 0.07);
+        0 0 0 2px rgba(0, 216, 167, 0.09);
 }
 
 .form-group.error input {
@@ -282,15 +283,16 @@ input {
 }
 
 .error-message {
-    min-height: 12px;
+    min-height: 13px;
 
     display: block;
 
-    margin-top: 4px;
+    margin-top: 5px;
 
-    color: #e45d69;
+    color: #ff7b86;
 
-    font-size: 8px;
+    font-size: 9px;
+    font-weight: 500;
 }
 
 
@@ -314,7 +316,7 @@ input {
 
     color: #04100d;
 
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
 
     cursor: pointer;
@@ -322,11 +324,17 @@ input {
     transition: 0.2s;
 }
 
-.continue-button:hover {
+.continue-button:hover:not(:disabled) {
     transform: translateY(-1px);
 
     box-shadow:
         0 8px 20px rgba(0, 222, 171, 0.12);
+}
+
+.continue-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
 }
 
 
@@ -342,7 +350,7 @@ input {
 
     gap: 12px;
 
-    border: 1px solid #392f17;
+    border: 1px solid #493b20;
     border-radius: 8px;
 
     background: #15130f;
@@ -369,17 +377,16 @@ input {
 .streak-card strong {
     display: block;
 
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 
-    color: #e9e9ed;
+    color: #f0f0f2;
 
-    font-size: 9px;
+    font-size: 10px;
 }
 
 .streak-card p {
-    color: #727486;
-
-    font-size: 8px;
+    color: #a4a194;
+    font-size: 9px;
 }
 
 
@@ -403,28 +410,7 @@ input {
         padding: 30px 23px;
     }
 }
-@media (max-width: 420px) {
 
-    .back-home {
-        display: none;
-    }
-
-    .signup-card {
-        padding: 27px 18px;
-    }
-}
-
-
-@media (max-width: 420px) {
-
-    .back-home {
-        display: none;
-    }
-
-    .signup-card {
-        padding: 27px 18px;
-    }
-}
 
 @media (max-width: 420px) {
 

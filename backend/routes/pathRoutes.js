@@ -218,11 +218,13 @@ router.get("/:pathId/enrollment", async (req, res) => {
         const enrollment = await getActiveEnrollment(user.id, pathId);
 
         // Get the learner's total XP across all learning paths.
-        const { data: profile, error: profileError } = await supabase
-            .from("user_profile")
-            .select("overall_xp")
-            .eq("user_id", user.id)
-            .maybeSingle();
+        
+const { data: profile, error: profileError } = await supabase
+    .from("user_profile")
+    .select("overall_xp, timezone, username, profile_picture_url")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
 
         if (profileError) throw profileError;
 
@@ -1212,7 +1214,7 @@ router.get("/dashboard/stats", async (req, res) => {
         // Get the learner's profile and timezone.
         const { data: profile, error: profileError } = await supabase
             .from("user_profile")
-            .select("overall_xp, timezone")
+           .select("overall_xp, timezone, username, profile_picture_url")
             .eq("user_id", userId)
             .maybeSingle();
 
@@ -1379,41 +1381,15 @@ for (let i = 0; i < 7; i++) {
             last_activity_date: null
         };
 
-        // return res.status(200).json({
-        //     success: true,
-
-        //     xp: {
-        //         overallXp: Number(profile?.overall_xp || 0)
-        //     },
-
-        //     streak: {
-        //         currentStreak: Number(streak.current_streak || 0),
-        //         longestStreak: Number(streak.longest_streak || 0),
-        //         lastActivityDate: streak.last_activity_date
-        //     },
-
-        //     lessonsCompleted: lessonsResult.count || 0,
-
-        //     weeklyActivity,
-
-        //     badges: (badgeResult.data || []).map(item => ({
-        //         userBadgeId: item.user_badge_id,
-        //         earnedAt: item.earned_at,
-        //         badge: item.badge
-        //     })),
-
-        //     rewards: (rewardResult.data || []).map(item => ({
-        //         userRewardId: item.user_reward_id,
-        //         earnedAt: item.earned_at,
-        //         claimedAt: item.claimed_at,
-        //         status: item.reward_status,
-        //         reward: item.reward
-        //     }))
-        // });
-
-        
+               
 return res.status(200).json({
     success: true,
+    
+profile: {
+    username: profile?.username || null,
+    profilePicture: profile?.profile_picture_url || null
+},
+
     today,
     weekStart,
     xp: {
@@ -1490,6 +1466,85 @@ router.get("/dashboard/lessons-completed", async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Unable to load completed lessons."
+        });
+    }
+});
+
+
+/*
+ * GET /api/paths/dashboard/leaderboard
+ * Rank all registered users by their overall XP.
+ * Return the top 10 and the logged-in user's actual position.
+ */
+router.get("/dashboard/leaderboard", async (req, res) => {
+    try {
+        const { user, message } = await getAuthenticatedUser(req);
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: message || "Please log in to continue."
+            });
+        }
+
+        const pageSize = 1000;
+        let allUsers = [];
+        let start = 0;
+
+        // Retrieve every profile in batches so the ranking is not
+        // restricted to the first page of database results.
+        while (true) {
+            const { data, error } = await supabase
+                .from("user_profile")
+                .select("user_id, username, overall_xp, profile_picture_url")
+                .order("overall_xp", {
+                    ascending: false,
+                    nullsFirst: false
+                })
+                .order("user_id", {
+                    ascending: true
+                })
+                .range(start, start + pageSize - 1);
+
+            if (error) {
+                throw error;
+            }
+
+            const batch = data || [];
+            allUsers = allUsers.concat(batch);
+
+            if (batch.length < pageSize) {
+                break;
+            }
+
+            start += pageSize;
+        }
+
+        const rankedUsers = allUsers.map((profile, index) => ({
+    user_id: profile.user_id,
+    username: profile.username || "Learner",
+    rank: index + 1,
+    overall_xp: Number(profile.overall_xp || 0),
+    profile_picture_url: profile.profile_picture_url || null
+}));
+
+        const currentUser = rankedUsers.find(
+            profile => profile.user_id === user.id
+        );
+
+        return res.status(200).json({
+            success: true,
+            topUsers: rankedUsers.slice(0, 10),
+            currentUser: currentUser || null,
+            totalUsers: rankedUsers.length
+        });
+
+    } catch (error) {
+        console.error("Dashboard leaderboard error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to load the leaderboard."
         });
     }
 });

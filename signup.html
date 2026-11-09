@@ -8,6 +8,7 @@
     <title>Sign Up | CodeXpert</title>
 
     <link rel="stylesheet" href="css/signup.css">
+    <script src="js/signup.js" defer></script>
 </head>
 
 <body>
@@ -78,9 +79,7 @@
 
             <span></span>
 
-            <p>
-                or with email
-            </p>
+            <p>or with email</p>
 
             <span></span>
 
@@ -88,7 +87,6 @@
 
 
         <form id="signupForm" novalidate>
-
 
             <!-- First Name -->
 
@@ -190,11 +188,32 @@
             </div>
 
 
+            <!-- Confirm Password -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    CONFIRM PASSWORD
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Re-enter your password"
+                    autocomplete="new-password">
+
+                <small class="error-message"></small>
+
+            </div>
+
+
             <button
                 type="submit"
-                class="continue-button">
+                class="continue-button"
+                id="signupButton">
 
-                Continue →
+                Create Account →
 
             </button>
 
@@ -203,28 +222,9 @@
     </section>
 
 
-    <div class="streak-card">
 
-        <div class="streak-icon"></div>
-
-        <div>
-
-            <strong>
-                alex_dev is on an 89-day streak
-            </strong>
-
-            <p>
-                278 learners coded today. Don't let your streak die.
-            </p>
-
-        </div>
-
-    </div>
 
 </main>
-
-
-<script src="js/signup.js"></script>
 
 </body>
 

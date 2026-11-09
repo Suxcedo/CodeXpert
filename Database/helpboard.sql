@@ -1090,6 +1090,22 @@ SELECT
 
 
 
+UPDATE public.badge
+SET image_url = CASE requirement_value
+    WHEN 3 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793888635/3_day_streak.png'
+    WHEN 7 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889333/7days_streak.jpg'
+    WHEN 14 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889368/day_14.jpg'
+    WHEN 30 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889370/day_30.png'
+    WHEN 50 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889370/day_50.jpg'
+    WHEN 75 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889371/day_75.jpg'
+    WHEN 100 THEN 'https://res.cloudinary.com/r4b5zaeb/image/upload/v1793889371/day_100.png'
+END
+WHERE badge_category = 'STREAK'
+  AND requirement_value IN (3, 7, 14, 30, 50, 75, 100);
+
+
+
+
 
 
 

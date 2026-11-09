@@ -2,11 +2,15 @@
 const express = require("express");
 const cors = require("cors");
 
+require("dotenv").config();
+
 const authRoutes = require("./routes/authRoutes");
 const pathRoutes = require("./routes/pathRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const communityRoutes = require("./routes/communityRoutes");
 const helpRoutes = require("./routes/helpRoutes");
+const reelsRoutes = require("./routes/reelsRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
 
 const app = express();
 const PORT = 5000;
@@ -28,6 +32,12 @@ app.use("/api/community", communityRoutes);
 
 // Help Board routes
 app.use("/api/help", helpRoutes);
+
+// Reels routes
+app.use("/api/reels", reelsRoutes);
+
+// Settings routes
+app.use("/api/settings", settingsRoutes);
 
 app.get("/", (req, res) => {
     res.json({

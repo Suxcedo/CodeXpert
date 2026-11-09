@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090b">
+    <title>Reels | CodeXperts</title>
+    <link rel="stylesheet" href="css/reels.css">
+</head>
+<body>
+
+<header class="topbar">
+    <a href="home.html" class="logo-link">
+        <img src="assets/codeXpert_logo.jpeg" alt="CodeXperts" class="logo-image">
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+        <a href="home.html">Dashboard</a>
+        <a href="lesson.html">Lesson</a>
+        <a href="reels.html" class="active">Reels</a>
+        <a href="community.html">Community</a>
+        <a href="helpboard.html">Help Board</a>
+    </nav>
+
+    <div class="top-actions">
+        <a href="profile.html" class="profile-circle" id="profileInitial"
+           aria-label="Your profile">U</a>
+
+        <button class="menu-button" id="menuButton" type="button"
+                aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    </div>
+</header>
+
+<main class="reels-page">
+
+    <section class="reels-heading">
+        <div class="heading-content">
+            <p class="eyebrow">CODEXPERTS COMMUNITY</p>
+            <h1>Discover <span>Reels</span></h1>
+            <p class="heading-description">
+                Learn, share your progress and get inspired by other developers.
+            </p>
+        </div>
+
+        <button class="upload-button" id="openUploadButton" type="button">
+            <span>＋</span> Create Reel
+        </button>
+    </section>
+
+    <section class="reels-search-section">
+        <div class="reel-search-wrapper">
+            <form class="reel-search-form" id="reelSearchForm">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+
+                <input
+                    type="search"
+                    id="reelSearchInput"
+                    placeholder="Search Reels, captions or creators..."
+                    autocomplete="off"
+                    maxlength="100"
+                >
+
+                <button type="button" id="clearSearchButton"
+                        class="clear-search-button hidden"
+                        aria-label="Clear search">×</button>
+
+                <button type="submit" class="search-button">Search</button>
+            </form>
+
+            <div class="reel-search-suggestions hidden"
+                 id="reelSearchSuggestions"></div>
+        </div>
+    </section>
+
+    <section class="feed-toolbar">
+        <div class="feed-tabs">
+            <button class="feed-tab active" id="forYouTab" type="button">
+                For You
+            </button>
+
+            <button class="feed-tab" id="followingTab" type="button">
+                Following
+            </button>
+        </div>
+
+        <p class="feed-description" id="feedDescription">
+            Discover the latest coding content.
+        </p>
+    </section>
+
+    <section class="reels-feed" id="reelsFeed">
+        <div class="feed-message">
+            <div class="loading-spinner"></div>
+            <p>Loading Reels...</p>
+        </div>
+    </section>
+
+    <div class="load-more-container hidden" id="loadMoreContainer">
+        <button class="load-more-button" id="loadMoreButton" type="button">
+            Load more Reels
+        </button>
+    </div>
+
+</main>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay hidden" id="uploadModal">
+    <div class="modal-card upload-modal-card">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">SHARE YOUR KNOWLEDGE</p>
+                <h2>Create a Reel</h2>
+            </div>
+
+            <button class="close-modal-button" id="closeUploadButton"
+                    type="button" aria-label="Close">×</button>
+        </div>
+
+        <form id="uploadForm">
+            <label for="reelVideo">Choose your video</label>
+
+            <div class="video-upload-area" id="videoUploadArea">
+                <input
+                    type="file"
+                    id="reelVideo"
+                    name="video"
+                    accept="video/mp4,video/quicktime,video/webm"
+                    required
+                >
+
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                    <span class="upload-icon">＋</span>
+                    <strong>Select a video</strong>
+                    <small>MP4, MOV or WebM · Maximum 100 MB</small>
+                </div>
+
+                <video id="uploadVideoPreview" class="hidden"
+                       controls playsinline></video>
+            </div>
+
+            <label for="reelCaption">Caption</label>
+
+            <textarea
+                id="reelCaption"
+                name="caption"
+                maxlength="2200"
+                rows="4"
+                placeholder="What are you sharing with the community?"
+            ></textarea>
+
+            <div class="character-count">
+                <span id="captionCount">0</span>/2200
+            </div>
+
+            <p class="form-message" id="uploadMessage"></p>
+
+            <button class="submit-upload-button" id="submitUploadButton"
+                    type="submit">Upload Reel</button>
+        </form>
+    </div>
+</div>
+
+<!-- COMMENTS MODAL -->
+<div class="modal-overlay hidden" id="commentsModal">
+    <div class="modal-card comments-modal-card">
+
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">COMMUNITY DISCUSSION</p>
+                <h2>Comments</h2>
+            </div>
+
+            <button class="close-modal-button" id="closeCommentsButton"
+                    type="button" aria-label="Close">×</button>
+        </div>
+
+        <div class="comments-list" id="commentsList">
+            <p class="comments-placeholder">Select a Reel to view comments.</p>
+        </div>
+
+        <form class="comment-form" id="commentForm">
+            <input
+                type="text"
+                id="commentInput"
+                maxlength="1000"
+                placeholder="Write a comment..."
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit" id="submitCommentButton">Send</button>
+        </form>
+
+        <p class="form-message" id="commentMessage"></p>
+    </div>
+</div>
+
+<div class="toast-message hidden" id="toastMessage"></div>
+
+<script src="js/reels.js"></script>
+
+</body>
+</html>

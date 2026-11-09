@@ -1,0 +1,5 @@
+add relpy in the helpboard insted of scrolling down to the discussussion,
+Report a question or a channel,
+picture for when in home page,
+Share achievement button,
+

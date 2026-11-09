@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | CodeXperts</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <script src="js/profile.js" defer></script>
+</head>
+<body>
+
+    <header class="topbar">
+        <a href="home.html" class="logo-link">
+            <img src="assets/codeXpert_logo.jpeg" alt="CodeXperts" class="logo-image">
+        </a>
+
+        <nav class="main-nav" id="mainNav">
+            <a href="home.html">Dashboard</a>
+            <a href="lesson.html">Lesson</a>
+            <a href="reels.html">Reels</a>
+            <a href="community.html">Community</a>
+            <a href="helpboard.html">Help Board</a>
+        </nav>
+
+        
+<div class="top-actions">
+
+    <a href="settings.html"
+       class="settings-button"
+       id="settingsButton"
+       aria-label="Account settings"
+       title="Settings">
+
+        <img src="assets/settings.png" alt="Settings">
+
+    </a>
+
+    <a href="profile.html" class="profile-circle" id="profileInitial">U</a>
+
+    <button class="menu-button" id="menuButton" type="button"
+        aria-label="Toggle navigation">
+        ☰
+    </button>
+
+</div>
+
+    </header>
+
+    <main class="profile-page">
+
+        <div class="page-heading">
+            <div>
+                <span class="eyebrow">CODEXPERTS COMMUNITY</span>
+                <h1>Developer Profile</h1>
+                <p>Explore achievements, learning progress and coding content.</p>
+            </div>
+
+            <a href="reels.html" class="back-button">
+                Explore Reels
+            </a>
+        </div>
+
+        <div class="loading-state" id="loadingState">
+            <div class="loader"></div>
+            <p>Loading profile...</p>
+        </div>
+
+        <div class="error-state hidden" id="errorState">
+            <div class="error-icon">!</div>
+            <h2>Unable to load profile</h2>
+            <p id="errorMessage">Something went wrong while loading this profile.</p>
+            <button type="button" id="retryButton">Try Again</button>
+        </div>
+
+        <div class="profile-content hidden" id="profileContent">
+
+            <!-- PROFILE HEADER -->
+
+            <section class="profile-card">
+
+                <div class="profile-cover">
+                    <div class="cover-decoration cover-decoration-one"></div>
+                    <div class="cover-decoration cover-decoration-two"></div>
+                    <span class="cover-label">CODEXPERTS DEVELOPER</span>
+                </div>
+
+                <div class="profile-main">
+
+                    <div class="profile-avatar-wrapper">
+                        <img
+                            src="assets/default-avatar.png"
+                            alt="Profile picture"
+                            class="profile-avatar"
+                            id="profileAvatar"
+                        >
+
+                        <button
+                            type="button"
+                            class="edit-avatar-button hidden"
+                            id="editAvatarButton"
+                            aria-label="Change profile picture"
+                            title="Change profile picture">
+                            ✎
+                        </button>
+
+                        <input
+                            type="file"
+                            id="profilePictureInput"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden
+                        >
+                    </div>
+
+                    <div class="profile-identity">
+                        <h2 id="profileName">Developer</h2>
+                        <p class="profile-username" id="profileUsername">@username</p>
+                        <p class="profile-bio" id="profileBio">
+                            No biography added yet.
+                        </p>
+
+                        <p class="joined-date" id="joinedDate"></p>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button
+                            type="button"
+                            class="follow-button hidden"
+                            id="followButton"
+                        >
+                            Follow
+                        </button>
+
+                        <a href="reels.html" class="create-reel-button hidden"
+                            id="createReelButton">
+                            + Create Reel
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="profile-statistics">
+
+                    <div class="stat-item">
+                        <span class="stat-value" id="overallXP">0</span>
+                        <span class="stat-label">Overall XP</span>
+                    </div>
+
+                    <button class="stat-item stat-button" type="button"
+                        id="followersButton">
+                        <span class="stat-value" id="followerCount">0</span>
+                        <span class="stat-label">Followers</span>
+                    </button>
+
+                    <button class="stat-item stat-button" type="button"
+                        id="followingButton">
+                        <span class="stat-value" id="followingCount">0</span>
+                        <span class="stat-label">Following</span>
+                    </button>
+
+                    <div class="stat-item">
+                        <span class="stat-value" id="reelCount">0</span>
+                        <span class="stat-label">Reels</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-value" id="badgeCount">0</span>
+                        <span class="stat-label">Badges</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- LEARNING PATHS -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-eyebrow">CONTINUOUS LEARNING</span>
+                        <h2>Learning Paths</h2>
+                        <p>Languages this developer is currently learning.</p>
+                    </div>
+                </div>
+
+                <div class="learning-grid" id="learningGrid"></div>
+
+                <div class="empty-message hidden" id="learningEmpty">
+                    This developer hasn't enrolled in any active learning paths yet.
+                </div>
+
+            </section>
+
+            <!-- BADGES -->
+
+            <section class="profile-section">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="section-eyebrow">MILESTONES</span>
+                        <h2>Achievements & Badges</h2>
+                        <p>Achievements earned through learning and participation.</p>
+                    </div>
+                </div>
+
+                <div class="badges-grid" id="badgesGrid"></div>
+
+                <div class="empty-message hidden" id="badgesEmpty">
+                    No badges earned yet. Keep learning to unlock achievements!
+                </div>
+
+            </section>
+
+            <!-- REELS -->
+
+            <section class="profile-section reels-section">
+
+                <div class="section-heading reels-heading">
+                    <div>
+                        <span class="section-eyebrow">CREATOR CONTENT</span>
+                        <h2>Reels</h2>
+                        <p>Coding videos shared by this developer.</p>
+                    </div>
+
+                    <span class="reel-total" id="reelTotal">0 videos</span>
+                </div>
+
+                <div class="reels-grid" id="reelsGrid"></div>
+
+                <div class="empty-message hidden" id="reelsEmpty">
+                    No Reels have been uploaded yet.
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- FOLLOWERS / FOLLOWING MODAL -->
+
+    <div class="modal-overlay hidden" id="usersModal">
+
+        <div class="users-modal">
+
+            <div class="modal-heading">
+                <div>
+                    <span class="section-eyebrow">COMMUNITY</span>
+                    <h2 id="usersModalTitle">Followers</h2>
+                </div>
+
+                <button type="button" class="modal-close" id="closeUsersModal"
+                    aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <div class="modal-users-list" id="modalUsersList"></div>
+
+            <div class="modal-empty hidden" id="modalEmpty">
+                No users to display.
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- REEL PREVIEW MODAL -->
+
+    <div class="modal-overlay hidden" id="reelModal">
+
+        <div class="reel-preview-modal">
+
+            <button type="button" class="modal-close reel-modal-close"
+                id="closeReelModal" aria-label="Close">
+                &times;
+            </button>
+
+            <div class="reel-video-container">
+                <video id="reelPreviewVideo" controls playsinline></video>
+            </div>
+
+            <div class="reel-preview-details">
+
+                <div class="reel-preview-heading">
+                    <span class="section-eyebrow">REEL DETAILS</span>
+                    <p id="reelPreviewCaption"></p>
+                    <span id="reelPreviewDate"></span>
+                </div>
+
+                <div class="reel-engagement-actions">
+
+                    <button
+                        type="button"
+                        class="reel-like-button"
+                        id="reelLikeButton">
+                        <span id="reelLikeIcon">♡</span>
+                        <span id="reelLikeCount">0</span>
+                        <span>Likes</span>
+                    </button>
+
+                    <div class="reel-comment-count">
+                        <span>●</span>
+                        <span id="reelCommentCount">0</span>
+                        <span>Comments</span>
+                    </div>
+
+                </div>
+
+                <div class="comments-section">
+
+                    <div class="comments-heading">
+                        <h3>Comments</h3>
+                    </div>
+
+                    <div class="comments-list" id="reelCommentsList">
+                        <p class="comments-loading">Loading comments...</p>
+                    </div>
+
+                    <form class="comment-form" id="reelCommentForm">
+                        <input
+                            type="text"
+                            id="reelCommentInput"
+                            placeholder="Write a comment..."
+                            maxlength="1000"
+                            autocomplete="off"
+                            required
+                        >
+
+                        <button type="submit" id="submitCommentButton">
+                            Post
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+</body>
+</html>
