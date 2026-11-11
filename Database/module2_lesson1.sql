@@ -1,52 +1,34 @@
-
 DO $$
 DECLARE
-    v_lesson_id BIGINT;
+    v_lesson_id BIGINT := 24;
     v_quiz_id BIGINT;
 BEGIN
-    -- Confirm Module 2 exists.
+    -- Confirm that the existing Java lesson belongs to Module 1.
     IF NOT EXISTS (
         SELECT 1
-        FROM public.module
-        WHERE module_id = 2
+        FROM public.lesson
+        WHERE lesson_id = v_lesson_id
+          AND module_id = 11
+          AND lesson_number = 1
+          AND title = 'What Is Java?'
     ) THEN
-        RAISE EXCEPTION 'Module 2 was not found.';
+        RAISE EXCEPTION 'Java Module 1 Lesson 1 was not found.';
     END IF;
 
-    -- Prevent duplicate lesson insertion.
+    -- Prevent duplicate content insertion.
     IF EXISTS (
         SELECT 1
-        FROM public.lesson
-        WHERE module_id = 2
-          AND lesson_number = 1
+        FROM public.quiz
+        WHERE lesson_id = v_lesson_id
+    ) OR EXISTS (
+        SELECT 1
+        FROM public.lesson_section
+        WHERE lesson_id = v_lesson_id
     ) THEN
-        RAISE EXCEPTION 'Module 2 Lesson 1 already exists. No changes were made.';
+        RAISE EXCEPTION
+            'Lesson 1 already contains sections or a quiz. No changes were made.';
     END IF;
 
-    -- Create Lesson 1.
-    INSERT INTO public.lesson (
-        module_id,
-        lesson_number,
-        title,
-        slug,
-        summary,
-        difficulty,
-        estimated_minutes,
-        prerequisites,
-        status
-    )
-    VALUES (
-        2,
-        1,
-        'Introduction to HTML',
-        'introduction-to-html',
-        'Learn what HTML is, how it structures web pages, how it works with CSS and JavaScript, and how browsers process HTML documents.',
-        'beginner',
-        25,
-        '[]'::jsonb,
-        'draft'
-    )
-    RETURNING lesson_id INTO v_lesson_id;
 
     -- Create the Knowledge Check quiz.
     INSERT INTO public.quiz (
@@ -65,8 +47,8 @@ BEGIN
         v_lesson_id,
         NULL,
         1,
-        'Lesson 2.1 Knowledge Check',
-        'Answer all three questions about HTML, HTML elements and how browsers process HTML documents.',
+        'Lesson 1.1 Knowledge Check',
+        'Answer all five questions about Java, its history, its original developers and its common applications.',
         'practice',
         50,
         3,
@@ -75,506 +57,293 @@ BEGIN
     )
     RETURNING quiz_id INTO v_quiz_id;
 
-    -- Section 1: Introduction.
+
+    -- SECTION 1: Introduction.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content
     )
     VALUES (
         v_lesson_id,
         1,
         'introduction',
-        'Introduction to HTML',
+        'Introduction to Java',
         jsonb_build_object(
             'blocks',
             jsonb_build_array(
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'Welcome to your first CodeXperts lesson! Before learning how to write code, it is important to understand what HTML is and how it is used to create and structure content on web pages.'
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'What Is HTML?'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'HTML stands for HyperText Markup Language. It is the standard markup language used to create and structure content on web pages.'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'HTML tells a web browser how different pieces of content should be organised. For example, it identifies which content is a heading, paragraph, image, link, list, table or form.'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'When a browser opens an HTML file, it reads the HTML instructions and displays the content as a web page.'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'HTML is not a programming language because it does not provide the same logic and decision-making capabilities as languages such as JavaScript, Python or Java. Instead, HTML describes the structure and meaning of web content.'
-                ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Example: Basic HTML content',
-                    'text', ($code$
-<h1>Welcome to CodeXperts</h1>
-<p>Learn programming by building real projects.</p>
-<a href="https://www.example.com">Visit our website</a>
 
-The browser displays:
-- A large heading.
-- A paragraph underneath the heading.
-- A clickable link.
-$code$)::text
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'Java is a high-level, object-oriented programming language used to develop different types of software applications. It was originally developed by Sun Microsystems and released in 1995. Java is now maintained by Oracle.'
                 ),
+
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'Java allows programmers to write instructions that computers can execute. It is widely used because it is reliable, secure and can run on different operating systems.'
+                ),
+
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'Java is one of the programming languages used to build software across different industries. From mobile applications to large business systems, Java provides developers with tools to create reliable applications.'
+                ),
+
                 jsonb_build_object(
                     'type', 'callout',
-                    'title', 'Remember',
-                    'text', 'Without HTML, the browser would not have the same structured instructions for presenting the content of a web page.'
+                    'title', 'Did You Know?',
+                    'text', 'Java was first released in 1995 and has continued to evolve into one of the widely used programming languages in software development.'
                 )
             )
         )
     );
 
-    -- Section 2: HTML, CSS and JavaScript.
+
+    -- SECTION 2: Common uses of Java.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content
     )
     VALUES (
         v_lesson_id,
         2,
         'heading',
-        'Understanding the Role of HTML, CSS and JavaScript',
+        'What Is Java Used For?',
         jsonb_build_object(
             'blocks',
             jsonb_build_array(
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'Modern websites commonly use three main technologies: HTML, CSS and JavaScript. Each technology has a different responsibility, but they work together to create complete websites.'
+                    'text', 'Java is used to develop different types of software applications. Some common examples include:'
                 ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'HTML — Structure'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'HTML defines what appears on the page and gives content its meaning.'
-                ),
+
                 jsonb_build_object(
                     'type', 'list',
                     'items',
                     jsonb_build_array(
-                        'Headings and paragraphs.',
-                        'Images and links.',
-                        'Forms and tables.'
+                        'Desktop applications.',
+                        'Web applications.',
+                        'Android applications.',
+                        'Banking systems.',
+                        'Business management software.',
+                        'Enterprise applications.'
                     )
                 ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'CSS — Presentation'
-                ),
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'CSS stands for Cascading Style Sheets. It controls how HTML content looks.'
+                    'text', 'These examples demonstrate how Java can be applied to different software development requirements, from applications used by individuals to complex systems used by organisations.'
                 ),
-                jsonb_build_object(
-                    'type', 'list',
-                    'items',
-                    jsonb_build_array(
-                        'Text colours and background colours.',
-                        'Font sizes and spacing.',
-                        'Borders and page layouts.',
-                        'Responsive designs.'
-                    )
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'JavaScript — Behaviour'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'JavaScript adds functionality and interaction to a web page.'
-                ),
-                jsonb_build_object(
-                    'type', 'list',
-                    'items',
-                    jsonb_build_array(
-                        'Opening a dropdown menu.',
-                        'Checking form input.',
-                        'Updating page content.',
-                        'Displaying notifications.',
-                        'Responding to button clicks.'
-                    )
-                ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Example: Combining HTML and JavaScript',
-                    'text', ($code$
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>My First Website</title>
-</head>
-<body>
-    <h1 id="heading">Welcome!</h1>
-    <button onclick="changeHeading()">
-        Click Me
-    </button>
 
-    <script>
-        function changeHeading() {
-            document.getElementById("heading").textContent =
-                "You clicked the button!";
-        }
-    </script>
-</body>
-</html>
-
-Explanation:
-- HTML creates the heading and button.
-- JavaScript changes the heading when the button is clicked.
-$code$)::text
-                ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Example: CSS styling',
-                    'text', ($code$
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: lightgray;
-    }
-
-    h1 {
-        color: darkblue;
-    }
-
-    button {
-        background-color: navy;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-    }
-</style>
-
-Explanation:
-- The body uses Arial as its font.
-- The page background is light grey.
-- The heading is dark blue.
-- The button has a navy background and white text.
-$code$)::text
-                ),
                 jsonb_build_object(
                     'type', 'callout',
-                    'title', 'Remember the difference',
-                    'text', 'HTML provides the structure, CSS controls the presentation, and JavaScript provides behaviour and interactivity.'
+                    'title', 'Important',
+                    'text', 'Java is not limited to one type of application. It can be used in different areas of software development.'
                 )
             )
         )
     );
 
-    -- Section 3: HTML elements.
+
+    -- SECTION 3: Java and beginners.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content
     )
     VALUES (
         v_lesson_id,
         3,
         'heading',
-        'Understanding HTML Elements',
+        'Why Learn Java?',
         jsonb_build_object(
             'blocks',
             jsonb_build_array(
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'An HTML element is generally made up of three parts: an opening tag, content and a closing tag.'
+                    'text', 'Java is also popular among beginners because it introduces important programming concepts that are used in many other programming languages.'
                 ),
+
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'As learners progress through Java, they will become familiar with concepts such as:'
+                ),
+
                 jsonb_build_object(
                     'type', 'list',
                     'items',
                     jsonb_build_array(
-                        'Opening tag.',
-                        'Content.',
-                        'Closing tag.'
+                        'Variables: Used to store information in a program.',
+                        'Methods: Used to organise instructions into reusable blocks of code.',
+                        'Classes: Used as blueprints for creating objects.',
+                        'Objects: Represent instances of classes that contain data and behaviour.'
                     )
                 ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Example: A paragraph element',
-                    'text', ($code$
-<p>This is a paragraph.</p>
 
-The three parts are:
-- <p> is the opening tag.
-- This is a paragraph. is the content.
-- </p> is the closing tag.
-
-Together, these parts form a paragraph element.
-$code$)::text
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'Void Elements'
-                ),
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'Not every HTML element has a closing tag. Some elements are called void elements because they cannot contain content. These elements do not use separate closing tags.'
+                    'text', 'These concepts form an important foundation for understanding how software applications are designed, organised and developed.'
                 ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Examples of void elements',
-                    'text', ($code$
-<img src="logo.png" alt="Company logo">
-<br>
-<hr>
-<input type="text">
-$code$)::text
-                ),
+
                 jsonb_build_object(
                     'type', 'callout',
-                    'title', 'Important',
-                    'text', 'Void elements do not use separate closing tags. Examples include img, br, hr and input.'
+                    'title', 'Remember',
+                    'text', 'Learning Java is not only about writing code. It also helps you understand fundamental programming concepts that are useful throughout software development.'
                 )
             )
         )
     );
 
-    -- Section 4: HTML tags.
+
+    -- SECTION 4: Key terms.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content
     )
     VALUES (
         v_lesson_id,
         4,
         'heading',
-        'Understanding HTML Tags',
+        'Important Java Terminology',
         jsonb_build_object(
             'blocks',
             jsonb_build_array(
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'An HTML tag is the markup enclosed within angle brackets. Tags tell the browser what type of element is being created.'
+                    'text', 'Before moving forward, it is important to understand three basic terms used throughout programming.'
                 ),
-                jsonb_build_object(
-                    'type', 'list',
-                    'items',
-                    jsonb_build_array(
-                        '<h1> — a heading tag.',
-                        '<p> — a paragraph tag.',
-                        '<a> — a link tag.',
-                        '<img> — an image tag.'
-                    )
-                ),
+
                 jsonb_build_object(
                     'type', 'heading',
-                    'text', 'The Difference Between a Tag and an Element'
+                    'text', '1. Programming Language'
                 ),
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'A common mistake is confusing an HTML tag with an HTML element. A tag is the markup itself, while an element includes the complete structure and its content, where applicable.'
+                    'text', 'A programming language is a language used to give instructions to a computer. Programmers use programming languages such as Java to create software applications.'
                 ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Tag versus element',
-                    'text', ($code$
-<p>Hello, learner!</p>
 
-In this example:
-- <p> is the opening tag.
-- </p> is the closing tag.
-- The complete paragraph, including its content, is the HTML element.
-$code$)::text
+                jsonb_build_object(
+                    'type', 'heading',
+                    'text', '2. Source Code'
                 ),
+
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'Source code refers to instructions written by a programmer using a programming language. In Java, source code is normally written in files with the .java extension.'
+                ),
+
+                jsonb_build_object(
+                    'type', 'heading',
+                    'text', '3. Application'
+                ),
+
+                jsonb_build_object(
+                    'type', 'paragraph',
+                    'text', 'An application is a software program designed to perform a particular task. Examples include banking applications, mobile applications and desktop programs.'
+                ),
+
                 jsonb_build_object(
                     'type', 'callout',
-                    'title', 'Remember',
-                    'text', 'A tag is the markup itself. An element is the complete HTML structure and its content, where applicable.'
+                    'title', 'Key Takeaway',
+                    'text', 'A programmer writes source code using a programming language to develop applications that perform specific tasks.'
                 )
             )
         )
     );
 
-    -- Section 5: Browser processing and the DOM.
+
+    -- SECTION 5: Lesson summary.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content
     )
     VALUES (
         v_lesson_id,
         5,
-        'heading',
-        'How a Browser Processes HTML',
-        jsonb_build_object(
-            'blocks',
-            jsonb_build_array(
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'When a browser loads an HTML document, it reads the markup and constructs a structured representation called the Document Object Model (DOM).'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'The DOM represents the page as a tree of objects. It organises the HTML elements according to their relationships within the document.'
-                ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Example: A simple HTML structure',
-                    'text', ($code$
-<body>
-    <h1>My Website</h1>
-    <section>
-        <p>Welcome to my website.</p>
-    </section>
-</body>
-
-The browser understands:
-- body is the parent of the heading and section.
-- section is the parent of the paragraph.
-- heading and section are children of body.
-$code$)::text
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'Parent and Child Relationships'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'An element that contains another element is called its parent. The element inside it is called its child. These parent-child relationships are important when working with nested HTML elements and JavaScript.'
-                ),
-                jsonb_build_object(
-                    'type', 'callout',
-                    'title', 'Important term',
-                    'text', 'DOM stands for Document Object Model. It is the browser''s structured representation of an HTML document.'
-                )
-            )
-        )
-    );
-
-    -- Section 6: Creating the first HTML page.
-    INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
-    )
-    VALUES (
-        v_lesson_id,
-        6,
-        'heading',
-        'Creating Your First HTML Page',
-        jsonb_build_object(
-            'blocks',
-            jsonb_build_array(
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'Now that you understand the purpose of HTML, you can create a simple HTML page. You will need a text editor, such as Visual Studio Code, and a web browser to view the result.'
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'Follow These Steps'
-                ),
-                jsonb_build_object(
-                    'type', 'list',
-                    'items',
-                    jsonb_build_array(
-                        'Open Visual Studio Code or another text editor.',
-                        'Create a new folder called my-first-website.',
-                        'Inside the folder, create a file called index.html.',
-                        'Add the HTML code shown in the example below.',
-                        'Save the file.',
-                        'Open index.html in a web browser.'
-                    )
-                ),
-                jsonb_build_object(
-                    'type', 'example',
-                    'title', 'Your first HTML document',
-                    'text', ($code$
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My First Web Page</title>
-</head>
-<body>
-    <h1>My First Website</h1>
-    <p>I am learning how to build websites using HTML.</p>
-</body>
-</html>
-$code$)::text
-                ),
-                jsonb_build_object(
-                    'type', 'heading',
-                    'text', 'Expected Result'
-                ),
-                jsonb_build_object(
-                    'type', 'paragraph',
-                    'text', 'When you open the file in your browser, you should see a heading that says My First Website and a paragraph underneath it.'
-                ),
-                jsonb_build_object(
-                    'type', 'callout',
-                    'title', 'Practical tip',
-                    'text', 'Make sure the file is saved with the .html extension. If you make changes to the file, save it and refresh the browser to view the updated page.'
-                )
-            )
-        )
-    );
-
-    -- Section 7: Lesson summary.
-    INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content
-    )
-    VALUES (
-        v_lesson_id,
-        7,
         'summary',
         'Lesson Summary',
         jsonb_build_object(
             'blocks',
             jsonb_build_array(
+
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'HTML stands for HyperText Markup Language. It provides the structure of a web page and identifies content such as headings, paragraphs, images, links, lists, tables and forms.'
+                    'text', 'Java is a high-level, object-oriented programming language used to develop different types of software applications. It was originally developed by Sun Microsystems and released in 1995. Oracle currently maintains Java.'
                 ),
+
                 jsonb_build_object(
                     'type', 'list',
                     'title', 'Important points to remember',
                     'items',
                     jsonb_build_array(
-                        'HTML stands for HyperText Markup Language.',
-                        'HTML provides the structure of a web page.',
-                        'CSS controls presentation and appearance.',
-                        'JavaScript provides behaviour and interactivity.',
-                        'HTML elements are created using tags.',
-                        'A tag is the markup itself, while an element is the complete structure and its content, where applicable.',
-                        'Browsers interpret HTML and construct the DOM.',
-                        'HTML is a markup language, not a programming language.'
+                        'Java is a high-level, object-oriented programming language.',
+                        'Java was originally developed by Sun Microsystems.',
+                        'Java was released in 1995.',
+                        'Java is currently maintained by Oracle.',
+                        'Java is used for desktop, web and Android applications.',
+                        'Java is also used in banking and enterprise systems.',
+                        'Java introduces important concepts such as variables, methods, classes and objects.',
+                        'Source code contains instructions written by a programmer.',
+                        'An application is software designed to perform a particular task.'
                     )
                 ),
+
                 jsonb_build_object(
                     'type', 'heading',
                     'text', 'Check Your Understanding'
                 ),
+
                 jsonb_build_object(
                     'type', 'list',
                     'items',
                     jsonb_build_array(
-                        'Can you explain what HTML is and what it is used for?',
-                        'Can you describe the different roles of HTML, CSS and JavaScript?',
-                        'Can you identify the opening tag, content and closing tag in an HTML element?',
-                        'Can you explain the difference between an HTML tag and an HTML element?',
-                        'Can you describe what the DOM represents?',
-                        'Can you create and open a basic HTML page in a browser?'
+                        'Can you explain what Java is?',
+                        'Who originally developed Java?',
+                        'In which year was Java released?',
+                        'Which company currently maintains Java?',
+                        'Can you identify different types of applications developed using Java?',
+                        'Can you explain the meaning of programming language, source code and application?'
                     )
                 ),
+
                 jsonb_build_object(
                     'type', 'callout',
                     'title', 'You are ready for the next lesson when...',
-                    'text', 'You can explain the purpose of HTML, distinguish it from CSS and JavaScript, identify basic HTML elements and describe how a browser processes an HTML document.'
+                    'text', 'You can explain what Java is, identify its original developers, state when it was released, describe where it is used and explain the basic programming terminology introduced in this lesson.'
                 )
             )
         )
     );
 
-    -- Section 8: Knowledge Check.
+
+    -- SECTION 6: Knowledge Check.
     INSERT INTO public.lesson_section (
-        lesson_id, display_order, section_type, section_title, section_content, quiz_id
+        lesson_id,
+        display_order,
+        section_type,
+        section_title,
+        section_content,
+        quiz_id
     )
     VALUES (
         v_lesson_id,
-        8,
+        6,
         'quiz',
         'Knowledge Check',
         jsonb_build_object(
@@ -582,400 +351,203 @@ $code$)::text
             jsonb_build_array(
                 jsonb_build_object(
                     'type', 'paragraph',
-                    'text', 'Check your understanding of HTML, the difference between tags and elements, and how browsers process HTML documents by answering the following questions.'
+                    'text', 'Test your understanding of Java, its history, its original developers, its current maintenance and its common applications.'
                 )
             )
         ),
         v_quiz_id
     );
 
-    -- Question 1.
+
+    -- QUESTION 1.
     INSERT INTO public.question (
-        quiz_id, display_order, question_type, prompt, options,
-        evaluation, explanation, xp_reward, is_required
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
     )
     VALUES (
         v_quiz_id,
         1,
         'multiple_choice',
-        'A student creates a web page using HTML and wants a button to change a heading when clicked. Which technology is responsible for implementing that interaction?',
+        'What is Java?',
         '[
-            {"label":"A","text":"HTML, because it defines the button''s position."},
-            {"label":"B","text":"CSS, because it controls how the heading is displayed."},
-            {"label":"C","text":"JavaScript, because it handles the click event and changes the content."},
-            {"label":"D","text":"The DOM, because it automatically executes user interactions."}
+            {"label":"A","text":"An operating system"},
+            {"label":"B","text":"A programming language"},
+            {"label":"C","text":"A database"},
+            {"label":"D","text":"A web browser"}
         ]'::jsonb,
-        '{"correct_answer":"C"}'::jsonb,
-        'JavaScript handles events and changes content. HTML provides the button, while CSS controls its appearance.',
+        '{"correct_answer":"B"}'::jsonb,
+        'Java is a high-level, object-oriented programming language used to develop different types of software applications.',
         3,
         TRUE
     );
 
-    -- Question 2.
+
+    -- QUESTION 2.
     INSERT INTO public.question (
-        quiz_id, display_order, question_type, prompt, options,
-        evaluation, explanation, xp_reward, is_required
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
     )
     VALUES (
         v_quiz_id,
         2,
         'multiple_choice',
-        'Which statement correctly describes the relationship between an HTML tag and an HTML element?',
+        'Who originally developed Java?',
         '[
-            {"label":"A","text":"A tag contains the complete content, while an element only identifies the opening markup."},
-            {"label":"B","text":"An element may consist of an opening tag, content and a closing tag, while a tag is the markup itself."},
-            {"label":"C","text":"Tags are only used for text, while elements are only used for images."},
-            {"label":"D","text":"An HTML element must always contain both an opening and closing tag."}
+            {"label":"A","text":"Microsoft"},
+            {"label":"B","text":"Google"},
+            {"label":"C","text":"Sun Microsystems"},
+            {"label":"D","text":"Apple"}
         ]'::jsonb,
-        '{"correct_answer":"B"}'::jsonb,
-        'An element consists of its markup and, where applicable, its content. A void element is an exception to the usual opening-content-closing structure.',
+        '{"correct_answer":"C"}'::jsonb,
+        'Java was originally developed by Sun Microsystems and released in 1995.',
         3,
         TRUE
     );
 
-    -- Question 3.
+
+    -- QUESTION 3.
     INSERT INTO public.question (
-        quiz_id, display_order, question_type, prompt, options,
-        evaluation, explanation, xp_reward, is_required
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
     )
     VALUES (
         v_quiz_id,
         3,
         'multiple_choice',
-        'What happens when a browser processes an HTML document?',
+        'In which year was Java released?',
         '[
-            {"label":"A","text":"It automatically converts all HTML into JavaScript."},
-            {"label":"B","text":"It creates a DOM representation of the document that the browser can work with."},
-            {"label":"C","text":"It converts every HTML element into a separate CSS file."},
-            {"label":"D","text":"It stores all HTML elements permanently in the browser''s database."}
+            {"label":"A","text":"1990"},
+            {"label":"B","text":"1995"},
+            {"label":"C","text":"2000"},
+            {"label":"D","text":"2010"}
         ]'::jsonb,
         '{"correct_answer":"B"}'::jsonb,
-        'The browser constructs a structured representation of the document, allowing it to display and manipulate page content.',
+        'Java was officially released in 1995.',
         3,
         TRUE
     );
 
-    -- Publish the lesson and quiz.
-    UPDATE public.lesson
-    SET status = 'published'
-    WHERE lesson_id = v_lesson_id;
 
+    -- QUESTION 4.
+    INSERT INTO public.question (
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
+    )
+    VALUES (
+        v_quiz_id,
+        4,
+        'multiple_choice',
+        'Which company currently maintains Java?',
+        '[
+            {"label":"A","text":"Oracle"},
+            {"label":"B","text":"Samsung"},
+            {"label":"C","text":"Meta"},
+            {"label":"D","text":"IBM"}
+        ]'::jsonb,
+        '{"correct_answer":"A"}'::jsonb,
+        'Java is currently maintained by Oracle, following its acquisition of Sun Microsystems.',
+        3,
+        TRUE
+    );
+
+
+    -- QUESTION 5.
+    INSERT INTO public.question (
+        quiz_id,
+        display_order,
+        question_type,
+        prompt,
+        options,
+        evaluation,
+        explanation,
+        xp_reward,
+        is_required
+    )
+    VALUES (
+        v_quiz_id,
+        5,
+        'multiple_choice',
+        'Which of the following is Java commonly used for?',
+        '[
+            {"label":"A","text":"Android applications"},
+            {"label":"B","text":"Washing clothes"},
+            {"label":"C","text":"Hardware manufacturing"},
+            {"label":"D","text":"Printing documents only"}
+        ]'::jsonb,
+        '{"correct_answer":"A"}'::jsonb,
+        'Java has traditionally been used in Android application development and remains supported alongside Kotlin.',
+        3,
+        TRUE
+    );
+
+
+    -- Publish the quiz.
     UPDATE public.quiz
     SET status = 'published'
     WHERE quiz_id = v_quiz_id;
 
+
     RAISE NOTICE
-        'Module 2 Lesson 1 created successfully. Lesson ID: %, Quiz ID: %',
-        v_lesson_id, v_quiz_id;
+        'Java Lesson 1 completed successfully. Lesson ID: %, Quiz ID: %',
+        v_lesson_id,
+        v_quiz_id;
 
 END $$;
 
 
+SELECT
+    l.lesson_id,
+    l.title,
+    l.status AS lesson_status,
+    ls.display_order,
+    ls.section_title,
+    ls.section_type,
+    q.quiz_id,
+    q.title AS quiz_title,
+    q.status AS quiz_status,
+    (
+        SELECT COUNT(*)
+        FROM public.question qu
+        WHERE qu.quiz_id = q.quiz_id
+    ) AS question_count
+FROM public.lesson l
+LEFT JOIN public.lesson_section ls
+    ON ls.lesson_id = l.lesson_id
+LEFT JOIN public.quiz q
+    ON q.lesson_id = l.lesson_id
+WHERE l.lesson_id = 24
+ORDER BY ls.display_order;
 
 
 
-
-
-
-
-
-
-
-DO $do$
-DECLARE
-    v_lesson_id BIGINT;
-BEGIN
-    -- Find Module 2, Lesson 1.
-    SELECT lesson_id
-    INTO v_lesson_id
-    FROM public.lesson
-    WHERE module_id = 2
-      AND lesson_number = 1;
-
-    IF v_lesson_id IS NULL THEN
-        RAISE EXCEPTION 'Module 2, Lesson 1 was not found.';
-    END IF;
-
-    -- Convert the existing example blocks into code blocks.
-    -- Explanations are moved into separate paragraphs and lists.
-    UPDATE public.lesson_section AS ls
-    SET section_content = jsonb_set(
-        ls.section_content,
-        '{blocks}',
-        (
-            SELECT jsonb_agg(
-                expanded.new_block
-                ORDER BY original.ordinality, expanded.sub_order
-            )
-            FROM jsonb_array_elements(
-                ls.section_content->'blocks'
-            ) WITH ORDINALITY AS original(block, ordinality)
-
-            CROSS JOIN LATERAL jsonb_array_elements(
-                CASE original.block->>'title'
-
-                    -- Section 1: Basic HTML content.
-                    WHEN 'Example: Basic HTML content' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'Basic HTML content',
-                                'language', 'html',
-                                'code', $snippet$
-<h1>Welcome to CodeXperts</h1>
-<p>Learn programming by building real projects.</p>
-<a href="https://www.example.com">Visit our website</a>
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'The browser displays:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    'A large heading.',
-                                    'A paragraph underneath the heading.',
-                                    'A clickable link.'
-                                )
-                            )
-                        )
-
-                    -- Section 2: HTML and JavaScript.
-                    WHEN 'Example: Combining HTML and JavaScript' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'Combining HTML and JavaScript',
-                                'language', 'html',
-                                'code', $snippet$
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>My First Website</title>
-</head>
-<body>
-    <h1 id="heading">Welcome!</h1>
-    <button onclick="changeHeading()">
-        Click Me
-    </button>
-
-    <script>
-        function changeHeading() {
-            document.getElementById("heading").textContent =
-                "You clicked the button!";
-        }
-    </script>
-</body>
-</html>
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'Explanation:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    'HTML creates the heading and button.',
-                                    'JavaScript changes the heading when the button is clicked.'
-                                )
-                            )
-                        )
-
-                    -- Section 2: CSS styling.
-                    WHEN 'Example: CSS styling' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'CSS styling',
-                                'language', 'css',
-                                'code', $snippet$
-body {
-    font-family: Arial, sans-serif;
-    background-color: lightgray;
-}
-
-h1 {
-    color: darkblue;
-}
-
-button {
-    background-color: navy;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-}
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'Explanation:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    'The body uses Arial as its font.',
-                                    'The page background is light grey.',
-                                    'The heading is dark blue.',
-                                    'The button has a navy background and white text.'
-                                )
-                            )
-                        )
-
-                    -- Section 3: Paragraph element.
-                    WHEN 'Example: A paragraph element' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'A paragraph element',
-                                'language', 'html',
-                                'code', $snippet$
-<p>This is a paragraph.</p>
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'The three parts are:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    '<p> is the opening tag.',
-                                    'This is a paragraph. is the content.',
-                                    '</p> is the closing tag.'
-                                )
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'Together, these parts form a paragraph element.'
-                            )
-                        )
-
-                    -- Section 3: Void elements.
-                    WHEN 'Examples of void elements' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'Examples of void elements',
-                                'language', 'html',
-                                'code', $snippet$
-<img src="logo.png" alt="Company logo">
-<br>
-<hr>
-<input type="text">
-$snippet$
-                            )
-                        )
-
-                    -- Section 4: Tag versus element.
-                    WHEN 'Tag versus element' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'Tag versus element',
-                                'language', 'html',
-                                'code', $snippet$
-<p>Hello, learner!</p>
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'In this example:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    '<p> is the opening tag.',
-                                    '</p> is the closing tag.',
-                                    'The complete paragraph, including its content, is the HTML element.'
-                                )
-                            )
-                        )
-
-                    -- Section 5: Simple HTML structure.
-                    WHEN 'Example: A simple HTML structure' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'A simple HTML structure',
-                                'language', 'html',
-                                'code', $snippet$
-<body>
-    <h1>My Website</h1>
-    <section>
-        <p>Welcome to my website.</p>
-    </section>
-</body>
-$snippet$
-                            ),
-                            jsonb_build_object(
-                                'type', 'paragraph',
-                                'text', 'The browser understands:'
-                            ),
-                            jsonb_build_object(
-                                'type', 'list',
-                                'items', jsonb_build_array(
-                                    'body is the parent of the heading and section.',
-                                    'section is the parent of the paragraph.',
-                                    'heading and section are children of body.'
-                                )
-                            )
-                        )
-
-                    -- Section 6: First HTML document.
-                    WHEN 'Your first HTML document' THEN
-                        jsonb_build_array(
-                            jsonb_build_object(
-                                'type', 'code',
-                                'title', 'Your first HTML document',
-                                'language', 'html',
-                                'code', $snippet$
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My First Web Page</title>
-</head>
-<body>
-    <h1>My First Website</h1>
-    <p>I am learning how to build websites using HTML.</p>
-</body>
-</html>
-$snippet$
-                            )
-                        )
-
-                    -- Leave all other blocks unchanged.
-                    ELSE
-                        jsonb_build_array(original.block)
-
-                END
-            ) WITH ORDINALITY AS expanded(new_block, sub_order)
-        ),
-        TRUE
-    )
-    WHERE ls.lesson_id = v_lesson_id
-      AND EXISTS (
-          SELECT 1
-          FROM jsonb_array_elements(
-              ls.section_content->'blocks'
-          ) AS existing(block)
-          WHERE existing.block->>'type' = 'example'
-            AND existing.block->>'title' IN (
-                'Example: Basic HTML content',
-                'Example: Combining HTML and JavaScript',
-                'Example: CSS styling',
-                'Example: A paragraph element',
-                'Examples of void elements',
-                'Tag versus element',
-                'Example: A simple HTML structure',
-                'Your first HTML document'
-            )
-      );
-
-    RAISE NOTICE
-        'Code examples updated successfully for Module 2, Lesson 1. Lesson ID: %',
-        v_lesson_id;
-
-END $do$;
+SELECT *
+FROM learning_path
+ORDER BY path_id;

@@ -49,11 +49,13 @@ const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
 
 const userXP = document.getElementById("userXP");
+const userStreak = document.getElementById("userStreak");
 const userProfile = document.getElementById("userProfile");
 
 const statMembers = document.getElementById("statMembers");
 const statLevel = document.getElementById("statLevel");
 const statXP = document.getElementById("statXP");
+
 
 const notificationButton = document.getElementById("notificationButton");
 const notificationPanel = document.getElementById("notificationPanel");
@@ -642,9 +644,12 @@ async function loadCommunity() {
 
         displayUserProfile();
 
-        displayGroups();
+displayGroups();
 
-        await loadNotifications();
+await Promise.all([
+    loadNotifications(),
+    loadCurrentStreak()
+]);
 
         if (communityGroups.length > 0) {
 
@@ -696,7 +701,44 @@ function displayUserProfile() {
     }
 }
 
+// ==========================================
+// LOAD CURRENT STREAK
+// ==========================================
 
+async function loadCurrentStreak() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/paths/dashboard/stats",
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || "Unable to load streak.");
+        }
+
+        const currentStreak = Number(
+            data.streak?.currentStreak || 0
+        );
+
+        userStreak.textContent =
+            `${currentStreak} day${currentStreak === 1 ? "" : "s"} streak`;
+
+    } catch (error) {
+
+        console.error("Current streak loading error:", error);
+
+        userStreak.textContent = "0 day streak";
+    }
+}
 // ==========================================
 // DISPLAY ENROLLED GROUPS
 // ==========================================

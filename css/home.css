@@ -1198,3 +1198,126 @@ button:disabled {
     height: 2px;
     background: var(--accent-green);
 }
+
+/* Multiple learning paths on the dashboard */
+
+#learningContent {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 20px;
+    min-height: auto;
+}
+
+#learningContent::before {
+    display: none;
+}
+
+#learningContent .learning-path-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-card);
+}
+
+#learningContent .learning-path-card h4 {
+    position: static;
+    margin: 0;
+    font-size: 17px;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+#learningContent .learning-path-card p {
+    position: static;
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+#learningContent .learning-path-card .module-label {
+    position: static;
+    display: block;
+    transform: none;
+    max-width: 100%;
+    margin-top: 6px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#learningContent .learning-path-card .path-next-lesson {
+    margin-top: 4px;
+}
+
+#learningContent .learning-path-card .continue-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 15px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+#learningContent .learning-path-card .continue-button:hover:not(:disabled) {
+    opacity: 0.88;
+}
+
+/* Website Development - Purple */
+
+#learningContent .learning-path-card.website-development {
+    background: rgba(167, 139, 250, 0.06);
+    border-color: rgba(167, 139, 250, 0.35);
+}
+
+#learningContent .learning-path-card.website-development .module-label {
+    color: var(--accent-purple);
+}
+
+#learningContent .learning-path-card.website-development .continue-button {
+    background: linear-gradient(90deg, #a78bfa, #8b5cf6);
+    color: #09090b;
+}
+
+/* Java Development - Blue */
+
+#learningContent .learning-path-card.java-development {
+    background: rgba(59, 130, 246, 0.06);
+    border-color: rgba(59, 130, 246, 0.35);
+}
+
+#learningContent .learning-path-card.java-development .module-label {
+    color: var(--accent-blue);
+}
+
+#learningContent .learning-path-card.java-development .continue-button {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    color: #ffffff;
+}
+
+/* Other learning paths - Green by default */
+
+#learningContent .learning-path-card.other-learning-path .module-label {
+    color: var(--accent-green);
+}
+
+#learningContent .learning-path-card.other-learning-path .continue-button {
+    background: linear-gradient(90deg, #00ff66, #00e5ff);
+    color: #09090b;
+}
+
+/* Hide the old single learning button when enrolled paths are displayed */
+
+#lessonButton[hidden],
+#lessonMessage[hidden] {
+    display: none !important;
+}

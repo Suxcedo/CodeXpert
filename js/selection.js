@@ -105,9 +105,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const isAvailable =
             String(path.status || "").trim().toLowerCase() === "available";
 
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = "path-card";
+      const card = document.createElement("button");
+card.type = "button";
+card.className = "path-card";
+
+const normalizedPathName = String(path.path_name || "")
+    .trim()
+    .toLowerCase();
+
+if (normalizedPathName === "website development") {
+    card.classList.add("path-website");
+} else if (normalizedPathName === "java development") {
+    card.classList.add("path-java");
+} else if (normalizedPathName === "c++ development") {
+    card.classList.add("path-cpp");
+}
         card.disabled = !isAvailable;
         card.setAttribute("aria-pressed", "false");
 

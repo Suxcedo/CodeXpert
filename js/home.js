@@ -404,28 +404,31 @@ async function loadAvailablePaths() {
     return data.paths || [];
 }
 
-async function findUserEnrollment(paths) {
-    for (const path of paths) {
-        const data = await apiRequest(
-            `/paths/${path.path_id}/enrollment`
-        );
 
-        const enrollment = data.enrollment;
+async function findUserEnrollments(paths) {
+    const enrollmentResults = await Promise.all(
+        paths.map(async path => {
+            const data = await apiRequest(
+                `/paths/${path.path_id}/enrollment`
+            );
 
-        if (
-            data.enrolled &&
-            enrollment &&
-            enrollment.status === "active"
-        ) {
-            return {
-                path,
-                enrollment
-            };
-        }
-    }
+            const enrollment = data.enrollment;
 
-    return null;
+            if (
+                data.enrolled &&
+                enrollment &&
+                enrollment.status === "active"
+            ) {
+                return { path, enrollment };
+            }
+
+            return null;
+        })
+    );
+
+    return enrollmentResults.filter(Boolean);
 }
+
 
 async function loadFirstModule(pathId) {
     const data = await apiRequest(`/paths/${pathId}/modules`);
@@ -443,16 +446,10 @@ async function loadModuleLessons(moduleId) {
 }
 
 
+
 async function findNextAvailableLesson(pathId) {
     const data = await apiRequest(`/paths/${pathId}/modules`);
     const modules = data.modules || [];
-
-    totalModules = modules.length;
-    activeModule = null;
-    nextLesson = null;
-    activeModuleNumber = 0;
-    activeModuleLessons = [];
-    currentLessonNumber = 0;
 
     let lastModule = null;
     let lastModuleLessons = [];
@@ -476,41 +473,50 @@ async function findNextAvailableLesson(pathId) {
         const availableLesson = findNextLesson(publishedLessons);
 
         if (availableLesson) {
-            activeModule = module;
-            activeModuleNumber = i + 1;
-            activeModuleLessons = publishedLessons;
-            nextLesson = availableLesson;
-
             const lessonIndex = publishedLessons.findIndex(
                 lesson =>
                     Number(lesson.lesson_id) ===
                     Number(availableLesson.lesson_id)
             );
 
-            currentLessonNumber = lessonIndex >= 0
-                ? lessonIndex + 1
-                : 1;
-
-            return nextLesson;
+            return {
+                activeModule: module,
+                nextLesson: availableLesson,
+                activeModuleNumber: i + 1,
+                totalModules: modules.length,
+                activeModuleLessons: publishedLessons,
+                currentLessonNumber: lessonIndex >= 0
+                    ? lessonIndex + 1
+                    : 1
+            };
         }
     }
 
-    // No unfinished accessible lesson was found.
-    // Keep the final module selected and show its completed progress.
-
     if (lastModule) {
-        activeModule = lastModule;
-        activeModuleLessons = lastModuleLessons;
-
-        activeModuleNumber = modules.findIndex(
-            module => module.module_id === lastModule.module_id
-        ) + 1;
-
-        currentLessonNumber = lastModuleLessons.length;
+        return {
+            activeModule: lastModule,
+            nextLesson: null,
+            activeModuleNumber: modules.findIndex(
+                module =>
+                    Number(module.module_id) ===
+                    Number(lastModule.module_id)
+            ) + 1,
+            totalModules: modules.length,
+            activeModuleLessons: lastModuleLessons,
+            currentLessonNumber: lastModuleLessons.length
+        };
     }
 
-    return null;
+    return {
+        activeModule: null,
+        nextLesson: null,
+        activeModuleNumber: 0,
+        totalModules: modules.length,
+        activeModuleLessons: [],
+        currentLessonNumber: 0
+    };
 }
+
 
 
 
@@ -603,67 +609,146 @@ function renderNoEnrollment() {
 /* Enrolled path */
 
 
-function renderEnrolledPath() {
-    if (!activePath || !activeEnrollment) return;
 
-    const pathName = activePath.path_name || "Your Learning Path";
+function renderEnrolledPath(enrolledPaths) {
+    if (!elements.learningContent) return;
 
-    setText(elements.pathHeading, pathName);
+    setText(elements.pathHeading, "Your Learning");
 
     setText(
         elements.pathDescription,
-        activePath.description || "Continue learning and improving your skills."
+        "Continue learning in any of your enrolled programming paths."
     );
 
     setText(
         elements.pathProgress,
-        `Module ${activeModuleNumber} of ${totalModules}`
+        `${enrolledPaths.length} active learning path${enrolledPaths.length === 1 ? "" : "s"}`
     );
 
     if (elements.choosePathButton) {
         elements.choosePathButton.hidden = true;
     }
 
-    if (elements.learningContent) {
-        elements.learningContent.innerHTML = `
-            <h4 class="learning-path-name"></h4>
-            <p class="learning-path-description"></p>
-            <span class="module-label"></span>
-        `;
-
-        elements.learningContent.querySelector(
-            ".learning-path-name"
-        ).textContent = pathName;
-
-        elements.learningContent.querySelector(
-            ".learning-path-description"
-        ).textContent =
-            activePath.description ||
-            "Continue with your learning journey.";
-
-        elements.learningContent.querySelector(
-            ".module-label"
-        ).textContent = activeModule
-            ? `Module ${activeModuleNumber}: ${activeModule.module_name}`
-            : "No active module";
+    // Hide the original single-path button.
+    // Each learning path will now have its own button.
+    if (elements.lessonButton) {
+        elements.lessonButton.hidden = true;
     }
 
-    if (nextLesson) {
-        if (elements.lessonButton) {
-            elements.lessonButton.disabled = false;
-            elements.lessonButton.textContent = "Continue Learning";
+    if (elements.lessonMessage) {
+        elements.lessonMessage.hidden = true;
+    }
+
+    elements.learningContent.replaceChildren();
+
+    enrolledPaths.forEach(item => {
+        const { path, enrollment, progress } = item;
+
+        const pathName = path.path_name || "Learning Path";
+        const normalizedName = pathName.toLowerCase();
+
+        let cardClass = "other-learning-path";
+
+        if (
+            normalizedName.includes("website") ||
+            normalizedName.includes("web development")
+        ) {
+            cardClass = "website-development";
+
+        } else if (normalizedName.includes("java")) {
+            cardClass = "java-development";
         }
 
-        if (elements.lessonMessage) {
-            elements.lessonMessage.textContent =
-                `Next lesson: ${nextLesson.title || nextLesson.lesson_title || "Continue your lesson"}`;
+        const card = document.createElement("div");
+        card.className = `learning-path-card ${cardClass}`;
+        card.dataset.pathId = path.path_id;
+
+        const heading = document.createElement("h4");
+        heading.textContent = pathName;
+
+        const description = document.createElement("p");
+        description.textContent =
+            path.description ||
+            "Continue learning and improving your programming skills.";
+
+        const moduleLabel = document.createElement("span");
+        moduleLabel.className = "module-label";
+
+        moduleLabel.textContent = progress.activeModule
+            ? `Module ${progress.activeModuleNumber} of ${progress.totalModules}: ${progress.activeModule.module_name}`
+            : "No published modules available";
+
+        const lessonMessage = document.createElement("p");
+        lessonMessage.className = "path-next-lesson";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "continue-button";
+
+        if (progress.nextLesson) {
+            const lessonTitle =
+                progress.nextLesson.title ||
+                progress.nextLesson.lesson_title ||
+                "Continue your lesson";
+
+            lessonMessage.textContent = `Next lesson: ${lessonTitle}`;
+
+            button.textContent = `Continue ${pathName}`;
+
+            
+
+button.addEventListener("click", () => {
+    const lessonUrl = new URLSearchParams({
+        path_id: String(path.path_id),
+        module_id: String(progress.activeModule.module_id),
+        lesson_id: String(progress.nextLesson.lesson_id)
+    });
+
+    window.location.href = `lesson.html?${lessonUrl.toString()}`;
+});
+
+
+
+        } else {
+            lessonMessage.textContent =
+                "No unfinished lessons are currently available in this learning path.";
+
+            button.textContent = "No Lessons Available";
+            button.disabled = true;
         }
-    } else {
-        displayNoLessonAvailable();
+
+        card.append(
+            heading,
+            description,
+            moduleLabel,
+            lessonMessage,
+            button
+        );
+
+        elements.learningContent.appendChild(card);
+    });
+
+    // Keep the existing dashboard statistics based on the first
+    // active enrollment, so unrelated dashboard features remain intact.
+    const firstPath = enrolledPaths[0];
+
+    if (firstPath) {
+        activePath = firstPath.path;
+        activeEnrollment = firstPath.enrollment;
+
+        activeModule = firstPath.progress.activeModule;
+        nextLesson = firstPath.progress.nextLesson;
+
+        activeModuleNumber = firstPath.progress.activeModuleNumber;
+        totalModules = firstPath.progress.totalModules;
+
+        activeModuleLessons = firstPath.progress.activeModuleLessons;
+        currentLessonNumber = firstPath.progress.currentLessonNumber;
     }
 
     displayInitialStats();
 }
+
 
 
 
@@ -1192,6 +1277,7 @@ function renderLeaderboard(data) {
 /* Dashboard initialization */
 
 
+
 async function init() {
     setupNavigation();
     setupSectionNavigation();
@@ -1212,26 +1298,34 @@ async function init() {
 
     try {
         const paths = await loadAvailablePaths();
-        const enrollmentData = await findUserEnrollment(paths);
+        const enrolledPaths = await findUserEnrollments(paths);
 
-        if (!enrollmentData) {
+        if (!enrolledPaths.length) {
             renderNoEnrollment();
             return;
         }
 
-        activePath = enrollmentData.path;
-        activeEnrollment = enrollmentData.enrollment;
+        // Retrieve the next available lesson separately for each path.
+        const pathsWithProgress = await Promise.all(
+            enrolledPaths.map(async item => {
+                const progress = await findNextAvailableLesson(
+                    item.path.path_id
+                );
 
-        // Search all modules for the next available lesson.
-        await findNextAvailableLesson(activePath.path_id);
+                return {
+                    ...item,
+                    progress
+                };
+            })
+        );
 
-        renderEnrolledPath();
+        renderEnrolledPath(pathsWithProgress);
 
     } catch (error) {
         console.error("Dashboard loading error:", error);
 
         showPageMessage(
-            "We could not load your learning path. Please refresh the page.",
+            "We could not load your learning paths. Please refresh the page.",
             "error"
         );
 
@@ -1241,6 +1335,7 @@ async function init() {
         }
     }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", init);

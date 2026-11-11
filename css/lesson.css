@@ -2065,3 +2065,200 @@ body.modal-open {
     height: 65px;
     object-fit: contain;
 }
+
+/* Java Learning Path - Blue Theme */
+
+body.java-theme {
+    --accent: #60a5fa;
+    --accent-strong: #2563eb;
+}
+
+/* Header and profile accents */
+body.java-theme .learning-label {
+    color: var(--accent);
+}
+
+body.java-theme .user-avatar {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+/* Sidebar course icon */
+body.java-theme .course-icon,
+body.java-theme .modal-course-icon {
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.12);
+}
+
+/* Sidebar progress */
+body.java-theme #progressBar {
+    background: linear-gradient(90deg, #2563eb, #93c5fd);
+}
+
+/* Active lesson */
+body.java-theme .lesson-nav-item.active {
+    background: rgba(59, 130, 246, 0.09);
+    border-color: rgba(96, 165, 250, 0.3);
+}
+
+body.java-theme .nav-number {
+    color: #60a5fa;
+}
+
+/* Module dropdowns */
+body.java-theme .module-dropdown:hover {
+    border-color: #315b91;
+}
+
+body.java-theme .module-dropdown-title:hover {
+    background: rgba(59, 130, 246, 0.07);
+}
+
+body.java-theme .module-dropdown:has(.module-dropdown-title > small) >
+.module-dropdown-title > small {
+    color: #93c5fd;
+    background: rgba(37, 99, 235, 0.12);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+body.java-theme .module-dropdown > .module-dropdown-title > small::before {
+    background: #60a5fa;
+}
+
+body.java-theme .module-dropdown-title::after {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+body.java-theme .module-dropdown[open] > .module-dropdown-title::after {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+/* Active lesson in module */
+body.java-theme .module-lesson-list .lesson-nav-item:not(:disabled):hover {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+body.java-theme .module-lesson-list .lesson-nav-item.active {
+    background: linear-gradient(
+        110deg,
+        rgba(37, 99, 235, 0.2),
+        rgba(37, 99, 235, 0.06)
+    );
+    border-color: rgba(96, 165, 250, 0.4);
+    box-shadow: inset 3px 0 0 #2563eb;
+}
+
+body.java-theme .module-lesson-list .nav-number {
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+/* Lesson headings and section accents */
+body.java-theme .lesson-topline > span:first-child,
+body.java-theme #lessonLabel,
+body.java-theme .intro-badge,
+body.java-theme .modal-kicker,
+body.java-theme .section-kicker {
+    color: var(--accent);
+}
+
+body.java-theme .section-number {
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+body.java-theme .content-callout {
+    border-left-color: #3b82f6;
+}
+
+/* Quiz */
+body.java-theme .quiz-question legend::after {
+    background: #2563eb;
+}
+
+body.java-theme .quiz-option:hover {
+    border-color: #3b82f6;
+}
+
+body.java-theme .quiz-option:has(input:checked) {
+    background: rgba(37, 99, 235, 0.14);
+    border-color: #60a5fa;
+}
+
+body.java-theme .quiz-option input {
+    accent-color: #2563eb;
+}
+
+body.java-theme .quiz-short-answer:focus {
+    border-color: #60a5fa;
+}
+
+body.java-theme .quiz-submit,
+body.java-theme .primary-button,
+body.java-theme .module-coming-soon-modal button {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Previous and next lesson buttons */
+body.java-theme .lesson-next-button {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-color: #3b82f6;
+    box-shadow: 0 5px 18px rgba(37, 99, 235, 0.18);
+}
+
+body.java-theme .lesson-next-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+}
+
+body.java-theme .lesson-previous-button:focus-visible,
+body.java-theme .lesson-next-button:focus-visible {
+    outline-color: #60a5fa;
+}
+
+/* Previous/next navigation arrows */
+body.java-theme .lesson-nav-button:hover:not(:disabled) {
+    background: rgba(37, 99, 235, 0.12);
+    border-color: rgba(96, 165, 250, 0.65);
+}
+
+body.java-theme .lesson-nav-button:focus-visible {
+    outline-color: #60a5fa;
+}
+
+body.java-theme .lesson-nav-arrow {
+    color: #bfdbfe;
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(96, 165, 250, 0.22);
+}
+
+/* Enrollment modal */
+body.java-theme .modal-decoration {
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.12);
+}
+
+/* XP notification */
+body.java-theme .xp-toast {
+    border-color: rgba(96, 165, 250, 0.55);
+}
+
+body.java-theme .xp-display.xp-updated {
+    border-color: #60a5fa;
+}
+
+/* Scrollbar */
+body.java-theme .lesson-sidebar {
+    scrollbar-color: #315b91 #0d1017;
+}
+
+body.java-theme .lesson-sidebar::-webkit-scrollbar-thumb {
+    background: #315b91;
+}
+
+body.java-theme .lesson-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}

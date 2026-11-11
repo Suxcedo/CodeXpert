@@ -828,3 +828,111 @@ button:disabled {
 .member-presence.offline .presence-dot {
     background: #999;
 }
+/* =========================================
+   PROFILE NAVIGATION
+========================================= */
+
+.navbar .profile {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #27272a;
+    color: #ffffff;
+
+    border: 2px solid #3f3f46;
+    border-radius: 50%;
+
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    transition: border-color 0.2s ease,
+                transform 0.2s ease,
+                background 0.2s ease;
+}
+
+.navbar .profile:hover {
+    border-color: #00ff66;
+    background: #151518;
+    transform: scale(1.05);
+}
+
+.navbar .profile:focus-visible {
+    outline: 2px solid #00ff66;
+    outline-offset: 3px;
+}
+
+.navbar .profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.navbar .profile img[hidden],
+.navbar .profile span[hidden] {
+    display: none;
+}
+/* =========================================
+   CODEXPERTS NAVIGATION - HOME PAGE STYLE
+========================================= */
+
+.navbar .nav-link {
+    position: relative;
+    color: var(--text-muted, #a1a1aa);
+    background: transparent;
+    border: none;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+}
+
+/* Green underline for active navigation */
+
+.navbar .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #00ff66;
+    transition: width 0.2s ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
+    width: 100%;
+}
+
+/* Current streak */
+
+.navbar .streak {
+    color: #ffffff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* XP */
+
+.navbar .xp {
+    color: #00ff66;
+    font-weight: 700;
+    white-space: nowrap;
+}

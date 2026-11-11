@@ -310,6 +310,10 @@ function getStoredUser() {
 // DISPLAY PROFILE INITIAL
 // ==========================================
 
+// ==========================================
+// DISPLAY USER PROFILE PICTURE
+// ==========================================
+
 function displayUserProfile() {
 
     const user = getStoredUser();
@@ -320,9 +324,38 @@ function displayUserProfile() {
         user.username ||
         "Learner";
 
-    if (profileInitial) {
-        profileInitial.textContent = name.charAt(0).toUpperCase();
+    const initial = name.charAt(0).toUpperCase();
+
+    if (!profileInitial) {
+        return;
     }
+
+    const profilePicture =
+        user.profile_picture_url ||
+        user.profilePictureUrl ||
+        user.avatar_url ||
+        user.avatarUrl;
+
+    // Show the initial when no profile picture is available.
+    profileInitial.textContent = initial;
+
+    if (!profilePicture) {
+        return;
+    }
+
+    const image = document.createElement("img");
+
+    image.src = profilePicture;
+    image.alt = "Profile picture";
+    image.loading = "eager";
+
+    image.onerror = function () {
+        image.remove();
+        profileInitial.textContent = initial;
+    };
+
+    profileInitial.textContent = "";
+    profileInitial.appendChild(image);
 }
 
 
@@ -872,10 +905,7 @@ function createQuestionCard(post) {
                     ${replyCount} replies
                 </span>
 
-                <span>
-                    <span aria-hidden="true">◉</span>
-                    ${viewCount} views
-                </span>
+              
 
             </div>
 
@@ -1712,4 +1742,4 @@ async function initialiseHelpBoard() {
 initialiseHelpBoard();
 
 
-initialiseHelpBoard();
+

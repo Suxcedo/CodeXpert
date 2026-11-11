@@ -637,3 +637,132 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* =========================================
+   INDIVIDUAL LEARNING PATH COLOURS
+========================================= */
+
+/* WEBSITE DEVELOPMENT - PURPLE */
+
+.path-card.path-website:not(:disabled):hover {
+    border-color: #a78bfa;
+}
+
+.path-card.path-website.selected {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(167, 139, 250, 0.12),
+            transparent 75%
+        ),
+        var(--surface);
+    border-color: #a78bfa;
+    box-shadow: 0 0 25px rgba(167, 139, 250, 0.12);
+}
+
+.path-website .path-icon {
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.25);
+}
+
+.path-website .path-status.available {
+    color: #a78bfa;
+    background: rgba(167, 139, 250, 0.12);
+}
+
+.path-website .path-tag {
+    background: rgba(167, 139, 250, 0.07);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+.path-card.path-website.selected .path-tag {
+    border-color: rgba(167, 139, 250, 0.4);
+}
+
+.path-website .path-action {
+    color: #a78bfa;
+}
+
+
+/* JAVA DEVELOPMENT - BLUE */
+
+.path-card.path-java:not(:disabled):hover {
+    border-color: #3b82f6;
+}
+
+.path-card.path-java.selected {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(59, 130, 246, 0.12),
+            transparent 75%
+        ),
+        var(--surface);
+    border-color: #3b82f6;
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.12);
+}
+
+.path-java .path-icon {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+.path-java .path-status.available {
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.path-java .path-tag {
+    background: rgba(59, 130, 246, 0.07);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.path-card.path-java.selected .path-tag {
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.path-java .path-action {
+    color: #60a5fa;
+}
+
+
+/* C++ DEVELOPMENT - YELLOW */
+
+.path-card.path-cpp:not(:disabled):hover {
+    border-color: #facc15;
+}
+
+.path-card.path-cpp.selected {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(250, 204, 21, 0.12),
+            transparent 75%
+        ),
+        var(--surface);
+    border-color: #facc15;
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.12);
+}
+
+.path-cpp .path-icon {
+    background: rgba(250, 204, 21, 0.12);
+    border-color: rgba(250, 204, 21, 0.25);
+}
+
+.path-cpp .path-status.available {
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.12);
+}
+
+.path-cpp .path-tag {
+    background: rgba(250, 204, 21, 0.07);
+    border-color: rgba(250, 204, 21, 0.2);
+}
+
+.path-card.path-cpp.selected .path-tag {
+    border-color: rgba(250, 204, 21, 0.4);
+}
+
+.path-cpp .path-action {
+    color: #facc15;
+}

@@ -4,8 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const params = new URLSearchParams(window.location.search);
     const pathId = params.get("path_id") || "1";
-    let moduleId = params.get("module_id") || "1";
-    let lessonId = params.get("lesson_id") || "1";
+    const pathName = Number(pathId) === 3
+    ? "Java Development"
+    : "Website Development";
+
+document.body.classList.toggle(
+    "java-theme",
+    Number(pathId) === 3
+);
+    let moduleId = params.get("module_id") || "";
+    let lessonId = params.get("lesson_id") || "";
 
     const $ = id => document.getElementById(id);
 
@@ -334,12 +342,25 @@ async function displayUser() {
     }
 
     function showEnrollmentModal() {
-        enrollmentOverlay.hidden = false;
-        document.body.classList.add("modal-open");
-        enrollmentError.hidden = true;
-        enrollNowButton.disabled = false;
-        enrollNowButton.textContent = "Enroll Now →";
+    if (modalPathTitle) {
+        modalPathTitle.textContent = pathName;
     }
+
+    const enrollmentTitle = $("enrollmentTitle");
+
+    if (enrollmentTitle) {
+        enrollmentTitle.textContent = Number(pathId) === 3
+            ? "Ready to become a Java developer?"
+            : "Ready to become a web developer?";
+    }
+
+    enrollmentOverlay.hidden = false;
+    document.body.classList.add("modal-open");
+
+    enrollmentError.hidden = true;
+    enrollNowButton.disabled = false;
+    enrollNowButton.textContent = "Enroll Now →";
+}
 
     function hideEnrollmentModal() {
         enrollmentOverlay.hidden = true;
@@ -469,61 +490,147 @@ async function displayUser() {
         return navigationCache;
     }
 
+
+    async function resolveInitialLesson() {
+    // If both IDs are already supplied, keep the selected lesson.
+    if (moduleId && lessonId) {
+        return;
+    }
+
+    // Retrieve modules and lessons belonging to this learning path.
+    const navigation = await fetchNavigationData();
+
+    if (!navigation.length) {
+        throw new Error("No modules are available for this learning path yet.");
+    }
+
+    let selectedModule;
+
+    // If a module was supplied, use it. Otherwise, select Module 1.
+    if (moduleId) {
+        selectedModule = navigation.find(result =>
+            String(result.module.module_id) === String(moduleId)
+        );
+    } else {
+        selectedModule = navigation.find(result =>
+            Number(result.module.module_number) === 1
+        ) || navigation[0];
+    }
+
+    if (!selectedModule) {
+        throw new Error("The selected module could not be found.");
+    }
+
+    moduleId = String(selectedModule.module.module_id);
+
+    // If a lesson was supplied, keep it.
+    if (lessonId) {
+        return;
+    }
+
+    // Otherwise, select the first published lesson in the selected module.
+    const firstLesson = selectedModule.lessons.find(isPublished);
+
+    if (!firstLesson) {
+        throw new Error("The first module does not have any published lessons yet.");
+    }
+
+    lessonId = String(firstLesson.lesson_id);
+
+    // Update the URL with the actual database IDs.
+    const query = new URLSearchParams({
+        path_id: pathId,
+        module_id: moduleId,
+        lesson_id: lessonId
+    });
+
+    window.history.replaceState(
+        { pathId, moduleId, lessonId },
+        "",
+        `${window.location.pathname}?${query.toString()}`
+    );
+
+    console.log("Default lesson selected:", {
+        pathId,
+        moduleId,
+        lessonId,
+        moduleNumber: selectedModule.module.module_number,
+        lessonNumber: firstLesson.lesson_number
+    });
+}
+
     /*
      * Do not clear the sidebar while requests are running.
      * Normal lesson navigation uses the cached data.
      */
-    async function loadLessonNavigation(forceRefresh = false) {
-        if (!lessonNavigation) return;
+    
+async function loadLessonNavigation(forceRefresh = false) {
+    if (!lessonNavigation) return;
 
-        if (navigationLoaded && !forceRefresh) {
+    // Reuse cached data instead of requesting it again.
+    if (navigationLoaded && !forceRefresh) {
+        // Render the sidebar if the data was fetched but not displayed yet.
+        if (!lessonNavigation.querySelector(".module-dropdown")) {
+            renderSidebar();
+        } else {
             updateSidebarForCurrentLesson();
+        }
+
+        updateNavigationTargets();
+        return;
+    }
+
+    // Avoid starting duplicate navigation requests.
+    if (navigationRequest) {
+        await navigationRequest;
+
+        if (!forceRefresh && navigationLoaded) {
+            if (!lessonNavigation.querySelector(".module-dropdown")) {
+                renderSidebar();
+            } else {
+                updateSidebarForCurrentLesson();
+            }
+
             updateNavigationTargets();
             return;
         }
+    }
 
-        if (navigationRequest) {
-            await navigationRequest;
+    const requestVersion = ++navigationVersion;
 
-            if (!forceRefresh && navigationLoaded) {
-                updateSidebarForCurrentLesson();
-                updateNavigationTargets();
-                return;
+    navigationRequest = (async () => {
+        try {
+            await fetchNavigationData();
+
+            if (requestVersion !== navigationVersion) return;
+
+            renderSidebar();
+            updateNavigationTargets();
+
+        } catch (error) {
+            console.error("Could not load lesson navigation:", error);
+
+            if (!navigationLoaded) {
+                lessonNavigation.replaceChildren();
+
+                const message = document.createElement("p");
+                message.className = "sidebar-muted";
+                message.textContent =
+                    "Could not load modules and lessons. Please try again.";
+
+                lessonNavigation.appendChild(message);
+            }
+
+        } finally {
+            if (requestVersion === navigationVersion) {
+                navigationRequest = null;
             }
         }
+    })();
 
-        const requestVersion = ++navigationVersion;
+    await navigationRequest;
+}
 
-        navigationRequest = (async () => {
-            try {
-                await fetchNavigationData();
-
-                if (requestVersion !== navigationVersion) return;
-
-                renderSidebar();
-                updateNavigationTargets();
-            } catch (error) {
-                console.error("Could not load lesson navigation:", error);
-
-                if (!navigationLoaded) {
-                    lessonNavigation.replaceChildren();
-
-                    const message = document.createElement("p");
-                    message.className = "sidebar-muted";
-                    message.textContent =
-                        "Could not load modules and lessons. Please try again.";
-
-                    lessonNavigation.appendChild(message);
-                }
-            } finally {
-                if (requestVersion === navigationVersion) {
-                    navigationRequest = null;
-                }
-            }
-        })();
-
-        await navigationRequest;
-    }
 
     function renderSidebar() {
         if (!lessonNavigation) return;
@@ -1102,54 +1209,66 @@ if (Number(lesson.lesson_number) === 7) {
 function showLessonComingSoonModal() {
     let modal = document.getElementById("lessonComingSoonModal");
 
+    const pathName = Number(pathId) === 3
+        ? "Java Development"
+        : "Website Development";
+
+    const nextLessonNumber =
+        Number(currentLesson?.lesson_number || lessonId) + 1;
+
+    const nextLessonTitle = Number(pathId) === 3
+        ? "Your next Java lesson"
+        : "Your next HTML lesson";
+
     if (!modal) {
         modal = document.createElement("div");
         modal.id = "lessonComingSoonModal";
         modal.className = "module-coming-soon-overlay";
 
-        modal.innerHTML = `
-            <div class="module-coming-soon-modal"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="lessonComingSoonTitle">
-
-                <div class="module-coming-soon-icon">🚀</div>
-
-                <h2 id="lessonComingSoonTitle">
-                    Lesson 3 Coming Soon!
-                </h2>
-
-                <p>Congratulations on completing Lesson 2!</p>
-
-                <p>
-                    You're making great progress in your HTML learning
-                    journey. We're preparing the next lesson for you.
-                    Check back soon!
-                </p>
-
-                <button type="button" id="closeLessonComingSoon">
-                    Got it
-                </button>
-            </div>
-        `;
-
         document.body.appendChild(modal);
-
-        modal.querySelector("#closeLessonComingSoon").addEventListener(
-            "click",
-            () => {
-                modal.hidden = true;
-                document.body.classList.remove("modal-open");
-            }
-        );
-
-        modal.addEventListener("click", event => {
-            if (event.target === modal) {
-                modal.hidden = true;
-                document.body.classList.remove("modal-open");
-            }
-        });
     }
+
+    modal.innerHTML = `
+        <div class="module-coming-soon-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="lessonComingSoonTitle">
+
+            <div class="module-coming-soon-icon">🚀</div>
+
+            <h2 id="lessonComingSoonTitle">
+                Lesson ${nextLessonNumber} Coming Soon!
+            </h2>
+
+            <p>Congratulations on completing Lesson ${currentLesson?.lesson_number || lessonId}!</p>
+
+            <p>
+                You're making great progress in your ${pathName} learning
+                journey. We're preparing your next lesson,
+                ${nextLessonTitle}, for you.
+                Check back soon!
+            </p>
+
+            <button type="button" id="closeLessonComingSoon">
+                Got it
+            </button>
+        </div>
+    `;
+
+    modal.querySelector("#closeLessonComingSoon").addEventListener(
+        "click",
+        () => {
+            modal.hidden = true;
+            document.body.classList.remove("modal-open");
+        }
+    );
+
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            modal.hidden = true;
+            document.body.classList.remove("modal-open");
+        }
+    });
 
     modal.hidden = false;
     document.body.classList.add("modal-open");
@@ -1214,9 +1333,17 @@ function showLessonComingSoonModal() {
             await loadLessonNavigation(true);
 
 
+const firstModule = navigationCache.find(item =>
+    Number(item.module.module_number) === 1
+);
+
+const firstModulePublishedLessons =
+    firstModule?.lessons.filter(isPublished) || [];
+
 if (
-    Number(moduleId) === 2 &&
-    Number(currentLesson?.lesson_number) === 2
+    firstModule &&
+    firstModulePublishedLessons.length > 0 &&
+    firstModulePublishedLessons.every(isCompleted)
 ) {
     showLessonComingSoonModal();
 }
@@ -2181,12 +2308,37 @@ function renderCodeBlock(block) {
         lessonLabel.textContent =
             `LESSON ${lesson.lesson_number || lesson.lesson_id || lessonId}`;
 
-        moduleLabel.textContent = `MODULE ${moduleId}`;
-        sidebarModuleTitle.textContent =
-            `Module ${lesson.module_number || moduleId}`;
+        const currentModule = navigationCache.find(result =>
+    String(result.module.module_id) === String(moduleId)
+);
 
-        modalPathTitle.textContent =
-            lesson.path_title || "Website Development";
+const displayModuleNumber =
+    lesson.module_number ||
+    currentModule?.module.module_number ||
+    1;
+
+moduleLabel.textContent = `MODULE ${displayModuleNumber}`;
+
+sidebarModuleTitle.textContent =
+    `Module ${displayModuleNumber}`;
+
+        const pathName = Number(pathId) === 3
+    ? "Java Development"
+    : "Website Development";
+
+modalPathTitle.textContent = pathName;
+
+const enrollmentTitle = document.getElementById("enrollmentTitle");
+
+if (enrollmentTitle) {
+    enrollmentTitle.textContent = "Ready to become a developer?";
+}
+
+const sidebarPathTitle = document.getElementById("sidebarPathTitle");
+
+if (sidebarPathTitle) {
+    sidebarPathTitle.textContent = pathName.toUpperCase();
+}
 
         lessonSections.replaceChildren();
 
@@ -2214,10 +2366,13 @@ function renderCodeBlock(block) {
         lessonPlaceholder.hidden = true;
 
         // Do not reload the sidebar here.
-        updateSidebarForCurrentLesson();
-        updateNavigationTargets();
+      
+// Display the sidebar as soon as the lesson is rendered.
+// Cached navigation data will be reused without another API request.
+loadLessonNavigation(false);
 
-        loadAndStartLessonProgress();
+loadAndStartLessonProgress();
+
     }
 
     async function loadLesson() {
@@ -2431,10 +2586,27 @@ if (logoutButton) {
     });
 }
     displayUser();
-    accessToken = findAccessToken();
 
-    loadXpTotals();
-    checkEnrollment();
+accessToken = findAccessToken();
+
+loadXpTotals();
+
+async function initializeLessonPage() {
+    try {
+        await resolveInitialLesson();
+        await checkEnrollment();
+    } catch (error) {
+        console.error("Lesson page initialization failed:", error);
+
+        showPlaceholder(
+            "We couldn't load this learning path",
+            error.message || "Please refresh the page and try again.",
+            true
+        );
+    }
+}
+
+initializeLessonPage();
 
     console.log("CodeXperts lesson page initialized:", {
         pathId,
